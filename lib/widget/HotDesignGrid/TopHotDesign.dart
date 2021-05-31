@@ -19,22 +19,16 @@ class TopHotDesign extends StatelessWidget {
             height: screenHeight,
             width: (screenWidth*2)-10,
             child: Card(
-              elevation: 15.0,
-              child: Text(
-                  'width ${screenWidth*2-10} \n height $screenHeight',
-                textAlign: TextAlign.center,
-              ),
+              elevation: 5.0,
+              child: Image.asset("assets/images/top_left.jpg",fit: BoxFit.fill,)
             ),
           ),
           Container(
             height: screenHeight,
             width: screenWidth,
             child: Card(
-              elevation: 15.0,
-              child: Text(
-                'width $screenWidth \n height $screenHeight',
-                textAlign: TextAlign.center,
-              ),
+              elevation: 5.0,
+              child: Image.asset("assets/images/top_right.jpg",fit: BoxFit.fill,)
             ),
           )
         ],

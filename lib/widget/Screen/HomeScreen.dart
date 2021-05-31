@@ -1,12 +1,12 @@
 
-import '../HotDesign/MiddleHotDesign.dart';
+import '../HotDesignGrid/MiddleHotDesign.dart';
 import '../Drawer/SideDrawer.dart';
 
-import '../DesignList.dart';
-import '../HotDesign/TopHotDesign.dart';
+import '../DesignList/DesignCardList.dart';
+import '../HotDesignGrid/TopHotDesign.dart';
 import 'package:flutter/material.dart';
 
-class Homepage extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
 
 
 

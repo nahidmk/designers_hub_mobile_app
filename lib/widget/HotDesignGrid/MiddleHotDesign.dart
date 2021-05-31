@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class MiddleHotDesign extends StatelessWidget {
@@ -12,11 +14,11 @@ class MiddleHotDesign extends StatelessWidget {
       height: screenHeight,
 
       child: Card(
-        elevation: 15.0,
-        child: Text(
-          'width $screenWidth \n height $screenHeight',
-          textAlign: TextAlign.center,
-        ),
+        elevation: 5.0,
+        child: Image.asset(
+                  'assets/images/middle.jpg',
+                   fit: BoxFit.cover,
+              ),
       ),
     );
   }
