@@ -1,4 +1,6 @@
 
+import 'package:designers_hub_modile_app/Service/FetchData.dart';
+
 import '../HotDesignGrid/MiddleHotDesign.dart';
 import '../Drawer/SideDrawer.dart';
 
@@ -37,6 +39,8 @@ class HomeScreen extends StatelessWidget {
             MiddleHotDesign(),
 
             DesignList(),
+
+            FetchData(),
 
           ],
         ),

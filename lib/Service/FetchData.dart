@@ -9,34 +9,54 @@ FetchDataState createState() => new FetchDataState();
 
 class FetchDataState extends State<FetchData> {
 
-  List data=[];
+  // List data=[];
+  // Future <String> getData() async {
+  //   var response = await http.get(
+  //       // Uri.https("13.82.95.231","/api/v/1.0.0/public/designs"),
+  //       // Uri.https("jsonplaceholder.typicode.com","posts"),
+  //       Uri.https("protocoderspoint.com","jsondata/superheros.json"),
+  //       headers: {
+  //         "Accept": "application/json"
+  //       }
+  //   );
+  //
+  //   this.setState(() {
+  //     data = jsonDecode(response.body);
+  //   });
+  //
+  //   print(data.length);
+  //
+  //   return "Success!";
+  // }
 
-  Future getData() async {
-    var response = await http.get(
-        Uri.https("jsonplaceholder.typicode.com","posts"),
-        headers: {
-          "Accept": "application/json"
-        }
+
+  List superheros_length=[];
+  void getData() async {
+    http.Response response =
+    await http.get(
+           // Uri.https("13.82.95.231","/api/v/1.0.0/public/designs"),
+            Uri.https("jsonplaceholder.typicode.com","posts"),
+        // Uri.https("protocoderspoint.com","jsondata/superheros.json")
     );
+    if (response.statusCode == 200) {
+      var data = response.body; //store response as string
 
-    this.setState(() {
-      data = jsonDecode(response.body);
-    });
+      setState(() {
+        superheros_length = jsonDecode(data); //get all the data from json string superheros
+        print(superheros_length.length); // just printed length of data
+      });
 
-    print(data.length);
 
-    return "Success!";
+    } else {
+      print(response.statusCode);
+    }
   }
 
-  // @override
-  // void initState(){
-  //   this.getData();
-  // }
 
   @override
   Widget build(BuildContext context){
     return Container(
-      child: data.length==0?Container(child: MaterialButton(
+      child: superheros_length.length==0?Container(child: MaterialButton(
         onPressed: getData,
         color: Colors.blue,
         elevation: 10.0,
@@ -52,9 +72,11 @@ class FetchDataState extends State<FetchData> {
           :Container(
             height: 300,
             child: ListView(
-              children: data.map((e) {
+              children: superheros_length.map((e) {
               return Card(
+              // child: Text(e["user"]["name"]),
               child: Text(e["title"]),
+              // child: Text(e["name"]),
             );
         }).toList(),
       ),
