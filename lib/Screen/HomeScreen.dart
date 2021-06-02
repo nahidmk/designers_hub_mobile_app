@@ -1,15 +1,15 @@
 
-import 'package:designers_hub_modile_app/Service/FetchData.dart';
+import 'package:designers_hub_modile_app/DummyData/dummy_service/album_service.dart';
+import '../DummyData/dummy_fetch_data/fetchData.dart';
+import '../widget/DesignList/DesignCardList.dart';
+import '../widget/HotDesignGrid/MiddleHotDesign.dart';
+import '../widget/HotDesignGrid/TopHotDesign.dart';
+import '../widget/Drawer/SideDrawer.dart';
 
-import '../HotDesignGrid/MiddleHotDesign.dart';
-import '../Drawer/SideDrawer.dart';
 
-import '../DesignList/DesignCardList.dart';
-import '../HotDesignGrid/TopHotDesign.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
-
 
 
   @override

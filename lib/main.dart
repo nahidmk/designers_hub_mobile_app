@@ -1,4 +1,5 @@
-import 'widget/Screen/HomeScreen.dart';
+
+import '../Screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
 void main(){
