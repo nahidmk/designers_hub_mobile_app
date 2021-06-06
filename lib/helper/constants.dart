@@ -1,7 +1,5 @@
 
 
-final ROOT_URL = "jsonplaceholder.typicode.com";
+final ROOT_URL = "http://13.82.95.231:8080";
 
-final UN_ENCODED_PATH = "albums";
-
-final GET_ALL_ALBUM = "$ROOT_URL/albums";
+final GET_ALL_DESIGN = "$ROOT_URL/api/v/1.0.0/public/designs?page=0&size=10";

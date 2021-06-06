@@ -15,4 +15,19 @@ class FabricMixing{
     required this.percentage,
     required this.fabricMixingType,
     required this.fabricWeave});
+
+
+  factory FabricMixing.fromJson(Map<String, dynamic> json) => FabricMixing(
+    id: json["id"],
+    fabricMixingType: json["fabricMixingType"],
+    percentage: json["percentage"],
+    fabricWeave: json["fabricWeave"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "fabricMixingType": fabricMixingType,
+    "percentage": percentage,
+    "fabricWeave": fabricWeave,
+  };
 }

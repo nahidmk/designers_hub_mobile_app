@@ -4,7 +4,7 @@ import '../Enum/Gender.dart';
 import '../Enum/Provider.dart';
 import '../Model/DesignImage.dart';
 import '../Model/FabricMixing.dart';
-import '../Model/Fabrics.dart';
+import '../Model/Fabric.dart';
 import '../Model/Product.dart';
 import '../Model/User.dart';
 
@@ -25,17 +25,17 @@ List<Product> products = [
         new DesignImage(3, "est/xyz.png")
       ],
       fabrics: [
-        new Fabrics(
+        new Fabric(
             available: false,
             baseColor: "black",
             descriptions: "hello fabrics",
-            disable: false,
+            disabled: false,
             favCount: 1,
             id: 1,
             name: "xyz",
             pricePerYard: 123,
             slug: "slug",
-            fabricMixing: [
+            fabricMixings: [
               new FabricMixing(
                   id: 1,
                   percentage: 20,
@@ -50,38 +50,18 @@ List<Product> products = [
               )
             ],
             thumbnail: "xyz/abc.png",
-            user: new User(
-                active: false,
-                address: "Chanpur",
-                banned: false,
-                dateOfBirth: DateTime.now(),
-                disabled: false,
-                email: "email@gmail.com",
-                fullName: "Nahidul Islam",
-                gender: Gender.FEMALE,
-                id: 1,
-                nid: "20130450",
-                nidPictureBack: "abc/abc.gpj",
-                nidPictureFront: "abc/abc.gpj",
-                password: "islam_mk",
-                primaryNumber: "021356487501",
-                profilePicture: "xyz/bcd.gpj",
-                provider: Provider.github,
-                providerId: "abc",
-                secondaryNumber: "62525658142"
-            )
         ),
-        new Fabrics(
+        new Fabric(
             available: false,
             baseColor: "Blue",
             descriptions: "hello fabrics 2",
-            disable: false,
+            disabled: false,
             favCount: 2,
             id: 2,
             name: "abc",
             pricePerYard: 526,
             slug: "slug_slug",
-            fabricMixing: [
+            fabricMixings: [
               new FabricMixing(
                   id: 6,
                   percentage: 62,
@@ -96,26 +76,6 @@ List<Product> products = [
               )
             ],
             thumbnail: "xyz/opk.png",
-            user: new User(
-                active: false,
-                address: "Faridganj",
-                banned: false,
-                dateOfBirth: DateTime.now(),
-                disabled: false,
-                email: "email@gmail.com",
-                fullName: "Joniyed Bhuiyan",
-                gender: Gender.FEMALE,
-                id: 1,
-                nid: "20130450",
-                nidPictureBack: "abc/abc.gpj",
-                nidPictureFront: "abc/abc.gpj",
-                password: "islam_mk",
-                primaryNumber: "021356487501",
-                profilePicture: "xyz/bcd.gpj",
-                provider: Provider.github,
-                providerId: "abc",
-                secondaryNumber: "62525658142"
-            )
         ),
 
       ],

@@ -1,5 +1,4 @@
 
-import 'package:designers_hub_modile_app/DummyData/dummy_service/album_service.dart';
 import '../DummyData/dummy_fetch_data/fetchData.dart';
 import '../widget/DesignList/DesignCardList.dart';
 import '../widget/HotDesignGrid/MiddleHotDesign.dart';
