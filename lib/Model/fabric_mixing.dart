@@ -1,14 +1,20 @@
 
 
-import '../Enum/FabricMixingtype.dart';
-import '../Enum/FabricWeave.dart';
+
 
 class FabricMixing{
 
+
+
+
+
   final int id;
   final double percentage;
-  final FabricMixingType fabricMixingType;
-  final FabricWeave fabricWeave;
+  final String fabricMixingType;
+  final String fabricWeave;
+
+
+
 
   FabricMixing({
     required this.id,
@@ -18,10 +24,10 @@ class FabricMixing{
 
 
   factory FabricMixing.fromJson(Map<String, dynamic> json) => FabricMixing(
-    id: json["id"],
-    fabricMixingType: json["fabricMixingType"],
-    percentage: json["percentage"],
-    fabricWeave: json["fabricWeave"],
+    id: json["id"] as int,
+    fabricMixingType: json["fabricMixingType"] ==null ? '' : json["fabricMixingType"] as String,
+    percentage: json["percentage"] as double,
+    fabricWeave: json["fabricWeave"]==null ? '' :json["fabricWeave"]  as String,
   );
 
   Map<String, dynamic> toJson() => {

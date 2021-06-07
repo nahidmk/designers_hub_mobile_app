@@ -1,5 +1,5 @@
-import '../Model/FabricMixing.dart';
-import '../Model/User.dart';
+import '../Model/fabric_mixing.dart';
+import '../Model/user.dart';
 
 class Fabric {
 
@@ -14,6 +14,10 @@ class Fabric {
   final String slug;
   final String thumbnail;
   final List<FabricMixing> fabricMixings;
+
+
+
+
 
   Fabric({
     required this.available,
@@ -30,17 +34,17 @@ class Fabric {
   });
 
   factory Fabric.fromJson(Map<String, dynamic> json) => Fabric(
-    id: json["id"],
-    name: json["name"],
-    available: json["available"],
-    baseColor: json["baseColor"],
-    slug: json["slug"],
-    thumbnail: json["thumbnail"],
-    favCount: json["favCount"],
-    pricePerYard: json["pricePerYard"],
-    disabled: json["disabled"],
-    descriptions: json["descriptions"],
-    fabricMixings: List<FabricMixing>.from(json["fabricMixings"].map((x) => FabricMixing.fromJson(x))),
+    id: json["id"] as int,
+    name: json["name"]==null ? '':json["name"] as String,
+    available: json["available"] as bool,
+    baseColor: json["baseColor"] ==null?'':json["baseColor"] as String,
+    slug: json["slug"]==null?'':json["slug"] as String,
+    thumbnail: json["thumbnail"]==null?'':json["thumbnail"] as String,
+    favCount: json["favCount"] as int,
+    pricePerYard: json["pricePerYard"] as double,
+    disabled: json["disabled"] as bool,
+    descriptions: json["descriptions"]==null?'':json["descriptions"] as String,
+    fabricMixings: json["fabricMixings"]==null?[]:List<FabricMixing>.from(json["fabricMixings"].map((x) => FabricMixing.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

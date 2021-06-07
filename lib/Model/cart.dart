@@ -1,8 +1,10 @@
-import '../Model/CartDetails.dart';
+import '../Model/cart_details.dart';
 import 'package:flutter/material.dart';
 
 
 class Cart{
+
+
 
   final double finalPrice;
   final double grandTotal;
@@ -12,17 +14,21 @@ class Cart{
   final double printingCost;
   final List<CartDetails> cartDetailsList;
 
+
+
+
+
   Cart({required this.finalPrice, required this.grandTotal, required this.id, required this.totalPrice,
       required this.totalProducts, required this.printingCost, required this.cartDetailsList});
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
-      finalPrice: json["finalPrice"],
-      grandTotal: json["grandTotal"],
-      id: json["id"],
-      totalPrice: json["totalPrice"],
-      totalProducts: json["totalProducts"],
-      printingCost: json["printingCost"],
-      cartDetailsList: List<CartDetails>.from(json["cartDetailsList"].map((x) => CartDetails.fromJson(x))),
+      finalPrice: json["finalPrice"] as double,
+      grandTotal: json["grandTotal"] as double,
+      id: json["id"] as int,
+      totalPrice: json["totalPrice"] as double,
+      totalProducts: json["totalProducts"] as int,
+      printingCost: json["printingCost"] as double,
+      cartDetailsList: json["cartDetailsList"]==null?[]:List<CartDetails>.from(json["cartDetailsList"].map((x) => CartDetails.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -32,7 +38,7 @@ class Cart{
     "grandTotal": grandTotal,
     "printingCost": printingCost,
     "finalPrice": finalPrice,
-    "cartDetailsList": List<dynamic>.from(cartDetailsList.map((x) => x.toJson())),
+    "cartDetailsList": cartDetailsList==null?[]:List<dynamic>.from(cartDetailsList.map((x) => x.toJson())),
 
   };
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SingleDesignCard extends StatelessWidget {
 
-  final int price;
+  final double price;
   final String name;
   final double cardWidth;
   final double cardHeight;
@@ -23,7 +23,7 @@ class SingleDesignCard extends StatelessWidget {
             Container(
               width: cardWidth,
               height: (cardHeight/3)*2-15,
-              child: Image.asset(imgUrl,fit: BoxFit.fill,),
+              child: Image.network(imgUrl,fit: BoxFit.fill,),
 
             ),
             Container(

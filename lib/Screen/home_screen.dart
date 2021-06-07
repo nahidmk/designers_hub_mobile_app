@@ -1,6 +1,7 @@
 
-import '../DummyData/dummy_fetch_data/fetchData.dart';
-import '../widget/DesignList/DesignCardList.dart';
+import 'package:designers_hub_modile_app/widget/HotDesignGrid/HotDesignList.dart';
+
+import '../widget/DesignList/design_card_list.dart';
 import '../widget/HotDesignGrid/MiddleHotDesign.dart';
 import '../widget/HotDesignGrid/TopHotDesign.dart';
 import '../widget/Drawer/SideDrawer.dart';
@@ -28,22 +29,7 @@ class HomeScreen extends StatelessWidget {
         child: SideDrawer()
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-
-          children: [
-
-           TopHotDesign(),
-
-            MiddleHotDesign(),
-
-            DesignList(),
-
-            FetchData(),
-
-          ],
-        ),
-      ),
+      body: HotDesign(),
     );
   }
 }

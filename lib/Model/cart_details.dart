@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 
 
 class CartDetails{
+
+
+
   final double designPrice;
   final double fabricQuantity;
   final int id;
   final double pricePerYardFabric;
   final double totalPrice;
+
+
 
   CartDetails({
     required this.designPrice,
@@ -17,11 +22,11 @@ class CartDetails{
 
 
   factory CartDetails.fromJson(Map<String, dynamic> json) => CartDetails(
-    id: json["id"],
-    fabricQuantity: json["fabricQuantity"],
-    pricePerYardFabric: json["pricePerYardFabric"],
-    designPrice: json["designPrice"],
-    totalPrice: json["totalPrice"],
+    id: json["id"] as int,
+    fabricQuantity: json["fabricQuantity"] as double,
+    pricePerYardFabric: json["pricePerYardFabric"] as double,
+    designPrice: json["designPrice"] as double,
+    totalPrice: json["totalPrice"] as double,
   );
 
 

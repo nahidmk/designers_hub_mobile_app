@@ -1,30 +1,22 @@
-import '../Enum/Gender.dart';
-import '../Enum/Provider.dart';
-import 'package:designers_hub_modile_app/Model/Cart.dart';
-
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 class User{
   final bool active;
   final String address;
   final bool banned;
-  final DateTime dateOfBirth;
+  final String dateOfBirth;
   final bool disabled;
   final String email;
   final String fullName;
-  final Gender gender;
+  final String gender;
   final int id;
   final String nid;
   final String nidPictureBack;
   final String nidPictureFront;
   final String primaryNumber;
   final String profilePicture;
-  final Provider provider;
+  final String provider;
   final String providerId;
   final String secondaryNumber;
-
 
   User({
       required this.active,
@@ -46,25 +38,24 @@ class User{
       required this.secondaryNumber,
       });
 
-
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    email: json["email"],
-    fullName: json["fullName"],
-    profilePicture: json["profilePicture"],
-    primaryNumber: json["primaryNumber"],
-    secondaryNumber: json["secondaryNumber"],
-    address: json["address"],
-    gender: json["gender"],
-    dateOfBirth: json["dateOfBirth"],
-    provider: json["provider"],
-    providerId: json["providerId"],
-    active: json["active"],
-    disabled: json["disabled"],
-    banned: json["banned"],
-    nid: json["nid"],
-    nidPictureFront: json["nidPictureFront"],
-    nidPictureBack: json["nidPictureBack"],
+    id: json["id"] as int,
+    email: json["email"]==null?'':json["email"] as String,
+    fullName: json["fullName"]==null?'':json["fullName"] as String,
+    profilePicture: json["profilePicture"]==null ? '': json["profilePicture"] as String,
+    primaryNumber: json["primaryNumber"] == null ? '':json["primaryNumber"]as String,
+    secondaryNumber: json["secondaryNumber"] == null? '':json["secondaryNumber"]as String,
+    address: json["address"]==null?'':json["address"]as String,
+    gender: json["gender"] == null? "": json["gender"] as String,
+    dateOfBirth: json["dateOfBirth"]==null ? "":json["dateOfBirth"],
+    provider: json["provider"]==null? "":json["provider"]as String,
+    providerId: json["providerId"] == null ? '':json["providerId"] as String,
+    active: json["active"] as bool,
+    disabled: json["disabled"] as bool,
+    banned: json["banned"]as bool,
+    nid: json["nid"]==null ? '':json["providerId"] as String,
+    nidPictureFront: json["nidPictureFront"]==null? '':json["nidPictureFront"] as String,
+    nidPictureBack: json["nidPictureBack"]==null ? '': json["nidPictureBack"] as String,
   );
 
   Map<String, dynamic> toJson() => {
