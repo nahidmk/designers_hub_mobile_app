@@ -33,22 +33,7 @@ class TopHotDesign extends StatelessWidget {
                 child: Image.asset("assets/images/top_right.jpg",fit: BoxFit.fill,)
               ),
             ),
-            Container(
-              height: screenHeight,
-              width: (screenWidth*2)-10,
-              child: Card(
-                  elevation: 5.0,
-                  child: Image.asset("assets/images/top_left.jpg",fit: BoxFit.fill,)
-              ),
-            ),
-            Container(
-              height: screenHeight,
-              width: screenWidth,
-              child: Card(
-                  elevation: 5.0,
-                  child: Image.asset("assets/images/top_right.jpg",fit: BoxFit.fill,)
-              ),
-            )
+
           ],
         )
             ],

@@ -1,3 +1,4 @@
+import 'package:designers_hub_modile_app/helper/currency.dart';
 import 'package:flutter/material.dart';
 
 class SingleDesignCard extends StatelessWidget {
@@ -7,8 +8,9 @@ class SingleDesignCard extends StatelessWidget {
   final double cardWidth;
   final double cardHeight;
   final String imgUrl;
+  final String description;
 
-  SingleDesignCard(this.price, this.name,this.cardWidth,this.cardHeight,this.imgUrl);
+  SingleDesignCard(this.price, this.name,this.cardWidth,this.cardHeight,this.imgUrl,this.description);
 
   @override
   Widget build(BuildContext context) {
@@ -16,56 +18,47 @@ class SingleDesignCard extends StatelessWidget {
       width: cardWidth,
       child: Card(
         elevation: 5.0,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: cardWidth,
-              height: (cardHeight/3)*2-15,
+            Expanded(
               child: Image.network(imgUrl,fit: BoxFit.fill,),
-
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              width: cardWidth,
-              height: (((cardHeight/3)/3)*2)+5,
-              child: Text(
-                '$name',
-                style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight:FontWeight.w600
-                ),
-              ),
-            ),
-            Container(
-              // margin: EdgeInsets.only(left: 5),
-              width: cardWidth,
-              height: ((cardHeight/3)/3),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    Text(
-                    ' \$$price',
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      Text(
+                      'Name : $name',
                       style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight:FontWeight.w900
+                          fontSize: 12.0,
+                          fontWeight:FontWeight.w500,
+                          color: Colors.black54
+
+                      )),Text(
+                        'Description : ${description=='' ? 'No descriptions':description}',
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight:FontWeight.w500,
+                            color: Colors.black54
+
+                        )),
+                      Text(
+                      ' $CURRENCY $price',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight:FontWeight.w900,
+                          color: Colors.black54
+                        ),
                       ),
-                    ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    child: FloatingActionButton(
-                        onPressed: (){},
-                      child: Icon(
-                        Icons.add_shopping_cart_rounded,
-                        color: Colors.black,
-                        size: 25,
-                      ),
-                    ),
-                  )
-                ],
+
+                  ],
+                  ),
                 ),
-              ),
+            ),
           ],
         )
       ),

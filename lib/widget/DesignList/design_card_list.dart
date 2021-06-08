@@ -36,7 +36,7 @@ class _DesignListState extends State<DesignList> {
       Center(child: CupertinoActivityIndicator(),) :
       ListView(
         children: designProvider.designList.map((e) => (
-            SingleDesignCard(e.price, e.name, screenWidth, screenHeight, '$IMAGE_URL${e.thumbnail}')
+            SingleDesignCard(e.price, e.name, screenWidth, screenHeight, '$IMAGE_URL${e.thumbnail}',e.descriptions)
         )).toList(),
       ),
     );
