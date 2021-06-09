@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 import 'package:designers_hub_modile_app/Model/design.dart';
@@ -12,8 +10,10 @@ class DesignProvider extends ChangeNotifier {
   DesignService get designService => GetIt.I<DesignService>();
 
   List<Design> _designList = [];
-  bool _loadingDesignList = true;
+  bool _loading = true;
   int _totalElements = 0;
+  dynamic _design;
+
 
   List<Design> get designList => _designList;
 
@@ -22,10 +22,10 @@ class DesignProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get loadingDesignList => _loadingDesignList;
+  bool get loading => _loading;
 
-  set loadingDesignList(bool value) {
-    _loadingDesignList = value;
+  set loading(bool value) {
+    _loading = value;
     notifyListeners();
   }
 
@@ -36,27 +36,57 @@ class DesignProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getDesignList() async {
-    try{
-      loadingDesignList = true;
-      final response = await designService.getAllDesign();
-      if(response.statusCode == 200){
-        final jsonResponse = json.decode(response.body);
-        print("status code....");
-        print('json response ---> $jsonResponse');
-        designList = (jsonResponse['content'] as List).map(
-          (e) => Design.fromJson(e)
-        ).toList();
+  Design get design => _design;
 
-        totalElements = jsonResponse['totalElements'];
-      }else{
+  set design(Design value) {
+    _design = value;
+    notifyListeners();
+  }
+
+
+  void getDesignList() async {
+    try {
+      loading = true;
+      final response = await designService.getAllDesign();
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        designList = (jsonResponse['content'] as List).map(
+                (e) => Design.fromJson(e)
+        ).toList();
+      } else {
         print('get design response error ---> ${json.decode(response.body)}');
       }
-      loadingDesignList = false;
-    }catch(error){
-      loadingDesignList = false;
+      loading = false;
+    } catch (error) {
+      loading = false;
       print('design gt error ---> $error');
     }
   }
 
+
+  void getDesign(int id) async {
+    try {
+      loading = true;
+      final response = await designService.getDesignById(id);
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+
+        print('json response ---> $jsonResponse');
+
+        design = Design.fromJson(jsonResponse);
+
+        print("Design name----->${_design.name}");
+
+      } else {
+        print('get design response error ---> ${json.decode(response.body)}');
+      }
+      loading = false;
+    } catch (error) {
+      loading = false;
+      print('design gt error ---> $error');
+    }
+  }
+
+
 }
+

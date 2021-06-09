@@ -6,20 +6,29 @@ class Cart{
 
 
 
-  final double finalPrice;
-  final double grandTotal;
-  final int id;
-  final double totalPrice;
-  final int totalProducts;
-  final double printingCost;
-  final List<CartDetails> cartDetailsList;
+    double finalPrice;
+    double grandTotal;
+    int id;
+    double totalPrice;
+    int totalProducts;
+    double printingCost;
+    List<CartDetails> cartDetailsList;
 
 
+    // CartDetails _cartDetails = CartDetails(designPrice: null, fabricQuantity: null, id: null, pricePerYardFabric: null, totalPrice: null)
 
 
+  Cart({
+     this.finalPrice=0,
+     this.grandTotal=0,
+     this.id=0,
+     this.totalPrice=0,
+     this.totalProducts=0,
+     this.printingCost=0,
+    this.cartDetailsList=const []
+  });
 
-  Cart({required this.finalPrice, required this.grandTotal, required this.id, required this.totalPrice,
-      required this.totalProducts, required this.printingCost, required this.cartDetailsList});
+
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
       finalPrice: json["finalPrice"] as double,

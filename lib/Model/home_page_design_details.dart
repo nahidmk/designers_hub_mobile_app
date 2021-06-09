@@ -8,10 +8,10 @@ class HomepageDesignDetails{
   final Design design;
 
   HomepageDesignDetails({
-    required this.id,
-    required this.colSize,
-    required this.image,
-    required this.design
+     this.id=0,
+     this.colSize=0,
+     this.image='',
+     this.design=Design(),
   });
 
   factory HomepageDesignDetails.fromJson(Map<String, dynamic> json) {

@@ -10,4 +10,9 @@ class DesignService{
     return http.get(Uri.parse(GET_ALL_DESIGN));
   }
 
+
+  Future <http.Response> getDesignById(int id) {
+    return http.get(Uri.parse('$GET_DESIGN_BY_ID$id'));
+  }
+
 }

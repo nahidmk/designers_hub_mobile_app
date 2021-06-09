@@ -20,17 +20,17 @@ class Fabric {
 
 
   Fabric({
-    required this.available,
-    required this.baseColor,
-    required this.descriptions,
-    required this.disabled,
-    required this.favCount,
-    required this.id,
-    required this.name,
-    required this.pricePerYard,
-    required this.slug,
-    required this.fabricMixings,
-    required this.thumbnail,
+     this.available=false,
+     this.baseColor='',
+     this.descriptions='',
+     this.disabled=false,
+     this.favCount=0,
+     this.id=0,
+     this.name='',
+     this.pricePerYard=0,
+     this.slug='',
+     this.fabricMixings=[],
+     this.thumbnail='',
   });
 
   factory Fabric.fromJson(Map<String, dynamic> json) => Fabric(

@@ -1,41 +1,42 @@
 
 class User{
-  final bool active;
-  final String address;
-  final bool banned;
-  final String dateOfBirth;
-  final bool disabled;
-  final String email;
-  final String fullName;
-  final String gender;
-  final int id;
-  final String nid;
-  final String nidPictureBack;
-  final String nidPictureFront;
-  final String primaryNumber;
-  final String profilePicture;
-  final String provider;
-  final String providerId;
-  final String secondaryNumber;
+   bool active;
+   String address;
+   bool banned;
+   String dateOfBirth;
+   bool disabled;
+   String email;
+   String fullName;
+   String gender;
+   int id;
+   String nid;
+   String nidPictureBack;
+   String nidPictureFront;
+   String primaryNumber;
+   String profilePicture;
+   String provider;
+   String providerId;
+   String secondaryNumber;
+
 
   User({
-      required this.active,
-      required this.address,
-      required this.banned,
-      required this.dateOfBirth,
-      required this.disabled,
-      required this.email,
-      required this.fullName,
-      required this.gender,
-      required this.id,
-      required this.nid,
-      required this.nidPictureBack,
-      required this.nidPictureFront,
-      required this.primaryNumber,
-      required this.profilePicture,
-      required this.provider,
-      required this.providerId,
-      required this.secondaryNumber,
+       this.active=false,
+       this.address='',
+       this.banned=false,
+       this.dateOfBirth='',
+       this.disabled=false,
+       this.email='',
+       this.fullName='',
+       this.gender='',
+       this.id=0,
+       this.nid='',
+       this.nidPictureBack='',
+       this.nidPictureFront='',
+       this.primaryNumber='',
+       this.profilePicture='',
+       this.provider='',
+       this.providerId='',
+       this.secondaryNumber='',
       });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -57,6 +58,7 @@ class User{
     nidPictureFront: json["nidPictureFront"]==null? '':json["nidPictureFront"] as String,
     nidPictureBack: json["nidPictureBack"]==null ? '': json["nidPictureBack"] as String,
   );
+
 
   Map<String, dynamic> toJson() => {
     "id": id,

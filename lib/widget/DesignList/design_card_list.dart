@@ -32,7 +32,7 @@ class _DesignListState extends State<DesignList> {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20.0),
       height: screenHeight,
-      child: designProvider.loadingDesignList ?
+      child: designProvider.loading ?
       Center(child: CupertinoActivityIndicator(),) :
       ListView(
         children: designProvider.designList.map((e) => (

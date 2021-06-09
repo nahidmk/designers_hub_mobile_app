@@ -3,6 +3,7 @@ import 'package:designers_hub_modile_app/Model/home_page_design.dart';
 import 'package:designers_hub_modile_app/Model/home_page_design_details.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/home_page_design_provider.dart';
+import 'package:designers_hub_modile_app/Screen/product_details_screen.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
 import 'package:designers_hub_modile_app/widget/DesignList/design_card_list.dart';
 import 'package:designers_hub_modile_app/widget/DesignList/single_sesign_card.dart';
@@ -59,17 +60,23 @@ class _HotDesignState extends State<HotDesign> {
 
         // designProvider.loadingDesignList ? Center(child: CupertinoActivityIndicator(),) :
 
-      ...designProvider.designList.map((e) => (
-
-          SingleDesignCard(
-              e.price,
-              e.name,
-              screenWidthForDesignCard,
-              screenHeightForDesignCard,
-              '$IMAGE_URL${e.thumbnail}',
-            e.descriptions,
+      ...designProvider.designList.map((e) =>
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailsScreen(id: e.id,)));
+            },
+            child: (
+                SingleDesignCard(
+                    e.price,
+                    e.name,
+                    screenWidthForDesignCard,
+                    screenHeightForDesignCard,
+                    '$IMAGE_URL${e.thumbnail}',
+                  e.descriptions,
+                )
+            ),
           )
-      )),
+        ),
       ]
 
     );

@@ -1,3 +1,5 @@
+import 'package:designers_hub_modile_app/Model/cart.dart';
+
 import '../Model/design_image.dart';
 import '../Model/fabric.dart';
 import '../Model/user.dart';
@@ -16,20 +18,25 @@ class Design{
   final List<DesignImage> designImages;
   final User user;
 
-  Design({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.disabled,
-    required this.descriptions,
-    required this.thumbnail,
-    required this.favCount,
-    required this.designImages,
-    required this.fabrics,
-    required this.user
-  });
 
-  factory Design.fromJson(Map<String, dynamic> json) => Design(
+
+
+   Design(
+      {
+        this.id =0,
+        this.name ='',
+        this.price=0,
+        this.disabled=false,
+        this.descriptions='',
+        this.thumbnail='',
+        this.favCount=0,
+        this.designImages = const [],
+        this.fabrics = const [],
+        this.user =
+      })
+  ;
+
+factory Design.fromJson(Map<String, dynamic> json) => Design(
     id: json["id"] as int,
     name: json["name"]==null?'':json["name"] as String,
     thumbnail: json["thumbnail"]==null? '':json["thumbnail"] as String,
@@ -37,8 +44,8 @@ class Design{
     disabled: json["disabled"] as bool,
     descriptions: json["descriptions"] == null ? '' : json["descriptions"] as String,
     price: json["price"] as double,
-    designImages: json["designImages"] == null? []: List<DesignImage>.from(json["designImages"].map((x) => DesignImage.fromJson(x))),
-    fabrics: json["fabrics"] == null? []:List<Fabric>.from(json["fabrics"].map((x) => Fabric.fromJson(x))),
+    designImages: List<DesignImage>.from(json["designImages"].map((x) => DesignImage.fromJson(x))),
+    fabrics: List<Fabric>.from(json["fabrics"].map((x) => Fabric.fromJson(x))),
     user: User.fromJson(json["user"]),
   );
 
@@ -49,9 +56,9 @@ class Design{
     "favCount": favCount,
     "disabled": disabled,
     "descriptions": descriptions,
-    "price":  price,
-    "designImages":  designImages==null? null:List<dynamic>.from(designImages.map((x) => x.toJson())),
-    "fabrics": fabrics==null ? null: List<dynamic>.from(fabrics.map((x) => x.toJson())),
+    "price": price,
+    "designImages": List<dynamic>.from(designImages.map((x) => x.toJson())),
+    "fabrics": List<dynamic>.from(fabrics.map((x) => x.toJson())),
     "user": user.toJson(),
   };
 

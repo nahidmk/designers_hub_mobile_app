@@ -10,7 +10,7 @@ class DesignTag{
 
 
 
-    DesignTag({required this.id, required this.title});
+    DesignTag({ this.id=0,  this.title=''});
 
     factory DesignTag.fromJson(Map<String, dynamic> json) => DesignTag(
         id: json["id"] as int,

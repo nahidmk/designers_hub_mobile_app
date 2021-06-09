@@ -9,10 +9,10 @@ class HomePageDesign{
   final List<HomepageDesignDetails> homePageDesignDetailsList;
 
   HomePageDesign({
-   required this.id, 
-    required this.height,
-    required this.title,
-    required this.homePageDesignDetailsList
+    this.id=0,
+     this.height=0,
+     this.title='',
+     this.homePageDesignDetailsList=0
   });
 
   factory HomePageDesign.fromJson(Map<String, dynamic> json) {
