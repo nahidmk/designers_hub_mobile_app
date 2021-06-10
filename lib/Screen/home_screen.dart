@@ -1,16 +1,27 @@
 
-import 'package:designers_hub_modile_app/widget/HotDesignGrid/HotDesignList.dart';
+import 'package:designers_hub_modile_app/Screen/cart_screen.dart';
+import 'package:designers_hub_modile_app/widget/HomePageDesign/HotDesignList.dart';
+import 'package:designers_hub_modile_app/widget/common/custom_navigation_bar.dart';
 
-import '../widget/DesignList/design_card_list.dart';
-import '../widget/HotDesignGrid/MiddleHotDesign.dart';
-import '../widget/HotDesignGrid/TopHotDesign.dart';
 import '../widget/Drawer/SideDrawer.dart';
 
 
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int activeTab = 1;
+
+  void onChangeTab(tab){
+    setState(() {
+      activeTab = tab;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +40,15 @@ class HomeScreen extends StatelessWidget {
         child: SideDrawer()
       ),
 
-      body: HotDesign(),
+      body: Stack(
+        children: [
+          activeTab == 1 ? HotDesign() : CartScreen(),
+          Positioned(
+            bottom: 0,
+            child: CustomNavigationBar(onChangeTab),
+          )
+        ],
+      ),
     );
   }
 }

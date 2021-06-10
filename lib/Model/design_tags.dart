@@ -4,13 +4,17 @@ class DesignTag{
 
 
 
-    final int id;
-    final String title;
+     int id;
+     String title;
 
 
 
 
-    DesignTag({ this.id=0,  this.title=''});
+    DesignTag({
+        required this.id,
+        required this.title
+    });
+
 
     factory DesignTag.fromJson(Map<String, dynamic> json) => DesignTag(
         id: json["id"] as int,

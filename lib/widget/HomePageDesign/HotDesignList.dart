@@ -5,8 +5,7 @@ import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/home_page_design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/product_details_screen.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
-import 'package:designers_hub_modile_app/widget/DesignList/design_card_list.dart';
-import 'package:designers_hub_modile_app/widget/DesignList/single_sesign_card.dart';
+import 'package:designers_hub_modile_app/widget/Design/single_sesign_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +20,10 @@ class _HotDesignState extends State<HotDesign> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Provider.of<HomePageDesignProvider>(context, listen: false).getHomePageDesignList();
-      Provider.of<DesignProvider>(context, listen: false).getDesignList();
+      if(Provider.of<HomePageDesignProvider>(context, listen: false).homePageDesignList.isEmpty)
+        Provider.of<HomePageDesignProvider>(context, listen: false).getHomePageDesignList();
+      if(Provider.of<DesignProvider>(context, listen: false).designList.isEmpty)
+        Provider.of<DesignProvider>(context, listen: false).getDesignList();
     });
   }
 
@@ -44,7 +45,9 @@ class _HotDesignState extends State<HotDesign> {
     : ListView(
 
 
-      children:[ ...homePageDesignProvider.homePageDesignList.map((HomePageDesign homePageDesign) => (
+      children:[
+
+        ...homePageDesignProvider.homePageDesignList.map((HomePageDesign homePageDesign) => (
           Container(
             // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
             width: screenWidth,
@@ -57,8 +60,6 @@ class _HotDesignState extends State<HotDesign> {
             ),
           )
       )),
-
-        // designProvider.loadingDesignList ? Center(child: CupertinoActivityIndicator(),) :
 
       ...designProvider.designList.map((e) =>
           GestureDetector(
@@ -88,8 +89,6 @@ Widget hotDesignCard({required HomePageDesign homePageDesign,required HomepageDe
     Card(
       elevation: 5,
       shadowColor: Colors.grey,
-      // decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 1.5)),
-      // padding: EdgeInsets.all(5),
       child: Column(
         children: [
           Image.network('$IMAGE_URL${designDetails.image}',height: (homePageDesign.height/2.5)-14,width: (screenWidth/12)*designDetails.colSize, fit: BoxFit.fill,),

@@ -44,13 +44,10 @@ class HomePageDesignProvider extends ChangeNotifier{
       final response = await homePageDesignService.getAllHomePageDesign();
       if(response.statusCode == 200){
         final jsonResponse = json.decode(response.body);
-        print("status code....");
-        print('json response ---> $jsonResponse');
+
         homePageDesignList = (jsonResponse['content'] as List).map(
                 (e) => HomePageDesign.fromJson(e)
         ).toList();
-
-        print('home page design --->${homePageDesignList[0].toJson()}');
 
         totalElements = jsonResponse['totalElements'];
       }else{

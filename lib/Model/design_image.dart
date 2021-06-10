@@ -2,10 +2,10 @@
 
 class DesignImage{
 
-  final int id;
-  final String image;
+   int id;
+   String image;
 
-  DesignImage({  this.id = 0, this.image = ''});
+  DesignImage({  required this.id , required this.image });
 
   factory DesignImage.fromJson(Map<String, dynamic> json) => DesignImage(
     id: json["id"] as int,

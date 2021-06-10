@@ -3,34 +3,34 @@ import '../Model/user.dart';
 
 class Fabric {
 
-  final bool available;
-  final String baseColor;
-  final String descriptions;
-  final bool disabled;
-  final int favCount;
-  final int id;
-  final String name;
-  final double pricePerYard;
-  final String slug;
-  final String thumbnail;
-  final List<FabricMixing> fabricMixings;
+   bool available;
+   String baseColor;
+   String descriptions;
+   bool disabled;
+   int favCount;
+   int id;
+   String name;
+   double pricePerYard;
+   String slug;
+   String thumbnail;
+   List<FabricMixing> fabricMixings;
 
 
 
 
 
   Fabric({
-     this.available=false,
-     this.baseColor='',
-     this.descriptions='',
-     this.disabled=false,
-     this.favCount=0,
-     this.id=0,
-     this.name='',
-     this.pricePerYard=0,
-     this.slug='',
-     this.fabricMixings=[],
-     this.thumbnail='',
+     required this.available,
+     required this.baseColor,
+     required this.descriptions,
+     required this.disabled,
+     required this.favCount,
+     required this.id,
+     required this.name,
+     required this.pricePerYard,
+     required this.slug,
+     required this.fabricMixings,
+     required this.thumbnail,
   });
 
   factory Fabric.fromJson(Map<String, dynamic> json) => Fabric(

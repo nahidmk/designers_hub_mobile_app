@@ -5,22 +5,19 @@
 class FabricMixing{
 
 
-
-
-
-  final int id;
-  final double percentage;
-  final String fabricMixingType;
-  final String fabricWeave;
+   int id;
+   double percentage;
+   String fabricMixingType;
+   String fabricWeave;
 
 
 
 
   FabricMixing({
-     this.id=0,
-     this.percentage=0,
-     this.fabricMixingType='',
-     this.fabricWeave=''});
+     required this.id,
+     required this.percentage,
+     required this.fabricMixingType,
+     required this.fabricWeave});
 
 
   factory FabricMixing.fromJson(Map<String, dynamic> json) => FabricMixing(

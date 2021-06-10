@@ -7,36 +7,31 @@ import 'package:flutter/material.dart';
 
 class Design{
 
-  final int id;
-  final String name;
-  final double price;
-  final bool disabled;
-  final String descriptions;
-  final String thumbnail;
-  final int favCount;
-  final List<Fabric> fabrics;
-  final List<DesignImage> designImages;
-  final User user;
+   int id;
+   String name;
+   double price;
+   bool disabled;
+   String descriptions;
+   String thumbnail;
+   int favCount;
+   List<Fabric> fabrics;
+   List<DesignImage> designImages;
+   User user;
 
 
+  Design({
+      required this.id,
+      required this.name,
+      required this.price,
+      required this.disabled,
+      required this.descriptions,
+      required this.thumbnail,
+      required this.favCount,
+      required this.fabrics,
+      required this.designImages,
+      required this.user});
 
-
-   Design(
-      {
-        this.id =0,
-        this.name ='',
-        this.price=0,
-        this.disabled=false,
-        this.descriptions='',
-        this.thumbnail='',
-        this.favCount=0,
-        this.designImages = const [],
-        this.fabrics = const [],
-        this.user =
-      })
-  ;
-
-factory Design.fromJson(Map<String, dynamic> json) => Design(
+  factory Design.fromJson(Map<String, dynamic> json) => Design(
     id: json["id"] as int,
     name: json["name"]==null?'':json["name"] as String,
     thumbnail: json["thumbnail"]==null? '':json["thumbnail"] as String,
@@ -44,8 +39,8 @@ factory Design.fromJson(Map<String, dynamic> json) => Design(
     disabled: json["disabled"] as bool,
     descriptions: json["descriptions"] == null ? '' : json["descriptions"] as String,
     price: json["price"] as double,
-    designImages: List<DesignImage>.from(json["designImages"].map((x) => DesignImage.fromJson(x))),
-    fabrics: List<Fabric>.from(json["fabrics"].map((x) => Fabric.fromJson(x))),
+    designImages: json["designImages"]==null?[]:List<DesignImage>.from(json["designImages"].map((x) => DesignImage.fromJson(x))),
+    fabrics: json["fabrics"]==null?[]: List<Fabric>.from(json["fabrics"].map((x) => Fabric.fromJson(x))),
     user: User.fromJson(json["user"]),
   );
 
