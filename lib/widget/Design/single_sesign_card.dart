@@ -33,28 +33,15 @@ class SingleDesignCard extends StatelessWidget {
                   children: [
                       Text(
                       'Name : $name',
-                      style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight:FontWeight.w500,
-                          color: Colors.black54
-
-                      )),Text(
+                      style: Theme.of(context).textTheme.bodyText1,
+                      ),Text(
                         'Description : ${description=='' ? 'No descriptions':description}',
-                        style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight:FontWeight.w500,
-                            color: Colors.black54
-
-                        )),
+                        style: Theme.of(context).textTheme.bodyText1
+                    ),
                       Text(
                       ' $CURRENCY $price',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight:FontWeight.w900,
-                          color: Colors.black54
-                        ),
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
-
                   ],
                   ),
                 ),

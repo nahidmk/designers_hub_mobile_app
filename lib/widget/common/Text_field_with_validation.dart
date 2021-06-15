@@ -1,42 +1,42 @@
+import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:os_ios/models/enums/input_types.dart';
-import 'package:os_ios/models/widget_helper_models/textFieldProperties.dart';
+
 
 class TextFieldWithValidation extends StatefulWidget {
-  final Decoration decoration;
+  final BoxDecoration decoration;
   final TextInputType keyboardType;
   final bool obscureText;
-  final Widget prefix;
-  final Widget suffix;
+  final Widget? prefix;
+  final Widget? suffix;
   final EdgeInsetsGeometry padding;
   final double lineGap;
   final EdgeInsets textFieldPadding;
   final TextFieldProperties properties;
-  @required
   final Function onChange;
   final TextStyle labelStyle;
   final TextStyle textStyle;
 
   TextFieldWithValidation(
-      {this.properties,
-      this.prefix,
-      this.suffix,
-      this.decoration,
-      this.keyboardType = TextInputType.text,
-      this.obscureText = false,
-      this.padding,
-      this.lineGap = 10,
-      this.labelStyle = const TextStyle(
+      {
+         required this.properties,
+         this.prefix,
+         this.suffix,
+        required this.decoration,
+        this.keyboardType = TextInputType.text,
+        this.obscureText = false,
+        required this.padding,
+        this.lineGap = 10,
+        this.labelStyle = const TextStyle(
           color: Color(0xff120c33), fontWeight: FontWeight.w500),
-      this.textStyle = const TextStyle(fontSize: 16),
-      this.textFieldPadding = const EdgeInsets.all(10),
-      this.onChange});
+        this.textStyle = const TextStyle(fontSize: 16),
+        this.textFieldPadding = const EdgeInsets.all(10),
+        required this.onChange
+      });
 
   @override
-  _TextFieldWithValidationState createState() =>
-      _TextFieldWithValidationState();
+  _TextFieldWithValidationState createState() => _TextFieldWithValidationState();
 }
 
 class _TextFieldWithValidationState extends State<TextFieldWithValidation> {
@@ -45,7 +45,7 @@ class _TextFieldWithValidationState extends State<TextFieldWithValidation> {
 //  DateTime selectedDate = DateTime.now();
 
   Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime(2000, 1),
         firstDate: DateTime(1950, 8),
@@ -65,7 +65,7 @@ class _TextFieldWithValidationState extends State<TextFieldWithValidation> {
     Widget field;
 
     switch (widget.properties.inputType) {
-      case InputTypes.date:
+      case 'date':
         field = Container(
           decoration: widget.decoration,
           width: double.infinity,
@@ -114,7 +114,7 @@ class _TextFieldWithValidationState extends State<TextFieldWithValidation> {
           SizedBox(
             height: 5,
           ),
-          if (widget.properties.inputType != InputTypes.date)
+          if (widget.properties.inputType != 'date')
             Text(
               _errorMsg,
               style:

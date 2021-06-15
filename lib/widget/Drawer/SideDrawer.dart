@@ -1,30 +1,40 @@
+import 'package:designers_hub_modile_app/widget/Drawer/create_drawer_body_item.dart';
+import 'package:designers_hub_modile_app/widget/Drawer/create_drawer_header.dart';
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          decoration: BoxDecoration(
-            color: Colors.blue,
-          ),
-          child: Text('Drawer Header'),
-        ),
-        ListTile(
-          title: Text('Item 1'),
-          onTap: () {
-          },
-        ),
-        ListTile(
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          CreateDrawerHeader(),
+          createDrawerBodyItem(
+            icon: Icons.announcement,
+            text: 'Terms and Condition',
+            onTap: () {}
 
-          title: Text('Item 2'),
-          onTap: () {
-          },
-        ),
-      ],
+          ),
+          Divider(),
+          createDrawerBodyItem(
+            icon: Icons.privacy_tip,
+            text: 'Privacy policy',
+            onTap: () {}
+          ),
+          Divider(),
+          createDrawerBodyItem(
+            icon: Icons.help,
+            text: 'Help center',
+            onTap: () {}
+          ),
+
+        ],
+      ),
     );
   }
+
+
 }
+

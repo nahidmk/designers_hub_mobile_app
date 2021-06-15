@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:os_ios/models/enums/input_types.dart';
 
 class TextFieldProperties {
   TextEditingController controller;
@@ -9,9 +8,9 @@ class TextFieldProperties {
   Function validate;
   String selectedDate;
   TextInputType keyboardType;
-  InputTypes inputType;
+  String inputType;
   int maxLine;
 
   TextFieldProperties(
-      {this.controller, this.label,this.keyboardType, this.touched,this.required = false, this.validate, this.selectedDate, this.inputType, this.maxLine = 1});
+      {required this.controller,required this.label,required this.keyboardType, this.touched =false,this.required = false, required this.validate, this.selectedDate = '', required this.inputType, this.maxLine = 1});
 }

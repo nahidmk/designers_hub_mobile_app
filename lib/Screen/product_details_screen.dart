@@ -2,13 +2,15 @@ import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
 import 'package:designers_hub_modile_app/helper/currency.dart';
+import 'package:designers_hub_modile_app/widget/common/CustomAppBar.dart';
+import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-
   final int id;
+
   const ProductDetailsScreen({required this.id});
 
   @override
@@ -16,277 +18,302 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  String _imageUrl = '';
 
-   String _imageUrl = '';
 
   @override
   void initState() {
+
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Provider.of<DesignProvider>(context, listen: false).getDesign(widget.id);
-
     });
+
   }
+
+  double _quantityPrice = 0;
+  String _fabricsName = "Choose Fabrics";
 
   @override
   Widget build(BuildContext context) {
-
     DesignProvider designProvider = Provider.of<DesignProvider>(context);
 
-
     List<String> imageList = [
-      designProvider.design.thumbnail, ...designProvider.design.designImages.map((e) => e.image)
+      designProvider.design.thumbnail,
+      ...designProvider.design.designImages.map((e) => e.image)
     ];
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-              "Product Details",
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 20.0
-            ),
-          ),
-        ),
-        body:Container(
-          width: MediaQuery.of(context).size.width,
-          // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-          padding: EdgeInsets.all(10),
-          child: designProvider.loading?
-          Container(child:Image.asset("assets/images/placeholder.jpg",fit: BoxFit.fill,)):
-          ListView(
-            children: [
-              //main image
-              Container(
+    double _designPrice = designProvider.design.price;
 
-                      // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-                      child:_imageUrl.isEmpty?Image.network(
-                          "$IMAGE_URL${designProvider.design.thumbnail}",fit: BoxFit.fill,
-                      ):Image.network(
-                        "$IMAGE_URL${_imageUrl}",fit: BoxFit.fill,
-                      )
-                  ),
-
-              //small images
-              Container(
-                // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-                height: 100,
-                
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    ...imageList.map((e) => Container(
-                        margin: EdgeInsets.all(5),
-                        child: GestureDetector(
-                          onTap: (){
-                            setState(() {
-                              _imageUrl = e;
-                            });
-                          },
-                          child: Image.network(
-                            "$IMAGE_URL${e}",fit: BoxFit.fill,
+    void showModal(){
+      showModalBottomSheet<void>(
+          context: context,
+          elevation: 10.0,
+          builder: (BuildContext context) {
+            return Container(
+              height: (MediaQuery.of(context)
+                  .size
+                  .height),
+              color: Colors.white70,
+              child: ListView(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 5, top: 10, bottom: 10),
+                    child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment
+                            .spaceBetween,
+                        children: [
+                          Text('Available Fabrics',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1),
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.pop(
+                                    context),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.red,
+                            ),
                           )
-                        )
-                      )
-                    )
-                  ],
-                ),
-              ),
-
-              //name and price
-              Container(
-                  // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
-                  margin: EdgeInsets.only(top: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          '${designProvider.design.name}',
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight:FontWeight.w500,
-                              color: Colors.black
-
-                          )),
-                      Text(
-                        '$CURRENCY ${designProvider.design.price}',
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight:FontWeight.w900,
-                            color: Colors.redAccent
-                        ),
-                      ),
-
-
-                    ],
+                        ]),
                   ),
+                  ...designProvider.design.fabrics
+                      .map((e) => Container(
+                    margin: EdgeInsets.only(
+                        left: 10, bottom: 5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child:  Image
+                                .network(
+                              "$IMAGE_URL${e.thumbnail}",
+                              fit: BoxFit
+                                  .fill,
+                            )),
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    '${e.name}',
+                                    style: Theme.of(context).textTheme.bodyText1),
+                                Text(
+                                  'Base color : ${e.baseColor}',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Text(
+                                    '$CURRENCY${e.pricePerYard} / Yard',
+                                    style: Theme.of(context).textTheme.headline6),
+
+                                secondaryButton((){
+                                  setState(() {
+                                    _fabricsName = e.name;
+                                });
+                                  Navigator.pop(context);
+                                  }, "Select", context
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+                ],
               ),
+            );
+          });
+    }
 
-              //fabric select
-              Container(
-                // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
+    return Scaffold(
+        appBar: buildCustomAppbar('DESIGN DETAILS',context),
+        body: Stack(children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
+            padding: EdgeInsets.all(10),
+            child: designProvider.loading
+                ? Container(
+                    child: Image.asset(
+                    "assets/images/placeholder.jpg",
+                    fit: BoxFit.fill,
+                  ))
+                : ListView(
+                    children: [
+                      //image
+                      Container(
+                        height: 250,
+                        padding: EdgeInsets.all(2),
+                        child: Row(
+                          children: [
+                            Container(
+                              // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
+                              height: 300,
+                              width: MediaQuery.of(context).size.width / 5,
+                              child: ListView(
+                                children: [
+                                  ...imageList.map((e) => Container(
+                                        margin: EdgeInsets.all(5),
+                                        child: GestureDetector(
+                                          onTap: () {
 
-                margin: EdgeInsets.only(top: 15),
+                                            setState(() {
+                                              _imageUrl = e;
+                                            });
 
-                width: 50,
-                child: MaterialButton(
-                  elevation: 10.0,
-                    onPressed: (){
-                    showModalBottomSheet<void>(
-                      context: context,
-                      elevation: 10.0,
-                      builder: (BuildContext context) {
-                        return Container(
-                          height: (MediaQuery.of(context).size.height),
-                          color: Colors.white70,
-                          child: ListView(
-                            children: [
-                               Container(
-                                 margin: EdgeInsets.only(left: 5,top: 10,bottom: 10),
-                                 child: Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                     children:[
-                                       Text('Available Fabrics',
-                                           style: TextStyle(
-                                               fontSize: 15,
-                                               fontWeight: FontWeight.w600
-                                           ),
-                                       ),
-                                       GestureDetector(
-                                         onTap: () => Navigator.pop(context),
-                                         child: Icon(
-                                           Icons.close,
-                                           color: Colors.red,
-                                         ),
-                                       )
-                                     ]
-                                 ),
-                               ),
-
-                              ...designProvider.design.fabrics.map((e) =>
-                                Container(
-                                  margin: EdgeInsets.only(left: 10,bottom: 5),
-                                  child: Row(
-                                    children: [
-                                      Expanded(child: designProvider.loading?
-                                      Image.asset("assets/images/placeholder.jpg",fit: BoxFit.fill,): Image.network(
-                                        "$IMAGE_URL${e.thumbnail}",fit: BoxFit.fill,
-                                      )),
-                                      Expanded(
-                                        child: Container(
-                                          padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                  '${e.name}',
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      fontWeight:FontWeight.w500,
-                                                      color: Colors.black54
-
-                                                  )),Text(
-                                                  'Base color : ${e.baseColor}',
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      fontWeight:FontWeight.w500,
-                                                      color: Colors.black54
-
-                                                  )),
-
-                                              Text(
-                                                '$CURRENCY${e.pricePerYard} / Yard',
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    fontWeight:FontWeight.w900,
-                                                    color: Colors.black54
-                                                ),
-                                              ),
-
-                                              OutlineButton(
-                                                  onPressed: (){},
-                                                child: Text('Select',style: TextStyle(fontSize: 15.0),),
-                                              )
-
-                                            ],
+                                          },
+                                          child: Image.network(
+                                            "$IMAGE_URL${e}",
+                                            fit: BoxFit.fill,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                      ))
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-                      }
-                    );},
-                  highlightElevation: 30.0,
-                  splashColor: Colors.grey,
-                  color: Colors.purple,
-                  textColor: Colors.black,
-                    child: Text(
-                        'Choose Fabrics',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w500,
-
-                      ),
-                    ),
-                ),
-              ),
-
-              //fabric size
-              Container(
-                // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-
-                margin: EdgeInsets.only(top: 10,left: 5,right: 5),
-                child: Row(
-                  children: [
-                    Expanded(child: Text('Fabric Size:',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),)),
-                    Expanded(
-                      child: Container(
-                        height: 30,
-                        child: TextField(
-
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-
-                          ),
+                            ),
+                            Container(
+                                // decoration: BoxDecoration( border: Border.all(color: Colors.greenAccent,width: 2.0),),
+                                height: 300,
+                                width: (MediaQuery.of(context).size.width / 5) * 4 - 25,
+                                child: _imageUrl.isEmpty
+                                    ? Image.network(
+                                        "$IMAGE_URL${designProvider.design.thumbnail}",
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Image.network(
+                                        "$IMAGE_URL${_imageUrl}",
+                                        fit: BoxFit.fill
+                                      )
+                            )
+                          ],
                         ),
                       ),
-                    ),
-                    Expanded(child: Text('  yard',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),)),
-                  ],
-                ),
-              ),
 
-              //add to cart
-              Container(
-                // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-                margin: EdgeInsets.only(top: 10,left: 5,right: 5),
-                child: MaterialButton(
-                  elevation: 10,
-                  highlightElevation: 30.0,
-                  splashColor: Colors.grey,
-                  onPressed: (){},
-                  color: Colors.black,
-                  textColor: Colors.white,
-                  child: Text(
-                    'ADD TO CART',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    )
+
+                      //name
+                      Container(
+                        // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
+                        margin: EdgeInsets.only(top: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('${designProvider.design.name}',
+                                style: Theme.of(context).textTheme.headline1),
+                          ],
+                        ),
+                      ),
+
+                      Divider(),
+
+                      //choose fabrics
+                      Container(
+                        // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
+                        height: 80,
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Fabrics :  ',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.only(left: 5),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(border: Border.all(color: Colors.grey,width: 0.5)),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(_fabricsName,style: Theme.of(context).textTheme.bodyText1,),
+                                  IconButton(
+                                      onPressed: showModal, icon: Icon(CupertinoIcons.pencil))
+
+                                ],
+                              ),
+                            ),
+
+
+                          ],
+                        ),
+                      ),
+
+                      //quantity and price
+                      Container(
+                        // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
+                        margin: EdgeInsets.only(top: 10),
+                        child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Quantity : ',
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+
+                                        width: 80,
+
+                                        child: TextField(
+                                          onChanged: (value){
+                                            setState(() {
+                                              _quantityPrice = int.parse(value) * _designPrice;
+                                            });
+                                            print("value --->$_quantityPrice");
+                                          },
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text('$CURRENCY $_quantityPrice',style:Theme.of(context).textTheme.headline2),
+                                          Text(
+                                              '$CURRENCY $_designPrice/quantity',
+                                              style: Theme.of(context).textTheme.subtitle1
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+
+                              ],
+                            ),
+
+
+                      ),
+
+                      SizedBox(height: 90,)
+                    ],
                   ),
-                ),
-              ),
-
-            ],
           ),
-
-        )
-    );
+          Positioned(
+            bottom: 0,
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.white,),
+                width: MediaQuery.of(context).size.width,
+                child: secondaryButton(() {
+                  // _fabricsName=="Choose Fabrics"?
+                }, "ADD TO CART", context)),
+          ),
+        ]));
   }
 }
-

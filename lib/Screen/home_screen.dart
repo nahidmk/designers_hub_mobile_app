@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   int activeTab = 1;
 
   void onChangeTab(tab){
@@ -29,10 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(
           "Designer's Hub",
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 20.0
-          ),
+
         )
       ),
       drawer: Drawer(

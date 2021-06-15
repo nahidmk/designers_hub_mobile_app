@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:os_ios/providers/profile_provider.dart';
 import 'package:provider/provider.dart';
 
 Widget buildToggleHideOrShowButton(toggleHideOrShowPassword) {
@@ -26,7 +25,7 @@ Widget buildPrefix() {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(3.0),
           child: Image.asset(
-            'assets/images/bd_flag.jpg',
+            'assets/images/2.jpg',
             fit: BoxFit.cover,
             height: 16,
             width: 16 * 1.5,
@@ -64,7 +63,7 @@ class ShowErrorMsgIfNeeded extends StatelessWidget {
 }
 
 
-Widget _buildErrorMsg(BuildContext context, String msg, Function dismissErrorMsg) {
+Widget _buildErrorMsg(BuildContext context, String msg, VoidCallback dismissErrorMsg) {
   return Padding(
     padding: const EdgeInsets.only(bottom:20.0),
     child: Container(

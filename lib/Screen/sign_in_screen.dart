@@ -1,3 +1,5 @@
+import 'package:designers_hub_modile_app/widget/signin_signup_form/signin_form.dart';
+import 'package:designers_hub_modile_app/widget/signin_signup_form/signup_form.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -7,32 +9,22 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
+  bool _signUpForm = false;
+
+  void swapSignupForm(bool value){
+    setState(() {
+      _signUpForm = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Container(
-              child: Image.asset(
-                'assets/images/placeholder.png',
-                height: 100,
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              child: Column(
-                children: [
-
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+    return Scaffold(
+      appBar: AppBar(),
+      body: _signUpForm ?
+      SignUpForm(toggleForm: swapSignupForm) :
+      SignInFrom(toggleForm: swapSignupForm,),
     );
   }
 }

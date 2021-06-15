@@ -1,109 +1,30 @@
-import 'package:flushbar/flushbar_route.dart';
+
+import 'package:designers_hub_modile_app/Model/user.dart';
+import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
+import 'package:designers_hub_modile_app/helper/colors.dart';
+import 'package:designers_hub_modile_app/helper/text.dart';
+import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:os_ios/helper/colors.dart';
-import 'package:os_ios/models/name.dart';
-import 'package:os_ios/models/user.dart';
-import 'package:os_ios/models/widget_helper_models/textFieldProperties.dart';
-import 'package:os_ios/providers/order_provider.dart';
-import 'package:os_ios/providers/profile_provider.dart';
-import 'package:os_ios/widgets/common/Text_field_with_validation.dart';
-import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 import 'helper_widgets.dart';
 
 class SignUpForm extends StatefulWidget {
   final Function toggleForm;
-  final String popAble;
+  final bool popAble;
 
-  SignUpForm({this.toggleForm, this.popAble});
+  SignUpForm({required this.toggleForm, this.popAble = true});
 
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  TextFieldProperties _firstNameProperties;
-  TextFieldProperties _lastNameProperties;
-  TextFieldProperties _phoneNumberProperties;
-  TextFieldProperties _passwordProperties;
-  TextFieldProperties _confirmPasswordProperties;
-  TextFieldProperties _refCodeProperties;
-
-  String _errorMessage = '';
-  bool termsAndConditions = false;
-
-  _SignUpFormState() {
-    _firstNameProperties = new TextFieldProperties(
-        controller: new TextEditingController(),
-        label: 'First name',
-        required: true,
-        validate: (String text) {
-          if (text.length < 1) {
-            return 'Too small.';
-          } else if (text.length > 20) {
-            return 'Too long';
-          } else
-            return '';
-        });
-
-    _lastNameProperties = new TextFieldProperties(
-        controller: new TextEditingController(),
-        label: 'Last name',
-        required: true,
-        validate: (String text) {
-          if (text.length < 2) {
-            return 'Too small.';
-          } else if (text.length > 20) {
-            return 'Too long';
-          } else
-            return '';
-        });
-
-    _phoneNumberProperties = new TextFieldProperties(
-        controller: new TextEditingController(),
-        label: 'Phone number',
-        required: true,
-        validate: (String text) {
-          if (text.length < 10 || text.length > 10) {
-            return 'Phone number must be 10 digits.';
-          } else
-            return '';
-        });
-
-    _passwordProperties = new TextFieldProperties(
-        controller: new TextEditingController(),
-        label: 'Password',
-        required: true,
-        validate: (String text) {
-          if (text.isEmpty) {
-            return 'Please enter your password';
-          }
-          if (text.length < 6) {
-            return 'At least 6 character';
-          }
-          return '';
-        });
-
-    _confirmPasswordProperties = new TextFieldProperties(
-        controller: new TextEditingController(),
-        label: 'Confirm password',
-        required: true,
-        validate: (String text) {
-          if (text.isEmpty) {
-            return 'Please confirm your password';
-          }
-          return _checkPassword(text);
-        });
-    _refCodeProperties = new TextFieldProperties(
-        controller: new TextEditingController(),
-        label: 'Reference code (If you have)'
-    );
-  }
-
-  bool _hidePassword = true;
+  // TextFieldProperties _firstNameProperties;
+  // TextFieldProperties _phoneNumberProperties;
+  // TextFieldProperties _passwordProperties;
+  // TextFieldProperties _confirmPasswordProperties;
 
   _checkPassword(String text) {
     if (text != _passwordProperties.controller.text) {
@@ -111,6 +32,89 @@ class _SignUpFormState extends State<SignUpForm> {
     } else
       return '';
   }
+
+  TextFieldProperties _firstNameProperties =  TextFieldProperties(
+  controller: TextEditingController(),
+  label: 'Full Name',
+  required: true,
+  inputType: "text",
+  keyboardType: TextInputType.text,
+  validate: (String text) {
+  if (text.length < 1) {
+  return 'Too small.';
+  } else if (text.length > 20) {
+  return 'Too long';
+  } else
+  return '';
+  });
+
+
+
+  TextFieldProperties _phoneNumberProperties = new TextFieldProperties(
+  controller: new TextEditingController(),
+  label: 'Phone number',
+  required: true,
+  inputType: "number",
+  keyboardType: TextInputType.number,
+  validate: (String text) {
+  if (text.length < 10 || text.length > 10) {
+  return 'Phone number must be 10 digits.';
+  } else
+  return '';
+  });
+
+  TextFieldProperties _passwordProperties = new TextFieldProperties(
+  controller: new TextEditingController(text: ''),
+  label: 'Password',
+  required: true,
+  inputType: "text",
+  keyboardType: TextInputType.text,
+  validate: (String text) {
+  if (text.isEmpty) {
+  return 'Please enter your password';
+  }
+  if (text.length < 6) {
+  return 'At least 6 character';
+  }
+  return '';
+  });
+
+  TextFieldProperties _confirmPasswordProperties = new TextFieldProperties(
+  controller: new TextEditingController(),
+  label: 'Confirm password',
+  inputType: "text",
+  keyboardType: TextInputType.text,
+  required: true,
+  validate: (String text) {
+  if (text.isEmpty) {
+  return 'Please confirm your password';
+  }
+  });
+  @override
+  void initState() {
+
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _confirmPasswordProperties = new TextFieldProperties(
+          controller: new TextEditingController(),
+          label: 'Confirm password',
+          inputType: "text",
+          keyboardType: TextInputType.text,
+          required: true,
+          validate: (String text) {
+            if (text.isEmpty) {
+              return 'Please confirm your password';
+            }
+            return _checkPassword(text);
+          });
+    });
+
+  }
+
+
+  String _errorMessage = '';
+  bool termsAndConditions = false;
+
+  bool _hidePassword = true;
 
   _toggleHideOrShowPassword() {
     setState(() {
@@ -126,7 +130,6 @@ class _SignUpFormState extends State<SignUpForm> {
       _phoneNumberProperties,
       _passwordProperties,
       _firstNameProperties,
-      _lastNameProperties,
       _confirmPasswordProperties
     ].forEach((element) {
       if (element.controller.text.isEmpty) {
@@ -146,7 +149,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     if (valid && !termsAndConditions) {
 
-      Fluttertoast.showToast(msg: "You must accept privacy policy and terms & conditions in order to sign up for Oushod Sheba");
+      // Fluttertoast.showToast(msg: "You must accept privacy policy and terms & conditions in order to sign up for $APP_NAME ");
       return false;
     }
 
@@ -158,10 +161,10 @@ class _SignUpFormState extends State<SignUpForm> {
       _errorMessage = '';
     });
 
-    if (_checkFormValidity()) {
-      await Provider.of<ProfileProvider>(context, listen: false).sendOTP(
-          primaryPhone: '+880${_phoneNumberProperties.controller.text}');
-    }
+    // if (_checkFormValidity()) {
+    //   await Provider.of<ProfileProvider>(context, listen: false).sendOTP(
+    //       primaryPhone: '+880${_phoneNumberProperties.controller.text}');
+    // }
   }
 
   _dismissErrorMsg() {
@@ -169,9 +172,9 @@ class _SignUpFormState extends State<SignUpForm> {
       _errorMessage = '';
     });
 
-    Provider.of<ProfileProvider>(context, listen: false)
-        .phoneVerificationErrorMsg = '';
-    Provider.of<ProfileProvider>(context, listen: false).signUpErrorMsg = '';
+    // Provider.of<ProfileProvider>(context, listen: false)
+    //     .phoneVerificationErrorMsg = '';
+    // Provider.of<ProfileProvider>(context, listen: false).signUpErrorMsg = '';
   }
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
@@ -179,7 +182,7 @@ class _SignUpFormState extends State<SignUpForm> {
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
 
-  TextEditingController _otpController = new TextEditingController();
+  // TextEditingController _otpController = new TextEditingController();
 
 //  @override
 //  void didChangeDependencies() {
@@ -193,41 +196,37 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
+    // ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
 
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: SingleChildScrollView(
-        child: profileProvider.phoneCodeSent
-            ? OTPForm(
-                controller: _otpController,
-                user: new User(
-                    primaryPhone:
-                        '+880${_phoneNumberProperties.controller.text}',
-                    name: new Name(
-                        firstName: _firstNameProperties.controller.text,
-                        lastName: _lastNameProperties.controller.text),
-                    password: _passwordProperties.controller.text,
-                    referralBy: _refCodeProperties.controller.text
-                ),
-                dismissErrorMsg: _dismissErrorMsg,
-                popAble: widget.popAble,
-                resend: _signUp)
-            : Container(
+        child:
+        // profileProvider.phoneCodeSent
+        //     ? OTPForm(
+        //         controller: _otpController,
+        //         user: new User(
+        //             primaryPhone:
+        //                 '+880${_phoneNumberProperties.controller.text}',
+        //             name: new Name(
+        //                 firstName: _firstNameProperties.controller.text,
+        //                 lastName: _lastNameProperties.controller.text),
+        //             password: _passwordProperties.controller.text,
+        //             referralBy: _refCodeProperties.controller.text
+        //         ),
+        //         dismissErrorMsg: _dismissErrorMsg,
+        //         popAble: widget.popAble,
+        //         resend: _signUp
+        // )
+            Container(
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
                     TextFieldWithValidation(
                       padding: EdgeInsets.only(bottom: 10),
                       properties: _firstNameProperties,
-                      decoration: _textFieldDecoration,
-                      onChange: _onChange,
-                    ),
-                    TextFieldWithValidation(
-                      padding: EdgeInsets.only(bottom: 10),
-                      properties: _lastNameProperties,
                       decoration: _textFieldDecoration,
                       onChange: _onChange,
                     ),
@@ -257,15 +256,6 @@ class _SignUpFormState extends State<SignUpForm> {
                       decoration: _textFieldDecoration,
                       onChange: _onChange,
                     ),
-                    TextFieldWithValidation(
-                      padding: EdgeInsets.only(bottom: 20),
-//                      obscureText: _hidePassword,
-                      properties: _refCodeProperties,
-//                      suffix: buildToggleHideOrShowButton(
-//                          _toggleHideOrShowPassword),
-                      decoration: _textFieldDecoration,
-                      onChange: _onChange,
-                    ),
                     Material(
                       color: Colors.transparent,
                       child: Column(
@@ -275,81 +265,39 @@ class _SignUpFormState extends State<SignUpForm> {
                             children: [
                               Checkbox(
                                 value: termsAndConditions,
-                                onChanged: (bool value) {
+
+
+                                onChanged: (value) {
                                   setState(() {
-                                    termsAndConditions = value;
+                                    termsAndConditions = value!;
                                   });
                                 },
                               ),
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "I agree with ",
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            launch('https://oushodsheba.com/privacy-policy');
-                                          },
-                                          child: Text(
-                                            "Privacy Policy",
-                                            style: TextStyle(
-                                                color:
-                                                    CupertinoColors.systemBlue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          ),
-                                        ),
-                                        Text(
-                                          " and ",
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            launch('https://oushodsheba.com/terms-and-conditions');
-                                          },
-                                          child: Text(
-                                            "Terms & Conditions",
-                                            style: TextStyle(
-                                                color:
-                                                    CupertinoColors.systemBlue,
-                                                decoration:
-                                                    TextDecoration.underline),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
+
                             ],
                           ),
-//                          Text(
-//                            "Please agree with terms and conditions",
-//                            style:
-//                            TextStyle(color: CupertinoColors.activeOrange, fontSize: 12),
-//                          ),
+                         Text(
+                           "Please agree with terms and conditions",
+                           style:
+                           TextStyle(color: CupertinoColors.activeOrange, fontSize: 12),
+                         ),
                         ],
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    ShowErrorMsgIfNeeded(
-                        _errorMessage.length > 0
-                            ? _errorMessage
-                            : profileProvider.signUpErrorMsg,
-                        _dismissErrorMsg),
-                    profileProvider.signUpLoading
-                        ? CupertinoActivityIndicator(
-                            radius: 15,
-                          )
-                        : SizedBox(
+                    // ShowErrorMsgIfNeeded(
+                    //     _errorMessage.length > 0
+                    //         ? _errorMessage
+                    //         : profileProvider.signUpErrorMsg,
+                    //     _dismissErrorMsg),
+                    // profileProvider.signUpLoading
+                    //     ? CupertinoActivityIndicator(
+                    //         radius: 15,
+                    //       )
+                    //     :
+                    SizedBox(
                             width: double.infinity,
                             child: CupertinoButton(
                               child: Text(
@@ -386,119 +334,119 @@ Widget _buildAlreadyHaveAccountMsg(
         ),
         onPressed: () {
           _dismissErrorMsg();
-          toggleForm();
+          toggleForm(false);
         },
       ),
     ],
   ));
 }
 
-class OTPForm extends StatelessWidget {
-  final TextEditingController controller;
-  final User user;
-  final Function dismissErrorMsg;
-  final String popAble;
-  final Function resend;
-
-  OTPForm(
-      {this.controller,
-      this.user,
-      this.dismissErrorMsg,
-      this.popAble,
-      this.resend});
-
-  @override
-  Widget build(BuildContext context) {
-    ProfileProvider profileProvider =
-        Provider.of<ProfileProvider>(context, listen: false);
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'We sent a verification code to your phone.',
-            style: TextStyle(fontWeight: FontWeight.w500),
-          ),
-          Text(
-            'Please Enter your verification code here.',
-            style: TextStyle(fontWeight: FontWeight.w500),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          SizedBox(
-            width: 100,
-            child: CupertinoTextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              style: TextStyle(fontSize: 20),
-              autofocus: true,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              profileProvider.signUpLoading
-                  ? CupertinoActivityIndicator(
-                      radius: 15,
-                    )
-                  : CupertinoButton(
-                      onPressed: resend,
-                      child: Text(
-                        'Resend code',
-                        style: TextStyle(
-                            color: CupertinoColors.systemBlue,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-              CupertinoButton(
-                onPressed: () {
-                  profileProvider.phoneCodeSent = false;
-                },
-                child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: CupertinoColors.activeOrange,
-                      fontWeight: FontWeight.w600),
-                ),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          ShowErrorMsgIfNeeded(
-              profileProvider.phoneVerificationErrorMsg, dismissErrorMsg),
-          profileProvider.phoneVerificationLoading
-              ? CupertinoActivityIndicator(
-                  radius: 15,
-                )
-              : CupertinoButton(
-                  color: CUSTOMER,
-                  child: Text(
-                    'Submit code',
-                    style: TextStyle(color: CupertinoColors.white),
-                  ),
-                  onPressed: () async {
-                    bool status = await profileProvider.signUpWithOTP(
-                        controller.text, user);
-                    if (status)
-                      Provider.of<OrderProvider>(context, listen: false)
-                          .getOnGoingOrderCountWithTopics();
-                    if (popAble != null) {
-                      Navigator.pop(context);
-                    }
-                  },
-                )
-        ],
-      ),
-    );
-  }
-}
+// class OTPForm extends StatelessWidget {
+//   final TextEditingController controller;
+//   final User user;
+//   final Function dismissErrorMsg;
+//   final String popAble;
+//   final Function resend;
+//
+//   OTPForm(
+//       {this.controller,
+//       this.user,
+//       this.dismissErrorMsg,
+//       this.popAble,
+//       this.resend});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     ProfileProvider profileProvider =
+//         Provider.of<ProfileProvider>(context, listen: false);
+//
+//     return Container(
+//       width: double.infinity,
+//       padding: EdgeInsets.all(20),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: <Widget>[
+//           Text(
+//             'We sent a verification code to your phone.',
+//             style: TextStyle(fontWeight: FontWeight.w500),
+//           ),
+//           Text(
+//             'Please Enter your verification code here.',
+//             style: TextStyle(fontWeight: FontWeight.w500),
+//           ),
+//           SizedBox(
+//             height: 20,
+//           ),
+//           SizedBox(
+//             width: 100,
+//             child: CupertinoTextField(
+//               controller: controller,
+//               keyboardType: TextInputType.number,
+//               style: TextStyle(fontSize: 20),
+//               autofocus: true,
+//               textAlign: TextAlign.center,
+//             ),
+//           ),
+//           SizedBox(
+//             height: 10,
+//           ),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               profileProvider.signUpLoading
+//                   ? CupertinoActivityIndicator(
+//                       radius: 15,
+//                     )
+//                   : CupertinoButton(
+//                       onPressed: resend,
+//                       child: Text(
+//                         'Resend code',
+//                         style: TextStyle(
+//                             color: CupertinoColors.systemBlue,
+//                             fontWeight: FontWeight.w600),
+//                       ),
+//                     ),
+//               CupertinoButton(
+//                 onPressed: () {
+//                   profileProvider.phoneCodeSent = false;
+//                 },
+//                 child: Text(
+//                   'Cancel',
+//                   style: TextStyle(
+//                       color: CupertinoColors.activeOrange,
+//                       fontWeight: FontWeight.w600),
+//                 ),
+//               )
+//             ],
+//           ),
+//           SizedBox(
+//             height: 20,
+//           ),
+//           ShowErrorMsgIfNeeded(
+//               profileProvider.phoneVerificationErrorMsg, dismissErrorMsg),
+//           profileProvider.phoneVerificationLoading
+//               ? CupertinoActivityIndicator(
+//                   radius: 15,
+//                 )
+//               : CupertinoButton(
+//                   color: CUSTOMER,
+//                   child: Text(
+//                     'Submit code',
+//                     style: TextStyle(color: CupertinoColors.white),
+//                   ),
+//                   onPressed: () async {
+//                     bool status = await profileProvider.signUpWithOTP(
+//                         controller.text, user);
+//                     if (status)
+//                       Provider.of<OrderProvider>(context, listen: false)
+//                           .getOnGoingOrderCountWithTopics();
+//                     if (popAble != null) {
+//                       Navigator.pop(context);
+//                     }
+//                   },
+//                 )
+//         ],
+//       ),
+//     );
+//   }
+// }
