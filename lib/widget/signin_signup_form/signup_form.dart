@@ -6,6 +6,7 @@ import 'package:designers_hub_modile_app/helper/text.dart';
 import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 import 'helper_widgets.dart';
@@ -149,7 +150,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     if (valid && !termsAndConditions) {
 
-      // Fluttertoast.showToast(msg: "You must accept privacy policy and terms & conditions in order to sign up for $APP_NAME ");
+      Fluttertoast.showToast(msg: "You must accept privacy policy and terms & conditions in order to sign up for $APP_NAME ");
       return false;
     }
 

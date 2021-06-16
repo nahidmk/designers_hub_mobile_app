@@ -25,7 +25,7 @@ Widget buildPrefix() {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(3.0),
           child: Image.asset(
-            'assets/images/2.jpg',
+            'assets/images/1.jpg',
             fit: BoxFit.cover,
             height: 16,
             width: 16 * 1.5,

@@ -1,9 +1,11 @@
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
+import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
 import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
 import 'package:designers_hub_modile_app/widget/signin_signup_form/helper_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignInFrom extends StatefulWidget {
 
@@ -159,18 +161,19 @@ class _SignInFromState extends State<SignInFrom> {
       _errorMessage = '';
     });
 
-    // if (_checkFormValidity()) {
-      // ProfileProvider profileProvider =
-      // Provider.of<ProfileProvider>(context, listen: false);
-      // bool signedIn = await profileProvider.signIn(
-      //     '+880${_phoneNumberProperties.controller.text}',
-      //     _passwordProperties.controller.text);
-      //
-      // if (signedIn && widget.popAble != null) {
-      //   Provider.of<OrderProvider>(context, listen: false).getOnGoingOrderCountWithTopics();
-      //   Navigator.pop(context);
-      // }
-    // }
+    if (_checkFormValidity()) {
+      ProfileProvider profileProvider =
+      Provider.of<ProfileProvider>(context, listen: false);
+      bool signedIn = await profileProvider.signIn(
+          '+880${_phoneNumberProperties.controller.text}',
+          _passwordProperties.controller.text);
+
+      if (signedIn && widget.popAble != null) {
+        // Provider.of<OrderProvider>(context, listen: false).getOnGoingOrderCountWithTopics();
+        print('hello i am sigin---->');
+        Navigator.pop(context);
+      }
+    }
   }
 
   _dismissErrorMsg() {
@@ -178,7 +181,7 @@ class _SignInFromState extends State<SignInFrom> {
       _errorMessage = '';
     });
 
-    // Provider.of<ProfileProvider>(context, listen: false).signInErrorMsg = '';
+    Provider.of<ProfileProvider>(context, listen: false).signInErrorMsg = '';
   }
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
@@ -188,6 +191,8 @@ class _SignInFromState extends State<SignInFrom> {
 
   @override
   Widget build(BuildContext context) {
+    ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(20),
@@ -195,7 +200,7 @@ class _SignInFromState extends State<SignInFrom> {
           children: <Widget>[
             Container(
               child: Image.asset(
-                'assets/images/1.jpg',
+                'assets/images/2.jpg',
                 height: 100,
               ),
             ),
@@ -205,7 +210,7 @@ class _SignInFromState extends State<SignInFrom> {
             Container(
               child: Column(
                 children: <Widget>[
-                  // ShowErrorMsgIfNeeded(_errorMessage.length > 0 ? _errorMessage : profileProvider.signInErrorMsg, _dismissErrorMsg),
+                  ShowErrorMsgIfNeeded(_errorMessage.length > 0 ? _errorMessage : profileProvider.signInErrorMsg, _dismissErrorMsg),
                   TextFieldWithValidation(
                     padding: EdgeInsets.only(bottom: 10),
                     prefix: buildPrefix(),
