@@ -9,6 +9,10 @@ final RED = Color(0xffcb2d3e);
 
 final GRADIENT_RED = [const Color(0xFFD31027), const Color(0xFFEA384D)];
 
+
+
+
+
 final BOX_SHADOW = [BoxShadow(
   color: CupertinoColors.inactiveGray.withOpacity(0.5),
   spreadRadius: -7,

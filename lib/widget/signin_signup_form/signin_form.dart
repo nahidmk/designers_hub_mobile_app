@@ -237,11 +237,11 @@ class _SignInFromState extends State<SignInFrom> {
                   SizedBox(
                     height: 15,
                   ),
-                  // profileProvider.signInLoading
-                  //     ? CupertinoActivityIndicator(
-                  //   radius: 15,
-                  // )
-                  //     :
+                  profileProvider.signInLoading
+                      ? CupertinoActivityIndicator(
+                    radius: 15,
+                  )
+                      :
                   RaisedButton(
                     color: CUSTOMER,
                     child: Center(

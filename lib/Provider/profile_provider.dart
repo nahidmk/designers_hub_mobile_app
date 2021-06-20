@@ -33,6 +33,15 @@ class ProfileProvider extends ChangeNotifier{
   bool _phoneCodeSent = false;
   String _phoneVerificationErrorMsg = '';
 
+  String _updateProfileErrorMsg = '';
+
+
+  String get updateProfileErrorMsg => _updateProfileErrorMsg;
+
+  set updateProfileErrorMsg(String value) {
+    _updateProfileErrorMsg = value;
+    notifyListeners();
+  }
 
   String get verificationId => _verificationId;
 
@@ -130,7 +139,7 @@ class ProfileProvider extends ChangeNotifier{
         return false;
       }
     } catch (error) {
-      print("error----->$error.toString()");
+      print("error----->${error.toString()}");
       signInLoading = false;
       signInErrorMsg = getErrorMsg(error);
       return false;
@@ -146,6 +155,25 @@ class ProfileProvider extends ChangeNotifier{
     }
   }
 
+  void isLogin() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? authToken = prefs.getString('aw_auth_token');
+
+    if (authToken == null) {
+      isAuthenticated = false;
+    } else if (authToken.isEmpty) {
+      isAuthenticated = false;
+    } else {
+      getProfile();
+    }
+
+  }
+
+  void signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('aw_auth_token');
+    isAuthenticated = false;
+  }
 
 
   Future<bool> getProfile() async {
@@ -156,18 +184,9 @@ class ProfileProvider extends ChangeNotifier{
       var response = await profileService.getProfile();
       if (response.statusCode == 200) {
         print('profile response --->${json.decode(response.body)}');
-        User user = User.fromJson(json.decode(response.body));
+        User user = User.fromJson(json.decode(response.body)["info"]);
         _profile = user;
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        String? deviceFCMToken = prefs.getString("device_fcm_token");
-
-        // if (deviceFCMToken != null) {
-        //   FCMDeviceRegToken deviceRegToken = FCMDeviceRegToken.fromJson(json.decode(deviceFCMToken));
-        //   deviceRegToken.userId = user.id;
-        //   fcmDeviceRegToken(deviceRegToken);
-        // }
-
+        print("user name---->${_profile.fullName}");
         isAuthenticated = true;
         profileLoading = false;
         return true;
@@ -183,6 +202,27 @@ class ProfileProvider extends ChangeNotifier{
     }
 
     return true;
+  }
+
+  Future<bool> updateProfile(User user) async {
+    try {
+      updateProfileErrorMsg = '';
+      final response = await profileService.updateProfile(user);
+      if (response.statusCode == 200) {
+        profile = User.fromJson(json.decode(response.body));
+        print("profile provider--->${profile.email}");
+        return true;
+      } else {
+        print('update profile response error---> ${response.body}');
+        updateProfileErrorMsg = json.decode(response.body)['message'];
+        return false;
+      }
+    } catch (error) {
+      print('update profile error --->$error');
+      profileLoading = false;
+      updateProfileErrorMsg = getErrorMsg(error);
+      return false;
+    }
   }
 
   Future<bool> recoverProfile() async {

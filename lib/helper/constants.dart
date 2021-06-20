@@ -19,3 +19,5 @@ final SIGN_IN_URL = "$ROOT_URL/api/v/$VERSION/public/users/login";
 final SIGN_UP_URL = "$ROOT_URL/api/v/$VERSION/public/customers/sign-up/by/phone-number";
 
 final GET_PROFILE_URL = "$ROOT_URL/api/v/$VERSION/secured/users/profile";
+
+final UPDATE_PROFILE_URL = GET_PROFILE_URL;

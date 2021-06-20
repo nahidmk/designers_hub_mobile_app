@@ -26,6 +26,18 @@ class ProfileService {
   }
 
 
+  Future<http.Response> updateProfile(User user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? authToken = prefs.getString('aw_auth_token');
+
+    user.dateOfBirth = (user.dateOfBirth != null ? "${user.dateOfBirth} 00:00:00" : null)!;
+
+    print('user --------->${json.encode(user)}');
+
+    return http.put(Uri.parse(UPDATE_PROFILE_URL),body:json.encode(user), headers: getAuthHeader(authToken));
+  }
+
+
   Future<http.Response> getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? authToken = prefs.getString('aw_auth_token');

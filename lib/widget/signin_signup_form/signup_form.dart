@@ -313,6 +313,8 @@ class _SignUpFormState extends State<SignUpForm> {
                           ),
                     _buildAlreadyHaveAccountMsg(
                         widget.toggleForm, _dismissErrorMsg),
+
+                    SizedBox(height: 70,)
                   ],
                 ),
               ),

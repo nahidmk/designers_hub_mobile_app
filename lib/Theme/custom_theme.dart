@@ -13,7 +13,7 @@ ThemeData CustomTheme(BuildContext context){
       headline1: TextStyle(fontSize: 22,fontWeight: FontWeight.w300,color: Colors.black,),
       headline2: TextStyle(fontSize: 20,fontWeight: FontWeight.w500,color: primaryColor),
       headline3: TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.black),
-      headline4: TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.black),
+      headline4: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
       headline6: TextStyle(fontSize: 15,fontWeight: FontWeight.w300,color: primaryColor),
       button: TextStyle(fontSize: 15,fontWeight: FontWeight.w300),
       caption: TextStyle(fontSize: 15,fontWeight: FontWeight.w200,color: Colors.black,),

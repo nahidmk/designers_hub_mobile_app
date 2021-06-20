@@ -1,15 +1,15 @@
+import 'package:designers_hub_modile_app/Model/user.dart';
+import 'package:designers_hub_modile_app/helper/colors.dart';
+import 'package:designers_hub_modile_app/helper/constants.dart';
+import 'package:designers_hub_modile_app/helper/functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:os_ios/helper/colors.dart';
-import 'package:os_ios/helper/constants.dart';
-import 'package:os_ios/helper/functions.dart';
-import 'package:os_ios/models/user.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProfileHeader extends StatelessWidget {
   final User user;
 
-  const ProfileHeader({Key key, this.user}) : super(key: key);
+  ProfileHeader({required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
             clipper: new MyClipper(),
             child: Container(
               padding: EdgeInsets.all(20),
-              height: MediaQuery.of(context).size.height / 4 + 30,
+              height: MediaQuery.of(context).size.height / 5 + 30,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -31,26 +31,24 @@ class ProfileHeader extends StatelessWidget {
                   ),
                 ],
                 gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: GRADIENT_RED,
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Colors.blue, Colors.green,],
                 ),
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
+
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    width: 20,
+                    width: 10,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        capitalize(user.name.fullName),
+                        capitalize(user.fullName),
                         style: TextStyle(
                             color: CupertinoColors.white,
                             fontSize: 16,
@@ -59,9 +57,9 @@ class ProfileHeader extends StatelessWidget {
                       SizedBox(
                         height: 5,
                       ),
-                      if(user.primaryPhone != null && user.primaryPhone.isNotEmpty)
+                      if(user.primaryNumber != null && user.primaryNumber.isNotEmpty)
                       Text(
-                        '${user.primaryPhone}',
+                        '${user.primaryNumber}',
                         style: TextStyle(
                             color: Color(0xFFeeeeee),
                             fontWeight: FontWeight.w300,
@@ -70,13 +68,7 @@ class ProfileHeader extends StatelessWidget {
                       SizedBox(
                         height: 5,
                       ),
-                      Text(
-                        'Balance: ${user.balance}',
-                        style: TextStyle(
-                            color: Color(0xFFeeeeee),
-                            fontWeight: FontWeight.w300,
-                            fontSize: 12),
-                      )
+
                     ],
                   )
                 ],
@@ -85,25 +77,7 @@ class ProfileHeader extends StatelessWidget {
           ),
         ),
 
-        Positioned(
-          top: 40,
-          right: 10,
-          child: ClipRRect(
-            child: Container(
-              color: CupertinoColors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Image.asset(
-                  'assets/images/os_logo.png',
-                  fit: BoxFit.cover,
-                  height: 25,
-                  width: 25,
-                ),
-              ),
-            ),
-            borderRadius: BorderRadius.circular(60.0),
-          ),
-        ),
+
         Positioned(
           bottom: 20,
           right: 50,
@@ -130,22 +104,10 @@ class ProfileHeader extends StatelessWidget {
                       width: 90,
                     )
                   : Image.network(
-                      '$IMAGE_API_URL${user.profilePicture}',
+                      '$IMAGE_URL${user.profilePicture}',
                       fit: BoxFit.cover,
                       height: 90,
                       width: 90,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes
-                          : null,
-                    ),
-                  );
-                },
                 errorBuilder: (context, error, stackTrace) {
                   return SvgPicture.asset(
                     'assets/icons/person.svg',
@@ -168,13 +130,16 @@ class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = new Path();
-    path.lineTo(0, size.height - 40);
-    path.lineTo(20, size.height - 15);
+    // path.moveTo(0, size.height/2);
+    path.lineTo(0,0);
+    path.lineTo(0,size.height);
 
-    path.quadraticBezierTo(32, size.height, 60, size.height - 8);
-
-    path.lineTo(size.width, size.height / 2);
     path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height/2);
+    //
+    //  path.quadraticBezierTo(32, size.height, 60, size.height - 8);
+    //
+
 
     path.close();
     return path;

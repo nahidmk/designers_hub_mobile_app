@@ -1,13 +1,16 @@
+import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
+import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:os_ios/models/widget_helper_models/textFieldProperties.dart';
-import 'package:os_ios/widgets/common/Text_field_with_validation.dart';
 
 class FormAttribute extends StatelessWidget {
   final Widget icon;
   final TextFieldProperties properties;
   final Function onChange;
+
+
+  FormAttribute({required this.icon, required this.properties, required this.onChange});
 
   static final BoxDecoration textFieldDecoration = const BoxDecoration(
       border: Border(
@@ -23,8 +26,7 @@ class FormAttribute extends StatelessWidget {
       fontWeight: FontWeight.w300,
       fontSize: 15);
 
-  FormAttribute({Key key, this.icon, this.properties, this.onChange})
-      : super(key: key);
+  
 
 
 
@@ -55,6 +57,7 @@ class FormAttribute extends StatelessWidget {
           ),
           Expanded(
             child: TextFieldWithValidation(
+              padding: EdgeInsets.all(0),
               properties: properties,
               lineGap: 0,
               labelStyle: labelStyle,

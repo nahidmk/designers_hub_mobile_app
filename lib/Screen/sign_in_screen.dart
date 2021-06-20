@@ -2,13 +2,17 @@ import 'package:designers_hub_modile_app/widget/signin_signup_form/signin_form.d
 import 'package:designers_hub_modile_app/widget/signin_signup_form/signup_form.dart';
 import 'package:flutter/material.dart';
 
-class SignIn extends StatefulWidget {
+class SignInScreen extends StatefulWidget {
+
+ final bool fromAccount;
+
+ SignInScreen(this.fromAccount);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInScreenState extends State<SignInScreen> {
 
   bool _signUpForm = false;
 
@@ -20,11 +24,17 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return widget.fromAccount?Scaffold(
+      body: _signUpForm ?
+      SignUpForm(toggleForm: swapSignupForm) :
+      SignInFrom(toggleForm: swapSignupForm,),
+    ):
+    Scaffold(
       appBar: AppBar(),
       body: _signUpForm ?
       SignUpForm(toggleForm: swapSignupForm) :
       SignInFrom(toggleForm: swapSignupForm,),
     );
+
   }
 }
