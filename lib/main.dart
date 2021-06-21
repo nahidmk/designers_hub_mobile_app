@@ -2,6 +2,7 @@
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/home_page_design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
+import 'package:designers_hub_modile_app/Provider/tab_provider.dart';
 import 'package:designers_hub_modile_app/Service/design_service.dart';
 import 'package:designers_hub_modile_app/Service/home_page_desing_service.dart';
 import 'package:designers_hub_modile_app/Service/profile_service.dart';
@@ -32,6 +33,9 @@ void main(){
           ),
           ChangeNotifierProvider(
               create: (_)=>ProfileProvider()
+          ),
+          ChangeNotifierProvider(
+              create: (_)=>TabProvider()
           ),
         ],
         child: MyApp(),

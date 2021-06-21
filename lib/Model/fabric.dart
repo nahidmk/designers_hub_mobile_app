@@ -10,7 +10,7 @@ class Fabric {
    int favCount;
    int id;
    String name;
-   double pricePerYard;
+   double price;
    String slug;
    String thumbnail;
    List<FabricMixing> fabricMixings;
@@ -27,7 +27,7 @@ class Fabric {
      required this.favCount,
      required this.id,
      required this.name,
-     required this.pricePerYard,
+     required this.price,
      required this.slug,
      required this.fabricMixings,
      required this.thumbnail,
@@ -41,7 +41,7 @@ class Fabric {
     slug: json["slug"]==null?'':json["slug"] as String,
     thumbnail: json["thumbnail"]==null?'':json["thumbnail"] as String,
     favCount: json["favCount"] as int,
-    pricePerYard: json["pricePerYard"] as double,
+    price: json["price"] as double,
     disabled: json["disabled"] as bool,
     descriptions: json["descriptions"]==null?'':json["descriptions"] as String,
     fabricMixings: json["fabricMixings"]==null?[]:List<FabricMixing>.from(json["fabricMixings"].map((x) => FabricMixing.fromJson(x))),
@@ -55,7 +55,7 @@ class Fabric {
     "slug": slug,
     "thumbnail": thumbnail,
     "favCount": favCount,
-    "pricePerYard": pricePerYard,
+    "pricePerYard": price,
     "disabled": disabled,
     "descriptions": descriptions,
     "fabricMixings": List<dynamic>.from(fabricMixings.map((x) => x.toJson())),

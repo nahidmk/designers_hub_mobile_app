@@ -48,17 +48,6 @@ class _ProfileInformationState extends State<ProfileInformation> {
           return '';
       });
 
-  TextFieldProperties _emailProperties = new TextFieldProperties(
-      controller: new TextEditingController(),
-      label: 'Email',
-      inputType: "text",
-      keyboardType: TextInputType.text,
-      validate: (String text) {
-        if (text.length < 12 || !text.contains('.') || !text.contains('@')) {
-          return 'Not a valid email.';
-        } else
-          return '';
-      });
 
   TextFieldProperties _addressProperties = new TextFieldProperties(
       controller: new TextEditingController(),
@@ -95,7 +84,6 @@ class _ProfileInformationState extends State<ProfileInformation> {
     });
 
     _firstNameProperties.controller.text = widget.user.fullName;
-    _emailProperties.controller.text = widget.user.email;
     _addressProperties.controller.text = widget.user.address;
     _contactNumberProperties.controller.text = widget.user.secondaryNumber != null ? widget.user.secondaryNumber.substring(3) : '';
     _birthDateProperties.selectedDate = widget.user.dateOfBirth == null
@@ -125,7 +113,6 @@ class _ProfileInformationState extends State<ProfileInformation> {
     });
 
     widget.user.fullName = (_firstNameProperties.controller.text != '' ? _firstNameProperties.controller.text : null)!;
-    widget.user.email = (_emailProperties.controller.text != '' ? _emailProperties.controller.text : null)!;
     widget.user.secondaryNumber = (_contactNumberProperties.controller.text != '' ? '+88${_contactNumberProperties.controller.text}' : null)!;
     widget.user.address = (_addressProperties.controller.text != '' ? _addressProperties.controller.text : null)!;
     widget.user.gender = _gender;
@@ -187,11 +174,6 @@ class _ProfileInformationState extends State<ProfileInformation> {
                       height: 10,
                     ),
 
-                    FormAttribute(
-                      icon: _buildSvgPicture('assets/icons/email.svg'),
-                      properties: _emailProperties,
-                      onChange: _onChange,
-                    ),
                     SizedBox(
                       height: 10,
                     ),

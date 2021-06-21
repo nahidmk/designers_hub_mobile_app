@@ -76,7 +76,6 @@ class _HotDesignState extends State<HotDesign> {
                     screenWidthForDesignCard,
                     screenHeightForDesignCard,
                     '$IMAGE_URL${e.thumbnail}',
-                  e.descriptions,
                 )
             ),
           )
@@ -90,11 +89,11 @@ class _HotDesignState extends State<HotDesign> {
 Widget hotDesignCard({required HomePageDesign homePageDesign,required HomepageDesignDetails designDetails, required Function onClick, required double screenWidth, required double screenHeight}) {
   return (
     Card(
-      elevation: 5,
+      elevation: 2,
       shadowColor: Colors.grey,
       child: Column(
         children: [
-          Image.network('$IMAGE_URL${designDetails.image}',height: (homePageDesign.height/2.5)-14,width: (screenWidth/12)*designDetails.colSize, fit: BoxFit.fill,),
+          Image.network('$IMAGE_URL${designDetails.image}',height: (homePageDesign.height/2.5)-14,width: (screenWidth/12)*designDetails.colSize, fit: BoxFit.cover,),
           // Container(margin:EdgeInsets.only(top: 5),child: Text(designDetails.design.name,textAlign: TextAlign.left,) ,width: screenWidth,height: screenHeight/4,)
         ],
       ),

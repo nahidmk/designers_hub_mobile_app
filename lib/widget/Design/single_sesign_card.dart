@@ -8,16 +8,15 @@ class SingleDesignCard extends StatelessWidget {
   final double cardWidth;
   final double cardHeight;
   final String imgUrl;
-  final String description;
 
-  SingleDesignCard(this.price, this.name,this.cardWidth,this.cardHeight,this.imgUrl,this.description);
+  SingleDesignCard(this.price, this.name,this.cardWidth,this.cardHeight,this.imgUrl);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: cardWidth,
       child: Card(
-        elevation: 5.0,
+        elevation: 2,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -34,10 +33,7 @@ class SingleDesignCard extends StatelessWidget {
                       Text(
                       'Name : $name',
                       style: Theme.of(context).textTheme.bodyText1,
-                      ),Text(
-                        'Description : ${description=='' ? 'No descriptions':description}',
-                        style: Theme.of(context).textTheme.bodyText1
-                    ),
+                      ),
                       Text(
                       ' $CURRENCY $price',
                         style: Theme.of(context).textTheme.bodyText1,

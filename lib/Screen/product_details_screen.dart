@@ -1,5 +1,8 @@
+import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
+import 'package:designers_hub_modile_app/Model/fabric.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
+import 'package:designers_hub_modile_app/Screen/cart_screen.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
 import 'package:designers_hub_modile_app/helper/currency.dart';
 import 'package:designers_hub_modile_app/widget/common/CustomAppBar.dart';
@@ -32,6 +35,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   double _quantityPrice = 0;
   String _fabricsName = "Choose Fabrics";
+  Fabric _fabric = Fabric(available: false, baseColor: "", descriptions: "", disabled: false, favCount: 0, id: 0, name:"", price: 0, slug: "", fabricMixings: [], thumbnail: "");
+  var quantity = 0;
+
+  List<CartDetails> cartDetailList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +50,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     ];
 
     double _designPrice = designProvider.design.price;
+    Design _design = designProvider.design;
+
 
     void showModal(){
       showModalBottomSheet<void>(
@@ -64,7 +73,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         MainAxisAlignment
                             .spaceBetween,
                         children: [
-                          Text('Available Fabrics',
+                          _design.fabrics.isEmpty? Text('No Fabrics Available Fabrics',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1)
+                          :Text('Available Fabrics',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1),
@@ -79,7 +92,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           )
                         ]),
                   ),
-                  ...designProvider.design.fabrics
+                  ..._design.fabrics
                       .map((e) => Container(
                     margin: EdgeInsets.only(
                         left: 10, bottom: 5),
@@ -107,12 +120,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 Text(
-                                    '$CURRENCY${e.pricePerYard} / Yard',
+                                    '$CURRENCY${e.price} / Yard',
                                     style: Theme.of(context).textTheme.headline6),
 
                                 secondaryButton((){
                                   setState(() {
                                     _fabricsName = e.name;
+                                    _fabric = e;
                                 });
                                   Navigator.pop(context);
                                   }, "Select", context
@@ -130,14 +144,31 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           });
     }
 
+    void showErrorMassage(){
+      showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Missing value'),
+        content: const Text('Select the Fabrics and quantity'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+         ],
+        ),
+      );
+    }
+
     return Scaffold(
-        appBar: buildCustomAppbar('DESIGN DETAILS',context),
+        appBar: buildCustomAppbar('DESIGN DETAILS',context,cartDetailList),
         body: Stack(children: [
           Container(
             width: MediaQuery.of(context).size.width,
             // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
             padding: EdgeInsets.all(10),
             child: designProvider.loading
+            //loading image
                 ? Container(
                     child: Image.asset(
                     "assets/images/placeholder.jpg",
@@ -182,7 +213,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 width: (MediaQuery.of(context).size.width / 5) * 4 - 25,
                                 child: _imageUrl.isEmpty
                                     ? Image.network(
-                                        "$IMAGE_URL${designProvider.design.thumbnail}",
+                                        "$IMAGE_URL${_design.thumbnail}",
                                         fit: BoxFit.fill,
                                       )
                                     : Image.network(
@@ -194,7 +225,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ),
 
-
                       //name
                       Container(
                         // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
@@ -203,7 +233,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${designProvider.design.name}',
+                            Text('${_design.name}',
                                 style: Theme.of(context).textTheme.headline1),
                           ],
                         ),
@@ -227,7 +257,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               margin: EdgeInsets.only(top: 5),
                               padding: EdgeInsets.only(left: 5),
                               width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(border: Border.all(color: Colors.grey,width: 0.5)),
+                              decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 1)),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -265,17 +295,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         width: 80,
 
                                         child: TextField(
+                                          style: Theme.of(context).textTheme.headline4,
                                           onChanged: (value){
+                                            quantity = value.isEmpty?0:int.parse(value);
                                             setState(() {
-                                              _quantityPrice = int.parse(value) * _designPrice;
+                                              _quantityPrice = quantity * _designPrice;
                                             });
-                                            print("value --->$_quantityPrice");
                                           },
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                           ),
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.right,
+
                                         ),
                                       ),
                                       Column(
@@ -311,7 +343,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   color: Colors.white,),
                 width: MediaQuery.of(context).size.width,
                 child: secondaryButton(() {
-                  // _fabricsName=="Choose Fabrics"?
+                  if(_fabricsName!="Choose Fabrics" && quantity > 0){
+                    cartDetailList.add(
+                      CartDetails(designPrice: _designPrice, id: 1, totalPrice: _quantityPrice+_fabric.price, quantity: quantity, design: _design, fabric: _fabric, note: "note", fabricPrice: _fabric.price)
+                    );
+                    print(" length---->${cartDetailList.length}");
+                  }
+                  else{
+                    showErrorMassage();
+                  }
                 }, "ADD TO CART", context)),
           ),
         ]));

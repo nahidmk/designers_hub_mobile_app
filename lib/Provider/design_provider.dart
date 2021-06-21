@@ -43,7 +43,7 @@ class DesignProvider extends ChangeNotifier {
           favCount: 0,
           id: 0,
           name: 'name',
-          pricePerYard: 0,
+          price: 0,
           slug: 'slug',
           fabricMixings: [new FabricMixing(
               id: 0,

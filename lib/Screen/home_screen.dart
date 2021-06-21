@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if(value==1){
       return HotDesign();
     }else if(value==2){
-      return CartScreen();
+      return CartScreen(fromProductDetails: false,);
     }else{
       return ProfileScreen(backToHome: backToHome,);
     }

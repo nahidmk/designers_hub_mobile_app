@@ -47,13 +47,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return profileProvider.isAuthenticated ?
         CupertinoPageScaffold(backgroundColor: CupertinoColors.white, child: Profile())
         : SignInScreen(true);
-
-    // return Container(
-    //  decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-    //   child: Center(
-    //     child: Text('account'),
-    //   ),
-    // );
   }
 }
 
