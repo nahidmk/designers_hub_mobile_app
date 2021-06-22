@@ -1,4 +1,5 @@
 import 'package:designers_hub_modile_app/Model/cart.dart';
+import 'package:designers_hub_modile_app/Model/design_type.dart';
 
 import '../Model/design_image.dart';
 import '../Model/fabric.dart';
@@ -16,6 +17,7 @@ class Design{
    int favCount;
    List<Fabric> fabrics;
    List<DesignImage> designImages;
+   DesignType designType;
    User user;
 
 
@@ -29,6 +31,7 @@ class Design{
       required this.favCount,
       required this.fabrics,
       required this.designImages,
+      required this.designType,
       required this.user});
 
   factory Design.fromJson(Map<String, dynamic> json) => Design(
@@ -39,6 +42,7 @@ class Design{
     disabled: json["disabled"] as bool,
     descriptions: json["descriptions"] == null ? '' : json["descriptions"] as String,
     price: json["price"] as double,
+    designType: DesignType.fromJson(json["designType"]),
     designImages: json["designImages"]==null?[]:List<DesignImage>.from(json["designImages"].map((x) => DesignImage.fromJson(x))),
     fabrics: json["fabrics"]==null?[]: List<Fabric>.from(json["fabrics"].map((x) => Fabric.fromJson(x))),
     user: User.fromJson(json["user"]),
@@ -55,6 +59,7 @@ class Design{
     "designImages": List<dynamic>.from(designImages.map((x) => x.toJson())),
     "fabrics": List<dynamic>.from(fabrics.map((x) => x.toJson())),
     "user": user.toJson(),
+    "designType":designType.toJson()
   };
 
 }

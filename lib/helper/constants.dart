@@ -21,3 +21,11 @@ final UPDATE_PROFILE_URL = GET_PROFILE_URL;
 
 //order
 final ADD_TO_CART = "$ROOT_URL/api/v/$VERSION/orders/customer/cart/update";
+
+
+//address
+
+final GET_ALL_DELIVERY_ADDRESSES = "$ROOT_URL/api/v/$VERSION/secured/delivery-addresses/customer";
+final POST_DELIVERY_ADDRESS = "$ROOT_URL/api/v/$VERSION/secured/delivery-addresses/customer/create";
+final UPDATE_DELIVERY_ADDRESS = "$ROOT_URL/api/v/$VERSION/secured/delivery-addresses/customer/update";
+final DELETE_DELIVERY_ADDRESS = "$ROOT_URL/api/v/$VERSION/secured/delivery-addresses/customer/delete";

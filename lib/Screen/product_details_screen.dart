@@ -178,7 +178,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     children: [
                       //image
                       Container(
-                        height: 250,
+                        height: 230,
                         padding: EdgeInsets.all(2),
                         child: Row(
                           children: [
@@ -242,9 +242,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       Divider(),
 
                       //choose fabrics
+                      designProvider.design.designType.requiredFabric?
                       Container(
                         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-                        height: 80,
+
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,31 +254,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               'Fabrics :  ',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
-                            Container(
-                              margin: EdgeInsets.only(top: 5),
-                              padding: EdgeInsets.only(left: 5),
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 1)),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(_fabricsName,style: Theme.of(context).textTheme.bodyText1,),
-                                  IconButton(
-                                      onPressed: showModal, icon: Icon(CupertinoIcons.pencil))
-
-                                ],
+                            GestureDetector(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 5),
+                                padding: EdgeInsets.only(left: 5),
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 1)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(_fabricsName,style: Theme.of(context).textTheme.bodyText1,),
+                                    Icon(CupertinoIcons.pencil)
+                                  ],
+                                ),
                               ),
-                            ),
+                              onTap: showModal,
+                            )
 
 
                           ],
                         ),
-                      ),
+                      ):SizedBox(height: 0,),
+
+                      Divider(),
+
 
                       //quantity and price
+
                       Container(
                         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-                        margin: EdgeInsets.only(top: 10),
+
                         child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

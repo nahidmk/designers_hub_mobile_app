@@ -1,8 +1,10 @@
 
+import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/home_page_design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Provider/tab_provider.dart';
+import 'package:designers_hub_modile_app/Service/delivery_address_service.dart';
 import 'package:designers_hub_modile_app/Service/design_service.dart';
 import 'package:designers_hub_modile_app/Service/home_page_desing_service.dart';
 import 'package:designers_hub_modile_app/Service/profile_service.dart';
@@ -18,6 +20,7 @@ void setupLocator() {
   GetIt.I.registerLazySingleton(() => DesignService());
   GetIt.I.registerLazySingleton(() => HomePageDesignService());
   GetIt.I.registerLazySingleton(() => ProfileService());
+  GetIt.I.registerLazySingleton(() => DeliveryAddressService());
 }
 
 void main(){
@@ -36,6 +39,9 @@ void main(){
           ),
           ChangeNotifierProvider(
               create: (_)=>TabProvider()
+          ),
+          ChangeNotifierProvider(
+              create: (_)=>DeliveryAddressProvider()
           ),
         ],
         child: MyApp(),

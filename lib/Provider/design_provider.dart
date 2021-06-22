@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Model/design_image.dart';
+import 'package:designers_hub_modile_app/Model/design_type.dart';
 import 'package:designers_hub_modile_app/Model/fabric.dart';
 import 'package:designers_hub_modile_app/Model/fabric_mixing.dart';
 import 'package:designers_hub_modile_app/Model/user.dart';
@@ -53,6 +54,7 @@ class DesignProvider extends ChangeNotifier {
           ),],
           thumbnail: 'thumbnail'
       ),],
+      designType: DesignType(id: 0,requiredFabric: false,title: ""),
       designImages: [new DesignImage(
           id: 0,
           image: 'image'

@@ -46,4 +46,26 @@ MaterialButton dangerButton(VoidCallback function, String name,BuildContext cont
       padding: EdgeInsets.all(5),
 
     )
+
+
 );
+
+MaterialButton AppBarButton(VoidCallback function, String name,BuildContext context) => (
+    MaterialButton(
+      onPressed: function,
+      child: Text(
+        name,
+        style: TextStyle(fontWeight: FontWeight.w300,fontSize: 10),
+      ),
+
+      color: Colors.black,
+      splashColor: Colors.greenAccent,
+      highlightElevation: 30.0,
+      textColor: Colors.white,
+      padding: EdgeInsets.all(5),
+
+    )
+
+
+);
+
