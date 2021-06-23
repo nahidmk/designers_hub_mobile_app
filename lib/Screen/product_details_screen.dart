@@ -1,6 +1,7 @@
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Model/fabric.dart';
+import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/cart_screen.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
@@ -38,11 +39,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Fabric _fabric = Fabric(available: false, baseColor: "", descriptions: "", disabled: false, favCount: 0, id: 0, name:"", price: 0, slug: "", fabricMixings: [], thumbnail: "");
   var quantity = 0;
 
-  List<CartDetails> cartDetailList = [];
+  // List<CartDetails> cartDetailList = [];
 
   @override
   Widget build(BuildContext context) {
     DesignProvider designProvider = Provider.of<DesignProvider>(context);
+    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
 
     List<String> imageList = [
       designProvider.design.thumbnail,
@@ -144,12 +146,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           });
     }
 
-    void showErrorMassage(){
+    void showErrorMassage(String msg){
       showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Missing value'),
-        content: const Text('Select the Fabrics and quantity'),
+        title: Text('Missing value',style: Theme.of(context).textTheme.headline4,),
+        content:  Text('$msg',style: Theme.of(context).textTheme.headline6),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, 'OK'),
@@ -161,7 +163,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
 
     return Scaffold(
-        appBar: buildCustomAppbar('DESIGN DETAILS',context,cartDetailList),
+        appBar: buildCustomAppbar('DESIGN DETAILS',context),
         body: Stack(children: [
           Container(
             width: MediaQuery.of(context).size.width,
@@ -349,15 +351,46 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   color: Colors.white,),
                 width: MediaQuery.of(context).size.width,
                 child: secondaryButton(() {
-                  if(_fabricsName!="Choose Fabrics" && quantity > 0){
-                    cartDetailList.add(
-                      CartDetails(designPrice: _designPrice, id: 1, totalPrice: _quantityPrice+_fabric.price, quantity: quantity, design: _design, fabric: _fabric, note: "note", fabricPrice: _fabric.price)
-                    );
-                    print(" length---->${cartDetailList.length}");
+                  if(designProvider.design.designType.requiredFabric){
+                    if(_fabricsName!="Choose Fabrics" && quantity > 0){
+                      cartDesignProvider.cart.cartDetailsList.add(
+                          CartDetails(
+                              designPrice: _designPrice,
+                              id: 1,
+                              totalPrice: _quantityPrice+_fabric.price,
+                              quantity: quantity,
+                              design: _design,
+                              fabric: _fabric,
+                              note: "note",
+                              fabricPrice: _fabric.price
+                          )
+                      );
+                      print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
+                    }
+                    else{
+                      showErrorMassage("Choose fabric and Quantity");
+                    }
+                  }else{
+                    if(quantity > 0){
+                      cartDesignProvider.cart.cartDetailsList.add(
+                          CartDetails(
+                              designPrice: _designPrice,
+                              id: 1,
+                              totalPrice: _quantityPrice+_fabric.price,
+                              quantity: quantity,
+                              design: _design,
+                              fabric: _fabric,
+                              note: "note",
+                              fabricPrice: _fabric.price
+                          )
+                      );
+                      print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
+                    }
+                    else{
+                      showErrorMassage("Provide Quantity");
+                    }
                   }
-                  else{
-                    showErrorMassage();
-                  }
+
                 }, "ADD TO CART", context)),
           ),
         ]));

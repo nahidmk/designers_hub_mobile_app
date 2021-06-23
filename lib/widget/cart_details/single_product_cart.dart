@@ -1,6 +1,7 @@
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Model/fabric.dart';
+import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
 import 'package:designers_hub_modile_app/helper/currency.dart';
@@ -21,6 +22,8 @@ class SingleProductCart extends StatefulWidget {
 class _SingleProductCartState extends State<SingleProductCart> {
   String _fabricsName = "";
   int quantity = 0;
+  double totalPrice = 0;
+  bool buttonPress = true;
 
   @override
   void initState() {
@@ -32,6 +35,8 @@ class _SingleProductCartState extends State<SingleProductCart> {
       _fabricsName = widget.cartDetails.fabric.name;
       quantity = widget.cartDetails.quantity;
     });
+
+
   }
 
   Fabric _fabric = Fabric(
@@ -47,13 +52,16 @@ class _SingleProductCartState extends State<SingleProductCart> {
       fabricMixings: [],
       thumbnail: "");
 
-  double _quantityPrice = 0;
+
+
+
 
   @override
   Widget build(BuildContext context) {
-    DesignProvider designProvider = Provider.of<DesignProvider>(context);
-    Design _design = designProvider.design;
-    double _designPrice = designProvider.design.price;
+
+    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
+    Design _design = widget.cartDetails.design;
+    double _designPrice = widget.cartDetails.design.price;
 
     void showModal() {
       showModalBottomSheet<void>(
@@ -135,6 +143,20 @@ class _SingleProductCartState extends State<SingleProductCart> {
           });
     }
 
+    void totalPriceCalculation(){
+      widget.cartDetails.design.designType.requiredFabric?
+      setState(() {
+        totalPrice =
+            quantity +(_fabric.price* _designPrice);
+        print('total price ---->$totalPrice');
+      })
+          :setState(() {
+        totalPrice =
+            quantity * _designPrice;
+        print('total price ---->$totalPrice');
+      });
+    }
+
     return Card(
       elevation: 3,
       child: Container(
@@ -158,7 +180,18 @@ class _SingleProductCartState extends State<SingleProductCart> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${widget.cartDetails.design.name}"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("${widget.cartDetails.design.name}",style: Theme.of(context).textTheme.subtitle1,),
+                      GestureDetector(
+                        child:  Icon(Icons.delete,color: Colors.black,) ,
+                        onTap:(){
+                        cartDesignProvider.deleteDesign(widget.cartDetails.design.id);
+                        },
+                      )
+                    ],
+                  ),
                   SizedBox(
                     height: 5,
                   ),
@@ -170,7 +203,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                       children: [
 
                         //choose fabric
-                        designProvider.design.designType.requiredFabric?
+                        widget.cartDetails.design.designType.requiredFabric?
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.only(left: 5),
@@ -208,33 +241,33 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                   child: Container(
                                     color: Theme.of(context).primaryColor,
                                     child: Icon(
-                                      Icons.add,
+                                      Icons.remove,
                                       color: Colors.white,
                                     ),
                                   ),
                                   onTap: () {
                                     setState(() {
-                                      quantity = quantity + 1;
+                                      quantity = quantity - 1;
                                     });
+                                    totalPriceCalculation();
                                   },
                                 ),
                                 SizedBox(
                                   width: 10,
                                 ),
                                 Container(
-                                  width: 100,
+                                  width: 50,
                                   child: TextField(
                                     controller: TextEditingController()
                                       ..text = quantity.toString(),
                                     style:
                                         Theme.of(context).textTheme.headline4,
                                     onChanged: (value) {
-                                      quantity =
-                                          value.isEmpty ? 0 : int.parse(value);
                                       setState(() {
-                                        _quantityPrice =
-                                            quantity * _designPrice;
+                                        quantity =
+                                        value.isEmpty ? 0 : int.parse(value);
                                       });
+                                      totalPriceCalculation();
                                     },
                                   ),
                                 ),
@@ -244,19 +277,22 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                 GestureDetector(
                                   child: Container(
                                     child: Icon(
-                                      Icons.remove,
+                                      Icons.add,
                                       color: Colors.white,
                                     ),
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   onTap: () {
                                     setState(() {
-                                      quantity = quantity - 1;
+                                      quantity = quantity + 1;
                                     });
+                                    totalPriceCalculation();
                                   },
                                 ),
+
                               ],
-                            )),
+                            )
+                        ),
                       ],
                     ),
                   ),

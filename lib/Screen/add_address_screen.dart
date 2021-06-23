@@ -1,23 +1,34 @@
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
+import 'package:designers_hub_modile_app/widget/common/buttons.dart';
+import 'package:designers_hub_modile_app/widget/common/form_attribute.dart';
+import 'package:designers_hub_modile_app/widget/signin_signup_form/helper_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:provider/provider.dart';
 
 class AddAddressScreen extends StatefulWidget {
-  static const routeName = 'add_address';
+
+  DeliveryAddress args;
+
+  AddAddressScreen({required this.args});
 
   @override
   _AddAddressScreenState createState() => _AddAddressScreenState();
 }
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
-  DeliveryAddress args  = DeliveryAddress(id: 0, address: "", title: "", preDefine: false, disable: false, phoneNumber: '');
+
+
 
   TextFieldProperties _titleProperties = new TextFieldProperties(
+
       controller: new TextEditingController(),
+      inputType: "text",
+      keyboardType: TextInputType.text,
       label: 'Title  (Home / Office / Other)',
       validate: (String text) {
         if (text.length < 3) {
@@ -29,6 +40,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       });
 
   TextFieldProperties _addressProperties = new TextFieldProperties(
+      inputType: "text",
+      keyboardType: TextInputType.text,
       controller: new TextEditingController(),
       label: 'Address',
       maxLine: 3,
@@ -40,6 +53,21 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         } else
           return '';
       });
+
+  TextFieldProperties _phoneNumberProperties = new TextFieldProperties(
+      controller: new TextEditingController(),
+      label: "Phone Number",
+
+      keyboardType: TextInputType.number,
+    inputType: "text",
+      validate: (String text) {
+        if (text.length < 11 || text.length > 11) {
+          return 'Phone number must be 11 digits.';
+        } else
+          return '';
+      }
+  );
+
 
 
   String _errorMessage = '';
@@ -62,10 +90,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_){
       Provider.of<DeliveryAddressProvider>(context, listen: false)
           .addAddressErrorMsg = '';
-      args = ModalRoute.of(context).settings.arguments;
-      if (args != null) {
-        _titleProperties.controller.text = args.title;
-        _addressProperties.controller.text = args.address;
+
+      print('args.....>${widget.args.title}');
+      if (widget.args != null) {
+        _titleProperties.controller.text = widget.args.title;
+        _addressProperties.controller.text = widget.args.address;
+        _phoneNumberProperties.controller.text = widget.args.phoneNumber;
 
       }
     });
@@ -75,13 +105,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 //  @ove
 
 
-
-    Navigator.pop(context);
-  }
-
   _checkFormValidity() {
     bool valid = true;
-    [_addressProperties, _titleProperties].forEach((element) {
+    [_addressProperties, _titleProperties,_phoneNumberProperties].forEach((element) {
       if (element.controller.text.isEmpty) {
         setState(() {
           _errorMessage = 'Please fill all the fields';
@@ -97,10 +123,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       }
     });
 
-    if (_area.areaName == 'Select area') {
-      valid = false;
-      _errorMessage = 'Please select an area.';
-    }
 
     return valid;
   }
@@ -109,15 +131,17 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     if (_checkFormValidity()) {
       bool status = true;
       DeliveryAddress deliveryAddress = new DeliveryAddress(
+          id: 0,
           title: _titleProperties.controller.text,
-          area: _area,
-          address: _addressProperties.controller.text);
-      if (args == null)
+          address: _addressProperties.controller.text,
+          phoneNumber: _phoneNumberProperties.controller.text,
+      );
+      if (widget.args.title.isEmpty)
         status =
             await Provider.of<DeliveryAddressProvider>(context, listen: false)
                 .createDeliveryAddress(deliveryAddress);
       else {
-        deliveryAddress.id = args.id;
+        deliveryAddress.id = widget.args.id;
         status =
             await Provider.of<DeliveryAddressProvider>(context, listen: false)
                 .updateDeliveryAddress(deliveryAddress);
@@ -132,25 +156,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     DeliveryAddressProvider deliveryAddressProvider =
         Provider.of<DeliveryAddressProvider>(context);
 
-    return deliveryAddressProvider.loadingAreas
-        ? CupertinoActivityIndicator(
-            radius: 15,
-          )
-        : deliveryAddressProvider.areasErrorMsg != ''
-            ? ShowError(
-                errorMsg: deliveryAddressProvider.areasErrorMsg,
-                onReload: () {
-                  deliveryAddressProvider.getAllAreas();
-                },
-              )
-            : CupertinoPageScaffold(
-                child: SingleChildScrollView(
+    return  Scaffold(
+      appBar: AppBar(title: Text(widget.args.title.isEmpty ? 'Add Address' : 'Edit address',),),
+                body: SingleChildScrollView(
                   child: Container(
                     child: Column(
                       children: <Widget>[
-                        buildCustomNavigationBar(
-                            args == null ? 'Add Address' : 'Edit address',
-                            context),
                         Container(
                           padding: const EdgeInsets.all(10.0),
                           height:
@@ -166,18 +177,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              AreaPicker(
-                                area: _area,
-                                pickArea: _pickArea,
-                                areas: deliveryAddressProvider.areas,
+                              FormAttribute(
+                                icon: Icon(CupertinoIcons.home),
+                                properties: _addressProperties,
+                                onChange: _onChange,
                               ),
                               SizedBox(
                                 height: 20,
                               ),
                               FormAttribute(
-                                icon: Icon(CupertinoIcons.home),
-                                properties: _addressProperties,
-                                onChange: _onChange,
+                                  icon: Icon(CupertinoIcons.phone),
+                                  properties: _phoneNumberProperties,
+                                  onChange: _onChange,
                               ),
                               SizedBox(
                                 height: 20,
@@ -190,19 +201,23 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                   _dismissErrorMsg),
                               deliveryAddressProvider.loadingAddAddress
                                   ? CupertinoActivityIndicator()
-                                  : CupertinoButton(
-                                      onPressed: () {
-                                        _submitAddress(context);
-                                      },
-                                      color: CupertinoColors.activeBlue,
-                                      child: Text(
-                                        args == null
-                                            ? 'Add address'
-                                            : 'Edit address',
-                                        style: TextStyle(
-                                            color: CupertinoColors.white),
-                                      ),
-                                    )
+                                  :
+                              MaterialButton(
+                                onPressed: (){
+                                  _submitAddress(context);
+                                },
+                                child: Text(
+                                    widget.args.title.isEmpty ? 'Add address' : 'Edit address',
+                                  style: Theme.of(context).textTheme.button,
+                                ),
+                                color: Colors.black,
+                                splashColor: Colors.greenAccent,
+                                highlightElevation: 30.0,
+                                textColor: Colors.black,
+                                padding: EdgeInsets.all(5),
+
+                              )
+
                             ],
                           ),
                         ),
@@ -211,193 +226,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   ),
                 ),
               );
-  }
-}
-
-class AreaPicker extends StatefulWidget {
-  final Area area;
-  final Function pickArea;
-  final List<Area> areas;
-
-  AreaPicker({this.area, this.pickArea, this.areas});
-
-  @override
-  _AreaPickerState createState() => _AreaPickerState();
-}
-
-class _AreaPickerState extends State<AreaPicker> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: CupertinoColors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                BoxShadow(
-                  color: CupertinoColors.inactiveGray.withOpacity(0.5),
-                  spreadRadius: -7,
-                  blurRadius: 15,
-                  offset: Offset(0, 2), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Row(
-              children: <Widget>[
-                _buildSvgPicture('assets/icons/area.svg'),
-                SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Area',
-                      style: FormAttribute.labelStyle,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      widget.area != null ? widget.area.areaName : 'Choose area',
-                      style: FormAttribute.textStyle,
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: 100,
-                      height: 60,
-                      child: FittedBox(
-                        child: Material(
-                          color: Colors.transparent,
-//                          child: DropdownButton(
-//                            hint: Text('Select'),
-//                            value: widget.area.id,
-//                            onChanged: (value){
-//                              widget.pickArea(widget.areas.firstWhere((element) => element.id == value));
-//                            },
-//                            items: widget.areas.map((e){
-//                              return DropdownMenuItem(
-//                                child: Text(e.areaName),
-//                                value: e.id,
-//                              );
-//                            }).toList(),
-//                          ),
-                        child: CupertinoButton(
-                          color: widget.area != null ? CupertinoColors.systemOrange : CUSTOMER,
-                          child: Text( widget.area != null ? 'Change' : 'Choose', style: TextStyle(fontSize: 30),),
-                          onPressed: (){
-                            showCupertinoModalBottomSheet(
-                                context: context,
-                                builder:
-                                    (_, scrollController) =>
-                                    AreaSelector(areaList: widget.areas,
-                                    selectArea: widget.pickArea,
-                                    ));
-                          },
-                        ),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-  }
-}
-
-class AreaSelector extends StatefulWidget {
-
-  final List<Area> areaList;
-  final Function selectArea;
-
-  AreaSelector({this.areaList, this.selectArea});
-
-  @override
-  _AreaSelectorState createState() => _AreaSelectorState();
-}
-
-class _AreaSelectorState extends State<AreaSelector> {
-  List<Area> _backupArea = [];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        _backupArea = [...widget.areaList];
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Container(
-      height: MediaQuery.of(context).size.height - 150,
-      child: Column(
-        children: [
-          CupertinoButton(
-            onPressed: (){
-              Navigator.pop(context);
-            },
-              child: buildShutterDown(),
-          ),
-          Material(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextFormField(
-                autofocus: true,
-                onChanged: (value){
-                  setState(() {
-                    _backupArea = [...widget.areaList];
-                    setState(() {
-                      _backupArea = widget.areaList.where((area) => area.areaName.toLowerCase().contains(value.toLowerCase())).toList();
-                    });
-                  });
-                },
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Search area',
-                    contentPadding: EdgeInsets.only(left: 10)
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: _backupArea.map((e) => Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Text(e.areaName, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
-                      ),
-                      CupertinoButton(
-                        child: Text('Select', style: TextStyle(color: CupertinoColors.activeBlue, fontWeight: FontWeight.bold),),
-                        onPressed: (){
-                          widget.selectArea(e);
-                        },
-                      ),
-                    ],
-                  ),
-                  Divider()
-                ],
-              )).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
 

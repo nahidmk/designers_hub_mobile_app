@@ -6,14 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-AppBar buildCustomAppbar(String title, BuildContext context,List<CartDetails>cartDetailsList){
+AppBar buildCustomAppbar(String title, BuildContext context){
   return AppBar(
     title: Text(
       title,
     ),
     actions: [
       IconButton(onPressed: (){
-           Navigator.push(context,MaterialPageRoute(builder: (_)=> CartScreen(fromProductDetails: true,cartDetailList: cartDetailsList,)));
+           Navigator.push(context,MaterialPageRoute(builder: (_)=> CartScreen(fromProductDetails: true,)));
       }, icon: Icon(CupertinoIcons.shopping_cart))
     ],
   );

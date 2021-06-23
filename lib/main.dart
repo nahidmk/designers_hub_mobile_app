@@ -1,4 +1,5 @@
 
+import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Provider/home_page_design_provider.dart';
@@ -42,6 +43,9 @@ void main(){
           ),
           ChangeNotifierProvider(
               create: (_)=>DeliveryAddressProvider()
+          ),
+          ChangeNotifierProvider(
+              create: (_)=>CartDesignProvider()
           ),
         ],
         child: MyApp(),

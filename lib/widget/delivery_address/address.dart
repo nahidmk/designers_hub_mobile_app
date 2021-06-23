@@ -1,6 +1,8 @@
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
+import 'package:designers_hub_modile_app/Screen/add_address_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Address extends StatelessWidget {
@@ -18,11 +20,7 @@ class Address extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           deliveryAddressProvider.selectedDeliveryAddress = address;
-
-          if(deliveryAddressProvider.popAbleScreen) {
-            deliveryAddressProvider.popAbleScreen = false;
             Navigator.pop(context);
-          }
         },
         child: Container(
           padding: EdgeInsets.only(left: 20, right: 10, top: 20, bottom: 20),
@@ -56,6 +54,23 @@ class Address extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
+                  SizedBox(
+                      width:
+                      MediaQuery.of(context).size.width - 40 - 40 - 20 - 34,
+                      child: Text(
+                        "Address: ${address.address}",
+                        style: Theme.of(context).textTheme.headline6,
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "Phone : ${address.phoneNumber}",
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
                 ],
               ),
               SizedBox(
@@ -63,7 +78,7 @@ class Address extends StatelessWidget {
                 child: FittedBox(
                   child: CupertinoButton(
                     onPressed: () {
-                      showCupertinoModalPopup(
+                      showModalBottomSheet(
                         context: context,
                         builder: (BuildContext ctx) => CupertinoActionSheet(
                           title: const Text('Choose Options'),
@@ -71,8 +86,10 @@ class Address extends StatelessWidget {
                             CupertinoActionSheetAction(
                               child: const Text('Edit address'),
                               onPressed: () {
-                                // Navigator.pushNamed(context, AddAddressScreen.routeName, arguments: address);
                                 Navigator.pop(ctx, 'Edit');
+                                Navigator.push(context, MaterialPageRoute(builder: (_)=>AddAddressScreen(args: address,)));
+                                // Navigator.pushNamed(context, AddAddressScreen.routeName, arguments: address);
+
                               },
                             ),
                             deliveryAddressProvider.loadingDeleteAddress
@@ -97,7 +114,7 @@ class Address extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Icon(CupertinoIcons.ellipsis),
+                    child: Icon(CupertinoIcons.info,color: Colors.black,),
                   ),
                 ),
               )

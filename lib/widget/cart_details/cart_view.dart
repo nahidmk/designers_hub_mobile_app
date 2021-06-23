@@ -1,4 +1,5 @@
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
+import 'package:designers_hub_modile_app/Screen/checkout_screen.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
 import 'package:designers_hub_modile_app/Screen/home_screen.dart';
 import 'package:designers_hub_modile_app/helper/currency.dart';
@@ -36,7 +37,6 @@ class _CartViewState extends State<CartView> {
               children: [
                 ...widget.cartDetailsList.map((e)=>SingleProductCart(cartDetails: e)),
 
-                SizedBox(height: 231,)
               ],
           ),
             ),
@@ -79,7 +79,7 @@ class _CartViewState extends State<CartView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   secondaryButton((){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>DeliveryAddressScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen()));
                   }, "Check Out", context)
                 ],
               )

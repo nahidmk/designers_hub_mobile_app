@@ -1,6 +1,7 @@
 
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
+import 'package:designers_hub_modile_app/Screen/add_address_screen.dart';
 import 'package:designers_hub_modile_app/widget/delivery_address/address.dart';
 import 'package:designers_hub_modile_app/widget/error/show_error.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,9 +79,10 @@ class DeliveryAddressListView extends StatelessWidget {
         child: Container(
           child: FloatingActionButton(
             onPressed: (){
-              print('add address');
+              Navigator.push(context, MaterialPageRoute(builder: (_)=>AddAddressScreen(args: DeliveryAddress(id: 0,address: "",phoneNumber: "",title: ""),)));
               },
-            child: const Icon(Icons.add),
+            backgroundColor: Colors.black,
+            child: const Icon(Icons.add,color: Colors.white,),
           ),
         )
       )

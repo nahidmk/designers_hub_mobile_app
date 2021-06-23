@@ -1,19 +1,15 @@
 
 class DeliveryAddress{
 
-  final  int id;
-  final String address;
-  final String title;
-  final bool preDefine;
-  final bool disable;
-  final String phoneNumber;
+   int id;
+   String address;
+   String title;
+   String phoneNumber;
 
   DeliveryAddress({
       required this.id,
       required this.address,
       required this.title,
-      required this.preDefine,
-      required this.disable,
       required this.phoneNumber
       });
 
@@ -23,8 +19,7 @@ class DeliveryAddress{
     address: json["address"]==null?"":json["address"] as String,
     title: json["title"]==null? " ":json['title'] as String,
     phoneNumber: json["phoneNumber"]==null? " ":json['phoneNumber'] as String,
-    preDefine: json["preDefine"] as bool,
-    disable: json["disable"] as bool
+
 
   );
 
@@ -33,8 +28,5 @@ class DeliveryAddress{
     "address":address,
     "title":title,
     "phoneNumber":phoneNumber,
-    "preDefine":preDefine,
-    "disable":disable
-
   };
 }

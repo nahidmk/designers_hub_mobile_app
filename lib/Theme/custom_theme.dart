@@ -18,7 +18,7 @@ ThemeData CustomTheme(BuildContext context){
 
       button: TextStyle(fontSize: 15,fontWeight: FontWeight.w300),
       caption: TextStyle(fontSize: 15,fontWeight: FontWeight.w200,color: Colors.black,),
-      subtitle1: TextStyle(fontSize: 12,fontWeight: FontWeight.w200,color: Colors.black)
+      subtitle1: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: Colors.black)
     );
   }
 

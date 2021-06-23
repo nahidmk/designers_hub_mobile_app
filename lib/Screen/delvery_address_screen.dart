@@ -17,7 +17,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
     ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
     return profileProvider.isAuthenticated ?
     Scaffold(
-      appBar: AppBar(title: Text('Choose delivery address',style: Theme.of(context).textTheme.headline4,)),
+      appBar: AppBar(title: Text('Choose delivery address',)),
       body: DeliveryAddressList(),
     ):
     SignInScreen(false);

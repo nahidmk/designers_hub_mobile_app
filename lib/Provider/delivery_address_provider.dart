@@ -24,7 +24,7 @@ class DeliveryAddressProvider extends ChangeNotifier{
 
   bool _popAbleScreen = false;
 
-  DeliveryAddress _selectedDeliveryAddress = DeliveryAddress(id: 0, address: "", title: "title", preDefine: false, disable: false, phoneNumber: "");
+  DeliveryAddress _selectedDeliveryAddress = DeliveryAddress(id: 0, address: "", title: "", phoneNumber: "");
 
   DeliveryAddress get selectedDeliveryAddress => _selectedDeliveryAddress;
 
@@ -213,7 +213,7 @@ class DeliveryAddressProvider extends ChangeNotifier{
         deliveryAddresses = _deliveryAddresses;
 
         if(selectedDeliveryAddress != null && deliveryAddress.id == selectedDeliveryAddress.id){
-          selectedDeliveryAddress = DeliveryAddress(id: 0, address: "", title: "", preDefine: false, disable: false, phoneNumber: "");;
+          selectedDeliveryAddress = DeliveryAddress(id: 0, address: "", title: "",  phoneNumber: "");;
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.remove('delivery_address');
         }

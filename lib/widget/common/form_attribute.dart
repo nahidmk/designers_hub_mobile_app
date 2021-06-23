@@ -16,7 +16,9 @@ class FormAttribute extends StatelessWidget {
       border: Border(
           bottom: BorderSide(
               color: CupertinoColors.activeOrange,
-              width: 1)));
+              width: 1)
+      )
+  );
 
   static final TextStyle labelStyle = const TextStyle(
       color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 12);
