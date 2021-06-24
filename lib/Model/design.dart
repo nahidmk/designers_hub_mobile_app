@@ -18,7 +18,7 @@ class Design{
    List<Fabric> fabrics;
    List<DesignImage> designImages;
    DesignType designType;
-   User user;
+   // User user;
 
 
   Design({
@@ -32,7 +32,7 @@ class Design{
       required this.fabrics,
       required this.designImages,
       required this.designType,
-      required this.user});
+  });
 
   factory Design.fromJson(Map<String, dynamic> json) => Design(
     id: json["id"] as int,
@@ -41,11 +41,10 @@ class Design{
     favCount: json["favCount"] as int,
     disabled: json["disabled"] as bool,
     descriptions: json["descriptions"] == null ? '' : json["descriptions"] as String,
-    price: json["price"] as double,
+    price: json["price"]==null?0.0 : json["price"] as double,
     designType: DesignType.fromJson(json["designType"]),
     designImages: json["designImages"]==null?[]:List<DesignImage>.from(json["designImages"].map((x) => DesignImage.fromJson(x))),
     fabrics: json["fabrics"]==null?[]: List<Fabric>.from(json["fabrics"].map((x) => Fabric.fromJson(x))),
-    user: User.fromJson(json["user"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -58,7 +57,6 @@ class Design{
     "price": price,
     "designImages": List<dynamic>.from(designImages.map((x) => x.toJson())),
     "fabrics": List<dynamic>.from(fabrics.map((x) => x.toJson())),
-    "user": user.toJson(),
     "designType":designType.toJson()
   };
 

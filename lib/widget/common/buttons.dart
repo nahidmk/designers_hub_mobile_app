@@ -32,6 +32,25 @@ MaterialButton secondaryButton(VoidCallback function, String name,BuildContext c
     )
 );
 
+Container outlinedButton(VoidCallback function, String name,BuildContext context) => (
+    Container(
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black54)
+      ),
+      child: MaterialButton(
+        onPressed: function,
+        child: Text(
+          name,
+          style: TextStyle(color: Colors.black),
+        ),
+        splashColor: Colors.greenAccent,
+        highlightElevation: 30.0,
+        textColor: Colors.black,
+      ),
+    )
+);
+
 MaterialButton dangerButton(VoidCallback function, String name,BuildContext context) => (
     MaterialButton(
       onPressed: function,

@@ -41,7 +41,7 @@ class Fabric {
     slug: json["slug"]==null?'':json["slug"] as String,
     thumbnail: json["thumbnail"]==null?'':json["thumbnail"] as String,
     favCount: json["favCount"] as int,
-    price: json["price"] as double,
+    price: json["price"]==null ? 0.0 :json["price"] as double,
     disabled: json["disabled"] as bool,
     descriptions: json["descriptions"]==null?'':json["descriptions"] as String,
     fabricMixings: json["fabricMixings"]==null?[]:List<FabricMixing>.from(json["fabricMixings"].map((x) => FabricMixing.fromJson(x))),

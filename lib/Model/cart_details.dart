@@ -10,7 +10,7 @@ class CartDetails{
    double designPrice;
    int id;
    double totalPrice;
-   int quantity;
+   double quantity;
    Design design;
    double fabricPrice;
    Fabric fabric;
@@ -31,13 +31,13 @@ CartDetails({
 
   factory CartDetails.fromJson(Map<String, dynamic> json) => CartDetails(
     id: json["id"] as int,
-    designPrice: json["designPrice"] as double,
-    totalPrice: json["totalPrice"] as double,
-    quantity: json["quantity"] as int,
+    designPrice: json["designPrice"]==null? 0.0 :json["designPrice"] as double,
+    totalPrice: json["totalPrice"]==null? 0.0 :json["totalPrice"] as double,
+    quantity: json["quantity"]==null? 0.0 :json["quantity"] as double,
     note: json["note"]==null?"":json["note"] as String,
-    fabricPrice: json["fabricPrice"] as double,
+    fabricPrice: json["fabricPrice"]==null? 0.0 : json["fabricPrice"] as double,
     design: Design.fromJson(json["design"]),
-    fabric: Fabric.fromJson(json["fabric"]),
+    fabric:json["fabric"]==null? Fabric(available: false, baseColor: "", descriptions: "", disabled: false, favCount: 0, id: 0, name: "", price: 0, slug: '', fabricMixings: [], thumbnail: ""): Fabric.fromJson(json["fabric"]),
   );
 
 

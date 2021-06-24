@@ -30,6 +30,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Provider.of<DesignProvider>(context, listen: false).getDesign(widget.id);
+
     });
 
   }
@@ -37,7 +38,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   double _quantityPrice = 0;
   String _fabricsName = "Choose Fabrics";
   Fabric _fabric = Fabric(available: false, baseColor: "", descriptions: "", disabled: false, favCount: 0, id: 0, name:"", price: 0, slug: "", fabricMixings: [], thumbnail: "");
-  var quantity = 0;
+  double quantity = 0;
 
   // List<CartDetails> cartDetailList = [];
 
@@ -161,6 +162,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       );
     }
+
+
 
     return Scaffold(
         appBar: buildCustomAppbar('DESIGN DETAILS',context),
@@ -303,12 +306,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         width: 80,
 
                                         child: TextField(
+
+                                          // controller: TextEditingController()..text = quantity.toString(),
                                           style: Theme.of(context).textTheme.headline4,
                                           onChanged: (value){
-                                            quantity = value.isEmpty?0:int.parse(value);
-                                            setState(() {
-                                              _quantityPrice = quantity * _designPrice;
-                                            });
+                                            quantity = value.isEmpty?0:double.parse(value);
+                                            if(designProvider.design.designType.requiredFabric){
+                                              setState(() {
+                                                _quantityPrice =  _designPrice + (quantity*_fabric.price);
+                                              });
+                                            }else{
+                                              setState(() {
+                                                _quantityPrice = quantity * _designPrice;
+                                              });
+                                            }
+
                                           },
                                           decoration: InputDecoration(
                                             border: OutlineInputBorder(),
@@ -353,7 +365,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: secondaryButton(() {
                   if(designProvider.design.designType.requiredFabric){
                     if(_fabricsName!="Choose Fabrics" && quantity > 0){
-                      cartDesignProvider.cart.cartDetailsList.add(
+
+                      cartDesignProvider.addToCart(
                           CartDetails(
                               designPrice: _designPrice,
                               id: 1,
@@ -363,7 +376,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               fabric: _fabric,
                               note: "note",
                               fabricPrice: _fabric.price
-                          )
+                          ),
+                        quantity
                       );
                       print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
                     }
@@ -372,7 +386,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     }
                   }else{
                     if(quantity > 0){
-                      cartDesignProvider.cart.cartDetailsList.add(
+                      cartDesignProvider.addToCart(
                           CartDetails(
                               designPrice: _designPrice,
                               id: 1,
@@ -382,7 +396,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               fabric: _fabric,
                               note: "note",
                               fabricPrice: _fabric.price
-                          )
+                          ),
+                        quantity
                       );
                       print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
                     }
@@ -390,6 +405,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       showErrorMassage("Provide Quantity");
                     }
                   }
+                  setState(() {
+                    _quantityPrice = 0;
+                  });
 
                 }, "ADD TO CART", context)),
           ),

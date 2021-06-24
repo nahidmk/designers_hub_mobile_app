@@ -46,12 +46,12 @@ class _CartScreenState extends State<CartScreen> {
           )
       ],),
       body: Container(
-        child: CartView(cartDetailsList: cartDesignProvider.cart.cartDetailsList,),
+        child: CartView(),
       ),
     ):Scaffold(
       backgroundColor: CupertinoColors.white,
       body: Container(
-        child: CartView(cartDetailsList: cartDesignProvider.cart.cartDetailsList,)
+        child: CartView()
       ),
     );
 

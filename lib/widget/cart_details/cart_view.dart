@@ -1,4 +1,6 @@
+import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
+import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/checkout_screen.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
 import 'package:designers_hub_modile_app/Screen/home_screen.dart';
@@ -6,20 +8,25 @@ import 'package:designers_hub_modile_app/helper/currency.dart';
 import 'package:designers_hub_modile_app/widget/cart_details/single_product_cart.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartView extends StatefulWidget {
 
-  final List<CartDetails> cartDetailsList;
 
-  CartView({required this.cartDetailsList});
 
   @override
   _CartViewState createState() => _CartViewState();
 }
 
 class _CartViewState extends State<CartView> {
+
+
+
   @override
   Widget build(BuildContext context) {
+    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
+    Cart _cart = cartDesignProvider.cart;
+
     return Stack(
       children: [
         Container(
@@ -35,7 +42,7 @@ class _CartViewState extends State<CartView> {
               child: ListView(
 
               children: [
-                ...widget.cartDetailsList.map((e)=>SingleProductCart(cartDetails: e)),
+                ...cartDesignProvider.cart.cartDetailsList.map((e)=>SingleProductCart(cartDetails: e)),
 
               ],
           ),
@@ -53,7 +60,7 @@ class _CartViewState extends State<CartView> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Estimated Total",style: Theme.of(context).textTheme.headline4,),
-                            Text("$CURRENCY 17.50",style: Theme.of(context).textTheme.headline4,)
+                            Text("$CURRENCY ${_cart.totalPrice}",style: Theme.of(context).textTheme.headline4,)
                           ],
                         ),
                         SizedBox(height: 5,),
@@ -79,7 +86,7 @@ class _CartViewState extends State<CartView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   secondaryButton((){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)));
                   }, "Check Out", context)
                 ],
               )

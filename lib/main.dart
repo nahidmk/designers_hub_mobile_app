@@ -8,6 +8,7 @@ import 'package:designers_hub_modile_app/Provider/tab_provider.dart';
 import 'package:designers_hub_modile_app/Service/delivery_address_service.dart';
 import 'package:designers_hub_modile_app/Service/design_service.dart';
 import 'package:designers_hub_modile_app/Service/home_page_desing_service.dart';
+import 'package:designers_hub_modile_app/Service/oder_service.dart';
 import 'package:designers_hub_modile_app/Service/profile_service.dart';
 import 'package:designers_hub_modile_app/Theme/custom_theme.dart';
 import 'package:get_it/get_it.dart';
@@ -22,6 +23,8 @@ void setupLocator() {
   GetIt.I.registerLazySingleton(() => HomePageDesignService());
   GetIt.I.registerLazySingleton(() => ProfileService());
   GetIt.I.registerLazySingleton(() => DeliveryAddressService());
+  GetIt.I.registerLazySingleton(() => OrderService());
+
 }
 
 void main(){

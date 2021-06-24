@@ -21,7 +21,7 @@ class SingleProductCart extends StatefulWidget {
 
 class _SingleProductCartState extends State<SingleProductCart> {
   String _fabricsName = "";
-  int quantity = 0;
+  double quantity = 0;
   double totalPrice = 0;
   bool buttonPress = true;
 
@@ -128,6 +128,9 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                         _fabricsName = e.name;
                                         _fabric = e;
                                       });
+                                      widget.cartDetails.fabric=_fabric;
+                                      cartDesignProvider.addToCart(widget.cartDetails,quantity);
+
                                       Navigator.pop(context);
                                     }, "Select", context),
                                   ],
@@ -143,19 +146,6 @@ class _SingleProductCartState extends State<SingleProductCart> {
           });
     }
 
-    void totalPriceCalculation(){
-      widget.cartDetails.design.designType.requiredFabric?
-      setState(() {
-        totalPrice =
-            quantity +(_fabric.price* _designPrice);
-        print('total price ---->$totalPrice');
-      })
-          :setState(() {
-        totalPrice =
-            quantity * _designPrice;
-        print('total price ---->$totalPrice');
-      });
-    }
 
     return Card(
       elevation: 3,
@@ -227,7 +217,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                               ],
                             ),
                           ),
-                          onTap: showModal,
+                          onTap: (){showModal();},
                         ):SizedBox(height: 0,),
 
                         Container(
@@ -246,10 +236,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() {
-                                      quantity = quantity - 1;
-                                    });
-                                    totalPriceCalculation();
+                                    cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity - 1);
                                   },
                                 ),
                                 SizedBox(
@@ -259,15 +246,22 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                   width: 50,
                                   child: TextField(
                                     controller: TextEditingController()
-                                      ..text = quantity.toString(),
+                                      ..text = widget.cartDetails.quantity.toString(),
+                                    keyboardType: TextInputType.number,
                                     style:
                                         Theme.of(context).textTheme.headline4,
+
                                     onChanged: (value) {
-                                      setState(() {
-                                        quantity =
-                                        value.isEmpty ? 0 : int.parse(value);
-                                      });
-                                      totalPriceCalculation();
+                                      if(value.isEmpty){
+                                        return;
+                                      }else{
+                                        try{
+                                          double q = double.parse(value);
+                                          cartDesignProvider.addToCart(widget.cartDetails, q);
+                                        }catch(error){
+                                          return;
+                                        }
+                                      }
                                     },
                                   ),
                                 ),
@@ -283,10 +277,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   onTap: () {
-                                    setState(() {
-                                      quantity = quantity + 1;
-                                    });
-                                    totalPriceCalculation();
+                                    cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity + 1);
                                   },
                                 ),
 

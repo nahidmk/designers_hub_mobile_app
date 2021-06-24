@@ -23,7 +23,7 @@ class FabricMixing{
   factory FabricMixing.fromJson(Map<String, dynamic> json) => FabricMixing(
     id: json["id"] as int,
     fabricMixingType: json["fabricMixingType"] ==null ? '' : json["fabricMixingType"] as String,
-    percentage: json["percentage"] as double,
+    percentage: json["percentage"]==null? 0.0 : json["percentage"] as double,
     fabricWeave: json["fabricWeave"]==null ? '' :json["fabricWeave"]  as String,
   );
 

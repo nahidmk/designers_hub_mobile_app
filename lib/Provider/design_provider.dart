@@ -59,25 +59,25 @@ class DesignProvider extends ChangeNotifier {
           id: 0,
           image: 'image'
       ),],
-      user: User(
-          active: false,
-          address: "address",
-          banned: false,
-          dateOfBirth: "dateOfBirth",
-          disabled: false,
-          email: "email",
-          fullName: "fullName",
-          gender: "gender",
-          id: 0,
-          nid: "nid",
-          nidPictureBack: "nidPictureBack",
-          nidPictureFront: "nidPictureFront",
-          primaryNumber: 'primaryNumber',
-          profilePicture: 'profilePicture',
-          provider: 'provider',
-          providerId: 'providerId',
-          secondaryNumber: 'secondaryNumber'
-      )
+      // user: User(
+      //     active: false,
+      //     address: "address",
+      //     banned: false,
+      //     dateOfBirth: "dateOfBirth",
+      //     disabled: false,
+      //     email: "email",
+      //     fullName: "fullName",
+      //     gender: "gender",
+      //     id: 0,
+      //     nid: "nid",
+      //     nidPictureBack: "nidPictureBack",
+      //     nidPictureFront: "nidPictureFront",
+      //     primaryNumber: 'primaryNumber',
+      //     profilePicture: 'profilePicture',
+      //     provider: 'provider',
+      //     providerId: 'providerId',
+      //     secondaryNumber: 'secondaryNumber'
+      // )
   );
 
 
