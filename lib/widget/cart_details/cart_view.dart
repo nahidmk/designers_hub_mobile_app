@@ -12,7 +12,9 @@ import 'package:provider/provider.dart';
 
 class CartView extends StatefulWidget {
 
+ bool fromProductDetails;
 
+ CartView(this.fromProductDetails);
 
   @override
   _CartViewState createState() => _CartViewState();
@@ -47,44 +49,77 @@ class _CartViewState extends State<CartView> {
               ],
           ),
             ),
-            Card(
-              elevation: 5,
-              child: Container(
-                padding: EdgeInsets.all(5),
 
-              width: MediaQuery.of(context).size.width,
-                  child:Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Estimated Total",style: Theme.of(context).textTheme.headline4,),
-                            Text("$CURRENCY ${_cart.totalPrice}",style: Theme.of(context).textTheme.headline4,)
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Text("Note: All price in the cart and during checkout are show including tax",style: Theme.of(context).textTheme.bodyText1 ),
-                      ]
-                  )
-              ),
-            ),
 
 
         ]
         ),
       ),
 
+        widget.fromProductDetails?
         Positioned(
           bottom: 0,
           child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              padding: EdgeInsets.only(top: 5,left: 10,right: 10),
               decoration: BoxDecoration(
                 color: Colors.white,),
               width: MediaQuery.of(context).size.width,
               child:Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Container(
+                      width: MediaQuery.of(context).size.width,
+                      child:Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("Estimated Total",style: Theme.of(context).textTheme.headline4,),
+                                Text("$CURRENCY ${_cart.totalPrice}",style: Theme.of(context).textTheme.headline4,)
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+                            Text("Note: All price in the cart and during checkout are show including tax",style: Theme.of(context).textTheme.bodyText1 ),
+                          ]
+                      )
+                  ),
+
+                  secondaryButton((){
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)));
+                  }, "Check Out", context)
+                ],
+              )
+          ),
+        )
+        :Positioned(
+          bottom: 50,
+          child: Container(
+              padding: EdgeInsets.only(top: 5,left: 10,right: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,),
+              width: MediaQuery.of(context).size.width,
+              child:Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                   Container(
+                        width: MediaQuery.of(context).size.width,
+                        child:Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Estimated Total",style: Theme.of(context).textTheme.headline4,),
+                                  Text("$CURRENCY ${_cart.totalPrice}",style: Theme.of(context).textTheme.headline4,)
+                                ],
+                              ),
+                              SizedBox(height: 5,),
+                              Text("Note: All price in the cart and during checkout are show including tax",style: Theme.of(context).textTheme.bodyText1 ),
+                            ]
+                        )
+                    ),
+
                   secondaryButton((){
                     Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)));
                   }, "Check Out", context)

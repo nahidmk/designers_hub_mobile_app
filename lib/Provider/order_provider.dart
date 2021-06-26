@@ -208,25 +208,25 @@ class OrderProvider extends ChangeNotifier {
 
   }
 
-  Future<bool> placeOrder(DeliveryAddress selectedDeliveryAddress) async {
+  Future placeOrder(DeliveryAddress selectedDeliveryAddress) async {
     try{
       loadingOrder = true;
       final response = await orderService.placeOrder(selectedDeliveryAddress);
       if(response.statusCode == 201){
-
         print('successful order - >${response.body}');
+        order = Order.fromJson(json.decode(response.body));
       }else{
         loadingOrder = false;
         print('order place response error --> ${json.decode(response.body)}');
-        return false;
+        return;
       }
       loadingOrder = false;
-      return true;
+      return;
 
     }catch(error){
       loadingOrder = false;
       print('place order error ---> $error');
-      return false;
+      return;
     }
   }
 

@@ -227,7 +227,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   }
                   orderProvider.placeOrder(
                       deliveryAddressProvider.selectedDeliveryAddress);
-                }, "Place Order", context),
+                  print('Order id -------> ${orderProvider.order.id}');
+                      }, "Place Order", context),
               )
 
             ],

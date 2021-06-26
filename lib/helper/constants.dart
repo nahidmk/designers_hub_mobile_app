@@ -27,7 +27,7 @@ final UPDATE_PROFILE_URL = GET_PROFILE_URL;
 final CART_UPDATE = "$SECURED_API_URL/orders/customer/cart/update";
 final PLACE_ORDER = "$SECURED_API_URL/orders/customer/create";
 final GET_ALL_ORDER = "$SECURED_API_URL/orders";
-final GET_ORDER_BY_ID = "$SECURED_API_URL/orders/";
+final GET_ORDER_BY_ID = "$SECURED_API_URL/orders/customer/id";
 
 
 //address

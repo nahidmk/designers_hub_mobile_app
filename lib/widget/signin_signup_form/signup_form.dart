@@ -274,14 +274,15 @@ class _SignUpFormState extends State<SignUpForm> {
                                   });
                                 },
                               ),
-
+                              Text(
+                                "Please agree with terms and conditions",
+                                style:
+                                TextStyle(color: CupertinoColors.activeOrange, fontSize: 12),
+                              ),
                             ],
+
                           ),
-                         Text(
-                           "Please agree with terms and conditions",
-                           style:
-                           TextStyle(color: CupertinoColors.activeOrange, fontSize: 12),
-                         ),
+
                         ],
                       ),
                     ),
