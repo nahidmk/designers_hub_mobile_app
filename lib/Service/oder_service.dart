@@ -34,6 +34,29 @@ class OrderService {
     );
   }
 
+  Future<Http.Response> getAllOrder(int page, int size) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    return Http.get(
+      Uri.parse("$GET_ALL_ORDER?page=$page&size=$size"),
+      headers: getAuthHeader(
+        sharedPreferences.get("aw_auth_token").toString(),
+      ),
+    );
+  }
+
+
+  Future<Http.Response> getOrderByOrderId(int orderId) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    return Http.get(
+      Uri.parse("$GET_ORDER_BY_ID/$orderId"),
+      headers: getAuthHeader(
+        sharedPreferences.get("os_auth_token").toString(),
+      ),
+    );
+  }
+
 
   Map<String, String> getAuthHeader(String? authToken) {
 

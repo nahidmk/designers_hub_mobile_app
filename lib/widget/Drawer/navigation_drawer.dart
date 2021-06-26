@@ -37,6 +37,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   children: <Widget>[
                     createDrawerHeader(context,profileProvider.profile),
                     TermsAndCondition(),
+                    OrderHistory(),
                     FacebookPage(),
                     Help(),
                     Divider(),
@@ -72,6 +73,28 @@ class LogoutButton extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class OrderHistory extends StatelessWidget {
+@override
+Widget build(BuildContext context) {
+  return CupertinoButton(
+    onPressed: () {
+      Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderHistory()));
+    },
+    child: Row(
+      children: <Widget>[
+        Icon(CupertinoIcons.time, color: Colors.black54),
+        SizedBox(width: 15),
+        Text(
+          'Order History',
+          style: CupertinoTheme.of(context).textTheme.textStyle,
+        ),
+      ],
+    ),
+  );
+}
 }
 
 class TermsAndCondition extends StatelessWidget {

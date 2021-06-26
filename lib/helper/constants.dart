@@ -1,6 +1,7 @@
 
 final VERSION = '1.0.0';
-final ROOT_URL = "http://192.168.0.176:8081";
+// final ROOT_URL = "http://192.168.0.176:8081";
+final ROOT_URL = "http://13.82.95.231:8080";
 
 final PUBLIC_API_URL = '$ROOT_URL/api/v/$VERSION/public';
 final SECURED_API_URL = '$ROOT_URL/api/v/$VERSION/secured';
@@ -25,6 +26,8 @@ final UPDATE_PROFILE_URL = GET_PROFILE_URL;
 //order
 final CART_UPDATE = "$SECURED_API_URL/orders/customer/cart/update";
 final PLACE_ORDER = "$SECURED_API_URL/orders/customer/create";
+final GET_ALL_ORDER = "$SECURED_API_URL/orders";
+final GET_ORDER_BY_ID = "$SECURED_API_URL/orders/";
 
 
 //address

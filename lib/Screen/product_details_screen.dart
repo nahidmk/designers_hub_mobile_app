@@ -1,7 +1,7 @@
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Model/fabric.dart';
-import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/cart_screen.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
@@ -45,7 +45,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     DesignProvider designProvider = Provider.of<DesignProvider>(context);
-    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
+    OrderProvider cartDesignProvider = Provider.of<OrderProvider>(context);
 
     List<String> imageList = [
       designProvider.design.thumbnail,

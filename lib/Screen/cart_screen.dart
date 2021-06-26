@@ -1,7 +1,7 @@
 
 
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
-import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/home_screen.dart';
 import 'package:designers_hub_modile_app/widget/cart_details/cart_view.dart';
@@ -30,7 +30,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
+    OrderProvider cartDesignProvider = Provider.of<OrderProvider>(context);
 
 
     return widget.fromProductDetails?Scaffold(

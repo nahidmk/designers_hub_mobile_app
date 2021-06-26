@@ -1,16 +1,22 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
+import 'package:designers_hub_modile_app/Model/order.dart';
+import 'package:designers_hub_modile_app/Model/order_status.dart';
+import 'package:designers_hub_modile_app/Model/payment_type.dart';
 import 'package:designers_hub_modile_app/Model/promo.dart';
+import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Service/oder_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CartDesignProvider extends ChangeNotifier {
+class OrderProvider extends ChangeNotifier {
 
   OrderService get orderService => GetIt.I<OrderService>();
 
@@ -26,8 +32,56 @@ class CartDesignProvider extends ChangeNotifier {
     promo: Promo(code: ""),
   );
 
-  CartDesignProvider(){
+  Order _order = Order(id: 0,
+      invoiceNumber: '',
+      canceledAt: '',
+      deliveredAt: '',
+      createdAt: '',
+      cart: Cart(finalPrice: 0, grandTotal: 0, discount: 0, id: 0, totalPrice: 0, totalProducts: 0, printingCost: 0, cartDetailsList: [], promo: Promo(code: '')),
+      paymentType: PaymentType(name: '', value: ''),
+      orderStatus: OrderStatus(name: '', value: ''),
+      deliveryAddress: DeliveryAddress(id: 0, address: '', title: '', phoneNumber: ''),
+      user: User(active: false, address: "", banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
+  );
+
+
+  Order get order => _order;
+
+  set order(Order value) {
+    _order = value;
+    notifyListeners();
+  }
+
+  OrderProvider(){
     _loadCart();
+  }
+
+  bool _loadingOrders = true;
+  String _orderErrorMsg = '';
+  int _totalElements = 0;
+  List<Order> _orderList = [];
+  String _ordersErrorMsg = '';
+
+
+  String get ordersErrorMsg => _ordersErrorMsg;
+
+  set ordersErrorMsg(String value) {
+    _ordersErrorMsg = value;
+    notifyListeners();
+  }
+
+  List<Order> get orderList => _orderList;
+
+  set orderList(List<Order> value) {
+    _orderList = value;
+    notifyListeners();
+  }
+
+  bool get loadingOrders => _loadingOrders;
+
+  set loadingOrders(bool value) {
+    _loadingOrders = value;
+    notifyListeners();
   }
 
   void _loadCart() async {
@@ -45,6 +99,20 @@ class CartDesignProvider extends ChangeNotifier {
 
   set loadingUpdateCart(bool value) {
     _loadingUpdateCart = value;
+    notifyListeners();
+  }
+
+  String get orderErrorMsg => _orderErrorMsg;
+
+  set orderErrorMsg(String value) {
+    _orderErrorMsg = value;
+    notifyListeners();
+  }
+
+  int get totalElements => _totalElements;
+
+  set totalElements(int value) {
+    _totalElements = value;
     notifyListeners();
   }
 
@@ -145,7 +213,8 @@ class CartDesignProvider extends ChangeNotifier {
       loadingOrder = true;
       final response = await orderService.placeOrder(selectedDeliveryAddress);
       if(response.statusCode == 201){
-        print('order placed successfully.');
+
+        print('successful order - >${response.body}');
       }else{
         loadingOrder = false;
         print('order place response error --> ${json.decode(response.body)}');
@@ -162,8 +231,58 @@ class CartDesignProvider extends ChangeNotifier {
   }
 
 
+  Future<List<Order>> getAllOrder(int page, int size) async {
+    try{
+      loadingOrders = true;
+      ordersErrorMsg = '';
+      Response response = await orderService.getAllOrder(page, size);
+
+      print(json.decode(response.body));
+
+      totalElements = json.decode(response.body)['totalElements'];
+
+      _orderList = (json.decode(response.body)['content'] as List)
+          .map((value) => Order.fromJson(value))
+          .toList();
+      loadingOrders = false;
+      return _orderList;
+    }catch(error){
+      loadingOrders = false;
+      ordersErrorMsg = getErrorMsg(error);
+    }
+    return [];
+
+  }
 
 
+  Future getOrderByOrderId(int orderId) async {
+    loadingOrder = true;
+    orderErrorMsg = '';
+    try {
+      Response response = await orderService.getOrderByOrderId(orderId);
+
+      if (response.statusCode == 200) {
+        order = Order.fromJson(json.decode(response.body));
+      } else {
+        orderErrorMsg = 'Can not load order. Try again later';
+        print(json.decode(response.body));
+      }
+      loadingOrder = false;
+    } catch (error) {
+      print(error.toString());
+      orderErrorMsg = getErrorMsg(error);
+      loadingOrder = false;
+    }
+  }
+
+  String getErrorMsg(error){
+    if (error is SocketException) {
+      return 'Please check your internet connection !';
+    }
+    else{
+      return 'Something went wrong. Please try again later !';
+    }
+  }
 
 
 }

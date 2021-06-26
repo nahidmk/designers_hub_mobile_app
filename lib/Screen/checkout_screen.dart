@@ -3,7 +3,7 @@ import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
 import 'package:designers_hub_modile_app/Model/promo.dart';
-import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
@@ -29,7 +29,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      Provider.of<CartDesignProvider>(context,listen: false).updateCart(widget.cartDetailsList);
+      Provider.of<OrderProvider>(context,listen: false).updateCart(widget.cartDetailsList);
     });
 
   }
@@ -64,9 +64,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
 
     DeliveryAddressProvider deliveryAddressProvider = Provider.of<DeliveryAddressProvider>(context);
-    cart = Provider.of<CartDesignProvider>(context).cart;
+    cart = Provider.of<OrderProvider>(context).cart;
     DeliveryAddress selectDeliveryAddress = deliveryAddressProvider.selectedDeliveryAddress;
-    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     return Scaffold(
       appBar: AppBar(title: Text("Check out"),),
@@ -176,12 +176,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             loadingPromo ? CupertinoActivityIndicator() :
                             cart.promo.code.isEmpty ? secondaryButton(() async {
                               loadingPromo = true;
-                              await cartDesignProvider.updateCart(cart.cartDetailsList, promoCode: promoCode);
+                              await orderProvider.updateCart(cart.cartDetailsList, promoCode: promoCode);
                               loadingPromo = false;
                             }, "Apply", context) :
                             dangerButton(() async {
                               loadingPromo = true;
-                              await cartDesignProvider.updateCart(cart.cartDetailsList, promoCode: '');
+                              await orderProvider.updateCart(cart.cartDetailsList, promoCode: '');
                               loadingPromo = false;
                             }, "Remove", context)
                           ],
@@ -218,14 +218,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(5),
-                child: cartDesignProvider.loadingOrder ?
+                child: orderProvider.loadingOrder ?
                 Center(child: CupertinoActivityIndicator(),) :
                 secondaryButton(() async {
                   if(deliveryAddressProvider.selectedDeliveryAddress.title.isEmpty){
                     //show error msg in toast;
                     return;
                   }
-                  cartDesignProvider.placeOrder(
+                  orderProvider.placeOrder(
                       deliveryAddressProvider.selectedDeliveryAddress);
                 }, "Place Order", context),
               )

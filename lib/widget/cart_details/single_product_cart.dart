@@ -1,7 +1,7 @@
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Model/fabric.dart';
-import 'package:designers_hub_modile_app/Provider/cart_design_provider.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/helper/constants.dart';
 import 'package:designers_hub_modile_app/helper/currency.dart';
@@ -59,7 +59,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
   @override
   Widget build(BuildContext context) {
 
-    CartDesignProvider cartDesignProvider = Provider.of<CartDesignProvider>(context);
+    OrderProvider cartDesignProvider = Provider.of<OrderProvider>(context);
     Design _design = widget.cartDetails.design;
     double _designPrice = widget.cartDetails.design.price;
 
