@@ -1,12 +1,16 @@
 
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
+import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
 import 'package:designers_hub_modile_app/helper/text.dart';
 import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 
 import 'helper_widgets.dart';
@@ -22,6 +26,8 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+
+
   // TextFieldProperties _firstNameProperties;
   // TextFieldProperties _phoneNumberProperties;
   // TextFieldProperties _passwordProperties;
@@ -108,7 +114,7 @@ class _SignUpFormState extends State<SignUpForm> {
             return _checkPassword(text);
           });
     });
-
+    Firebase.initializeApp();
   }
 
 
@@ -162,10 +168,10 @@ class _SignUpFormState extends State<SignUpForm> {
       _errorMessage = '';
     });
 
-    // if (_checkFormValidity()) {
-    //   await Provider.of<ProfileProvider>(context, listen: false).sendOTP(
-    //       primaryPhone: '+880${_phoneNumberProperties.controller.text}');
-    // }
+    if (_checkFormValidity()) {
+      await Provider.of<ProfileProvider>(context, listen: false).sendOTP(
+          primaryPhone: '+880${_phoneNumberProperties.controller.text}');
+    }
   }
 
   _dismissErrorMsg() {
@@ -173,9 +179,9 @@ class _SignUpFormState extends State<SignUpForm> {
       _errorMessage = '';
     });
 
-    // Provider.of<ProfileProvider>(context, listen: false)
-    //     .phoneVerificationErrorMsg = '';
-    // Provider.of<ProfileProvider>(context, listen: false).signUpErrorMsg = '';
+    Provider.of<ProfileProvider>(context, listen: false)
+        .phoneVerificationErrorMsg = '';
+    Provider.of<ProfileProvider>(context, listen: false).signUpErrorMsg = '';
   }
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
@@ -183,21 +189,21 @@ class _SignUpFormState extends State<SignUpForm> {
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
 
-  // TextEditingController _otpController = new TextEditingController();
+  TextEditingController _otpController = new TextEditingController();
 
-//  @override
-//  void didChangeDependencies() {
-//    // TODO: implement didChangeDependencies
-//    super.didChangeDependencies();
-//
-////    if(Provider.of<ProfileProvider>(context, listen: false).isAuthenticated && Navigator.canPop(context)){
-////      Navigator.pop(context);
-////    }
-//  }
+ @override
+ void didChangeDependencies() {
+   // TODO: implement didChangeDependencies
+   super.didChangeDependencies();
+
+   if(Provider.of<ProfileProvider>(context, listen: false).isAuthenticated && Navigator.canPop(context)){
+     Navigator.pop(context);
+   }
+ }
 
   @override
   Widget build(BuildContext context) {
-    // ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
+    ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
 
     return GestureDetector(
       onTap: () {
@@ -205,23 +211,36 @@ class _SignUpFormState extends State<SignUpForm> {
       },
       child: SingleChildScrollView(
         child:
-        // profileProvider.phoneCodeSent
-        //     ? OTPForm(
-        //         controller: _otpController,
-        //         user: new User(
-        //             primaryPhone:
-        //                 '+880${_phoneNumberProperties.controller.text}',
-        //             name: new Name(
-        //                 firstName: _firstNameProperties.controller.text,
-        //                 lastName: _lastNameProperties.controller.text),
-        //             password: _passwordProperties.controller.text,
-        //             referralBy: _refCodeProperties.controller.text
-        //         ),
-        //         dismissErrorMsg: _dismissErrorMsg,
-        //         popAble: widget.popAble,
-        //         resend: _signUp
-        // )
-            Container(
+        profileProvider.phoneCodeSent
+            ? OTPForm(
+                controller: _otpController,
+                user: new User(
+                  id: 0,
+                    active: false,
+
+                    primaryNumber:
+                        '+880${_phoneNumberProperties.controller.text}',
+                    fullName: _firstNameProperties.controller.text,
+                    password: _passwordProperties.controller.text,
+                  address: '',
+                  banned: false,
+                  dateOfBirth: '',
+                  disabled: false,
+                  email: '',
+                  gender: '',
+                  nid: '',
+                  nidPictureBack: '',
+                  nidPictureFront:'' ,
+                  profilePicture:'' ,
+                  provider:'' ,
+                  providerId: '',
+                  secondaryNumber:'' ,
+
+                ),
+                dismissErrorMsg: _dismissErrorMsg,
+                resend: _signUp
+        )
+           : Container(
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
@@ -289,16 +308,16 @@ class _SignUpFormState extends State<SignUpForm> {
                     SizedBox(
                       height: 10,
                     ),
-                    // ShowErrorMsgIfNeeded(
-                    //     _errorMessage.length > 0
-                    //         ? _errorMessage
-                    //         : profileProvider.signUpErrorMsg,
-                    //     _dismissErrorMsg),
-                    // profileProvider.signUpLoading
-                    //     ? CupertinoActivityIndicator(
-                    //         radius: 15,
-                    //       )
-                    //     :
+                    ShowErrorMsgIfNeeded(
+                        _errorMessage.length > 0
+                            ? _errorMessage
+                            : profileProvider.signUpErrorMsg,
+                        _dismissErrorMsg),
+                    profileProvider.signUpLoading
+                        ? CupertinoActivityIndicator(
+                            radius: 15,
+                          )
+                        :
                     SizedBox(
                             width: double.infinity,
                             child: CupertinoButton(
@@ -309,7 +328,9 @@ class _SignUpFormState extends State<SignUpForm> {
                                     fontWeight: FontWeight.w300),
                               ),
                               color: CUSTOMER,
-                              onPressed: _signUp,
+                              onPressed:(){
+                                _signUp();
+                              },
                             ),
                           ),
                     _buildAlreadyHaveAccountMsg(
@@ -345,112 +366,105 @@ Widget _buildAlreadyHaveAccountMsg(
   ));
 }
 
-// class OTPForm extends StatelessWidget {
-//   final TextEditingController controller;
-//   final User user;
-//   final Function dismissErrorMsg;
-//   final String popAble;
-//   final Function resend;
-//
-//   OTPForm(
-//       {this.controller,
-//       this.user,
-//       this.dismissErrorMsg,
-//       this.popAble,
-//       this.resend});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     ProfileProvider profileProvider =
-//         Provider.of<ProfileProvider>(context, listen: false);
-//
-//     return Container(
-//       width: double.infinity,
-//       padding: EdgeInsets.all(20),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: <Widget>[
-//           Text(
-//             'We sent a verification code to your phone.',
-//             style: TextStyle(fontWeight: FontWeight.w500),
-//           ),
-//           Text(
-//             'Please Enter your verification code here.',
-//             style: TextStyle(fontWeight: FontWeight.w500),
-//           ),
-//           SizedBox(
-//             height: 20,
-//           ),
-//           SizedBox(
-//             width: 100,
-//             child: CupertinoTextField(
-//               controller: controller,
-//               keyboardType: TextInputType.number,
-//               style: TextStyle(fontSize: 20),
-//               autofocus: true,
-//               textAlign: TextAlign.center,
-//             ),
-//           ),
-//           SizedBox(
-//             height: 10,
-//           ),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               profileProvider.signUpLoading
-//                   ? CupertinoActivityIndicator(
-//                       radius: 15,
-//                     )
-//                   : CupertinoButton(
-//                       onPressed: resend,
-//                       child: Text(
-//                         'Resend code',
-//                         style: TextStyle(
-//                             color: CupertinoColors.systemBlue,
-//                             fontWeight: FontWeight.w600),
-//                       ),
-//                     ),
-//               CupertinoButton(
-//                 onPressed: () {
-//                   profileProvider.phoneCodeSent = false;
-//                 },
-//                 child: Text(
-//                   'Cancel',
-//                   style: TextStyle(
-//                       color: CupertinoColors.activeOrange,
-//                       fontWeight: FontWeight.w600),
-//                 ),
-//               )
-//             ],
-//           ),
-//           SizedBox(
-//             height: 20,
-//           ),
-//           ShowErrorMsgIfNeeded(
-//               profileProvider.phoneVerificationErrorMsg, dismissErrorMsg),
-//           profileProvider.phoneVerificationLoading
-//               ? CupertinoActivityIndicator(
-//                   radius: 15,
-//                 )
-//               : CupertinoButton(
-//                   color: CUSTOMER,
-//                   child: Text(
-//                     'Submit code',
-//                     style: TextStyle(color: CupertinoColors.white),
-//                   ),
-//                   onPressed: () async {
-//                     bool status = await profileProvider.signUpWithOTP(
-//                         controller.text, user);
-//                     if (status)
-//                       Provider.of<OrderProvider>(context, listen: false)
-//                           .getOnGoingOrderCountWithTopics();
-//                     if (popAble != null) {
-//                       Navigator.pop(context);
-//                     }
-//                   },
-//                 )
-//         ],
-//       ),
-//     );
-//   }
-// }
+class OTPForm extends StatelessWidget {
+  final TextEditingController controller;
+  final User user;
+  final Function dismissErrorMsg;
+  final VoidCallback resend;
+
+  OTPForm(
+      {required this.controller,
+      required this.user,
+      required this.dismissErrorMsg,
+      required this.resend});
+
+  @override
+  Widget build(BuildContext context) {
+    ProfileProvider profileProvider =
+        Provider.of<ProfileProvider>(context, listen: false);
+
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'We sent a verification code to your phone.',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          Text(
+            'Please Enter your verification code here.',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          SizedBox(
+            width: 100,
+            child: CupertinoTextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              style: TextStyle(fontSize: 20),
+              autofocus: true,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              profileProvider.signUpLoading
+                  ? CupertinoActivityIndicator(
+                      radius: 15,
+                    )
+                  : CupertinoButton(
+                      onPressed: resend,
+                      child: Text(
+                        'Resend code',
+                        style: TextStyle(
+                            color: CupertinoColors.systemBlue,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+              CupertinoButton(
+                onPressed: () {
+                  profileProvider.phoneCodeSent = false;
+                },
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: CupertinoColors.activeOrange,
+                      fontWeight: FontWeight.w600),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          ShowErrorMsgIfNeeded(
+              profileProvider.phoneVerificationErrorMsg, dismissErrorMsg),
+          profileProvider.phoneVerificationLoading
+              ? CupertinoActivityIndicator(
+                  radius: 15,
+                )
+              : CupertinoButton(
+                  color: CUSTOMER,
+                  child: Text(
+                    'Submit code',
+                    style: TextStyle(color: CupertinoColors.white),
+                  ),
+                  onPressed: () async {
+                    bool status = await profileProvider.signUpWithOTP(
+                        controller.text, user);
+                      Navigator.pop(context);
+                  },
+                )
+        ],
+      ),
+    );
+  }
+}

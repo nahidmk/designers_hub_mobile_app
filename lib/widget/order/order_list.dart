@@ -35,7 +35,8 @@ class _OrderListState extends State<OrderList> {
     setState(() {
       loadingOrders = true;
     });
-      _orderList = await Provider.of<OrderProvider>(context, listen: false)
+    print('constractor is called.....');
+    _orderList = await Provider.of<OrderProvider>(context, listen: false)
           .getAllOrder(page, size);
 
     setState(() {

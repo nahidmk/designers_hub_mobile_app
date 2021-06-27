@@ -14,14 +14,12 @@ class OrderCard extends StatelessWidget {
   Order order = Order(
       id: 0,
       invoiceNumber: '',
-      deliveredAt: '',
       createdAt: '',
-      canceledAt: '',
       cart: Cart(finalPrice: 0, grandTotal: 0, discount: 0, id: 0, totalPrice: 0, totalProducts: 0, printingCost: 0, cartDetailsList: [], promo: Promo(code: '')),
       paymentType: PaymentType(name: '', value: ''),
       orderStatus: OrderStatus(name: '', value: ''),
       deliveryAddress: DeliveryAddress(id: 0, address: '', title: '', phoneNumber: ''),
-      user: User(active: false, address: "", banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
+      user: User(active: false, address: "", banned: false, password: '', dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
   );
 
   OrderCard({required this.order});
@@ -30,10 +28,12 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
+        print('order id --->${order.id}');
         Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderDetailsScreen(id: order.id,)));
       },
-      child: Container(
-        child: Card(
+      child: Card(
+        child:Container(
+          padding: EdgeInsets.all(10),
           child: Column(
             children: [
               CustomRow("ID: ${order.id}", "$CURRENCY${order.cart.grandTotal}"),

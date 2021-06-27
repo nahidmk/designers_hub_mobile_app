@@ -15,12 +15,17 @@ class ProfileService {
   }
 
 
-  Future<http.Response> signUp(User user, String token) async {
+  Future<http.Response> isExistAccount(String phoneNumber) {
+    return http.get(Uri.parse('$CHECK_PHONE_NUMBER?phoneNumber=$phoneNumber}'));
+  }
+
+
+  Future<http.Response> signUp(User user, String? token) async {
     return http.post(
         Uri.parse(SIGN_UP_URL),
         headers: {
           'Content-Type': 'application/json',
-          'FIREBASE-TOKEN': token,
+          'FIREBASE-TOKEN': token == null ? '' : token,
         },
         body:json.encode(user.toJson()));
   }

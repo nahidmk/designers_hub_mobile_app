@@ -275,6 +275,7 @@ class _SignInFromState extends State<SignInFrom> {
                       widget.toggleForm(true);
                     },
                   ),
+                  SizedBox(height: 20,)
                 ],
               ),
             ),

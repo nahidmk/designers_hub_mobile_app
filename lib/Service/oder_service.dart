@@ -52,7 +52,7 @@ class OrderService {
     return Http.get(
       Uri.parse("$GET_ORDER_BY_ID/$orderId"),
       headers: getAuthHeader(
-        sharedPreferences.get("os_auth_token").toString(),
+        sharedPreferences.get("aw_auth_token").toString(),
       ),
     );
   }

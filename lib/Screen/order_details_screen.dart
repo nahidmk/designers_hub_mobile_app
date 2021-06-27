@@ -31,7 +31,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
-      Provider.of<OrderProvider>(context).getOrderByOrderId(widget.id);
+      Provider.of<OrderProvider>(context,listen: false).getOrderByOrderId(widget.id);
     });
 
   }
@@ -50,6 +50,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           elevation: 10.0,
           builder: (BuildContext context) {
             return Container(
+              padding: EdgeInsets.all(10),
               height: (MediaQuery.of(context)
                   .size
                   .height),
@@ -105,19 +106,20 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             child: Column(
               children: [
                 Container(
-                  height:100,
+                  height:50,
+                  padding: EdgeInsets.all(5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("Items(${order.cart.cartDetailsList.length})"),
-                      primaryButton((){}, "Reorder", context)
+                      Text("Items(${order.cart.cartDetailsList.length})",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
+                      // primaryButton((){}, "Reorder", context)
                     ],
                   ),
                 ),
                 Divider(),
 
                 Container(
-                  height: MediaQuery.of(context).size.height,
+                  height:300,
                   child: ListView(
                     children: [
                       ...order.cart.cartDetailsList.map((e) => ItemCard(e))

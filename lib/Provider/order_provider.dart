@@ -34,14 +34,12 @@ class OrderProvider extends ChangeNotifier {
 
   Order _order = Order(id: 0,
       invoiceNumber: '',
-      canceledAt: '',
-      deliveredAt: '',
       createdAt: '',
       cart: Cart(finalPrice: 0, grandTotal: 0, discount: 0, id: 0, totalPrice: 0, totalProducts: 0, printingCost: 0, cartDetailsList: [], promo: Promo(code: '')),
       paymentType: PaymentType(name: '', value: ''),
       orderStatus: OrderStatus(name: '', value: ''),
       deliveryAddress: DeliveryAddress(id: 0, address: '', title: '', phoneNumber: ''),
-      user: User(active: false, address: "", banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
+      user: User(active: false, address: "", password: '', banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
   );
 
 
@@ -208,25 +206,25 @@ class OrderProvider extends ChangeNotifier {
 
   }
 
-  Future placeOrder(DeliveryAddress selectedDeliveryAddress) async {
+  Future<Order> placeOrder(DeliveryAddress selectedDeliveryAddress) async {
     try{
       loadingOrder = true;
       final response = await orderService.placeOrder(selectedDeliveryAddress);
       if(response.statusCode == 201){
         print('successful order - >${response.body}');
-        order = Order.fromJson(json.decode(response.body));
+        _order = Order.fromJson(json.decode(response.body));
       }else{
         loadingOrder = false;
         print('order place response error --> ${json.decode(response.body)}');
-        return;
+        return _order;
       }
       loadingOrder = false;
-      return;
+      return _order;
 
     }catch(error){
       loadingOrder = false;
       print('place order error ---> $error');
-      return;
+      return _order;
     }
   }
 
@@ -237,7 +235,7 @@ class OrderProvider extends ChangeNotifier {
       ordersErrorMsg = '';
       Response response = await orderService.getAllOrder(page, size);
 
-      print(json.decode(response.body));
+      print("response --->${json.decode(response.body)}");
 
       totalElements = json.decode(response.body)['totalElements'];
 

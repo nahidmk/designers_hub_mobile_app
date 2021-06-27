@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:designers_hub_modile_app/Model/fcm_device_reg_token.dart';
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Service/profile_service.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as Firebse;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +27,16 @@ class ProfileProvider extends ChangeNotifier{
   bool _profileLoading = true;
   String _profileErrorMsg = '';
 
+  String _forgotPasswordErrorMsg = '';
+  bool _loadingForgotPassword = false;
+
+  String get forgotPasswordErrorMsg => _forgotPasswordErrorMsg;
+
+  set forgotPasswordErrorMsg(String value) {
+    _forgotPasswordErrorMsg = value;
+    notifyListeners();
+  }
+
   bool _isAuthenticated = false;
 
   String _verificationId="";
@@ -35,6 +45,17 @@ class ProfileProvider extends ChangeNotifier{
 
   String _updateProfileErrorMsg = '';
 
+  bool phoneVerificationLoading = false;
+
+  String? _idToken = '';
+
+
+  FirebaseMessaging get firebaseMessaging => _firebaseMessaging;
+
+  set firebaseMessaging(FirebaseMessaging value) {
+    _firebaseMessaging = value;
+    notifyListeners();
+  }
 
   String get updateProfileErrorMsg => _updateProfileErrorMsg;
 
@@ -57,7 +78,7 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  User _profile = User(active: false, address: "", banned: false, dateOfBirth: "", disabled: false, email: "", fullName: "", gender: "", id: 0, nid: "", nidPictureBack: "", nidPictureFront: "", primaryNumber: '', profilePicture: "", provider: "", providerId: "", secondaryNumber: "");
+  User _profile = User(active: false, address: "", password: '', banned: false, dateOfBirth: "", disabled: false, email: "", fullName: "", gender: "", id: 0, nid: "", nidPictureBack: "", nidPictureFront: "", primaryNumber: '', profilePicture: "", provider: "", providerId: "", secondaryNumber: "");
 
 
   User get profile => _profile;
@@ -71,6 +92,13 @@ class ProfileProvider extends ChangeNotifier{
 
   set signInLoading(bool value) {
     _signInLoading = value;
+    notifyListeners();
+  }
+
+  bool get loadingForgotPassword => _loadingForgotPassword;
+
+  set loadingForgotPassword(bool value) {
+    _loadingForgotPassword = value;
     notifyListeners();
   }
 
@@ -225,6 +253,38 @@ class ProfileProvider extends ChangeNotifier{
     }
   }
 
+
+  Future<bool> isExistAccount(String phoneNumber) async{
+
+    try{
+      loadingForgotPassword = true;
+      forgotPasswordErrorMsg = '';
+
+      final response = await profileService.isExistAccount(phoneNumber);
+      if(response.statusCode == 200){
+        loadingForgotPassword = false;
+        if(json.decode(response.body)['exist'] == true){
+          await sendOTP(primaryPhone: '+880$phoneNumber');
+          return true;
+        }else{
+          forgotPasswordErrorMsg = 'There is no account with this phone number.';
+          return false;
+        }
+      }else{
+        print("forgot password response error ---->${response.body}");
+        loadingForgotPassword = false;
+        forgotPasswordErrorMsg = json.decode(response.body)['errors'][0];
+        return false;
+      }
+
+    }catch(error){
+      print("forgot password error ---->${error}");
+      forgotPasswordErrorMsg = getErrorMsg(error);
+      return false;
+    }
+  }
+
+
   Future<bool> recoverProfile() async {
     try{
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -261,54 +321,114 @@ class ProfileProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  // Future<bool> sendOTP({primaryPhone}) async {
-  //   print('sent otp called------<><><><><>');
-  //   signUpLoading = true;
-  //
-  //   signUpErrorMsg = '';
-  //
-  //   final PhoneVerificationCompleted verified = (AuthCredential authResult) {
-  //     print('completed---> ${json.decode(authResult.toString())}');
-  //     signUpLoading = false;
-  //   };
-  //
-  //   final PhoneVerificationFailed verificationFailed =
-  //       (AuthException authException) {
-  //     print('${authException.message}');
-  //     signUpErrorMsg = 'Phone verification failed.';
-  //     signUpLoading = false;
-  //   };
-  //
-  //   final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
-  //     print('phone code sent --->$verId');
-  //     verificationId = verId;
-  //
-  //     phoneCodeSent = true;
-  //     signUpLoading = false;
-  //   };
-  //
-  //   final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
-  //     phoneVerificationErrorMsg = 'Time out !';
-  //     verificationId = verId;
-  //   };
-  //
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   try {
-  //     _auth.verifyPhoneNumber(
-  //       phoneNumber: primaryPhone,
-  //       timeout: Duration(seconds: 120),
-  //       verificationCompleted: verified,
-  //       verificationFailed: verificationFailed,
-  //       codeSent: smsSent,
-  //       codeAutoRetrievalTimeout: autoTimeout,
-  //     );
-  //   } catch (error) {
-  //     print('google error---> ${error}');
-  //     signUpErrorMsg = 'Unexpected error !';
-  //     signUpLoading = false;
-  //   }
-  //   return false;
-  // }
+
+
+  Future<bool> sendOTP({primaryPhone}) async {
+
+    print('sent otp called------<><><><><>');
+    signUpLoading = true;
+
+    signUpErrorMsg = '';
+
+    final Firebse.PhoneVerificationCompleted verified = (Firebse.PhoneAuthCredential credential) {
+      print('completed---> ${json.decode(credential.toString())}');
+      signUpLoading = false;
+    };
+
+
+    final Firebse.PhoneVerificationFailed verificationFailed =
+        (Firebse.FirebaseAuthException authException) {
+      if(authException.code == 'invalid-phone-number'){
+        print('The provided phone number is not valid.');
+      }
+      signUpLoading = false;
+    };
+
+    final Firebse.PhoneCodeSent smsSent = (String verId, [int? forceResend]) {
+      print('phone code sent --->$verId');
+      verificationId = verId;
+
+      phoneCodeSent = true;
+      signUpLoading = false;
+    };
+
+
+    final Firebse.PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
+      phoneVerificationErrorMsg = 'Time out !';
+      verificationId = verId;
+
+    };
+
+    Firebse.FirebaseAuth _auth = Firebse.FirebaseAuth.instance;
+    try {
+      _auth.verifyPhoneNumber(
+        phoneNumber: primaryPhone,
+        timeout: Duration(seconds: 120),
+        verificationCompleted: verified,
+        verificationFailed: verificationFailed,
+        codeSent: smsSent,
+        codeAutoRetrievalTimeout: autoTimeout,
+
+      );
+      signUpLoading = false;
+    } catch (error) {
+      print('google error---> ${error}');
+      signUpErrorMsg = 'Unexpected error !';
+      signUpLoading = false;
+    }
+    return false;
+  }
+
+  Future<bool> verifyOTP(smsCode) async {
+    print('verification id ------->$verificationId');
+
+    Firebse.AuthCredential authCredential = Firebse.PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: smsCode);
+
+    print('auth credential ----> $authCredential');
+
+    try {
+      Firebse.UserCredential authResult = await Firebse.FirebaseAuth.instance.signInWithCredential(authCredential);
+      _idToken = await authResult.user?.getIdToken();
+      print('idToken -----> ${_idToken}');
+      return true;
+    } catch (error) {
+      print('error--->${error}');
+      return false;
+    }
+  }
+
+
+  Future<bool> signUpWithOTP(smsCode, User user) async {
+    phoneVerificationLoading = true;
+    phoneVerificationErrorMsg = '';
+
+    bool verified = await verifyOTP(smsCode);
+
+    if (!verified) {
+      phoneVerificationLoading = false;
+      phoneVerificationErrorMsg = "Invalid code !";
+      return false;
+    };
+
+
+    final response = await profileService.signUp(user, _idToken);
+    if (response.statusCode == 201) {
+      print('success---->${json.decode(response.body)}');
+      signIn(user.primaryNumber, user.password);
+      return true;
+    } else {
+      print('failed---->${json.decode(response.body)}');
+      signUpErrorMsg = 'Unexpected error !';
+      phoneCodeSent = false;
+      phoneVerificationLoading = false;
+      phoneCodeSent = false;
+      return false;
+    }
+
+  }
+
+
 
 // void fcmDeviceRegToken(FCMDeviceRegToken fcmDeviceRegToken) async {
   //   try {

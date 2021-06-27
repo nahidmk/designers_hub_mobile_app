@@ -93,7 +93,7 @@ class _TextFieldWithValidationState extends State<TextFieldWithValidation> {
           onChanged: (text) {
             widget.onChange();
             setState(() {
-              _errorMsg = widget.properties.validate(text);
+              _errorMsg = widget.properties.validate(text)==null?'':widget.properties.validate(text);
             });
           },
         );

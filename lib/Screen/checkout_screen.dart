@@ -2,11 +2,16 @@
 import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
+import 'package:designers_hub_modile_app/Model/order.dart';
+import 'package:designers_hub_modile_app/Model/order_status.dart';
+import 'package:designers_hub_modile_app/Model/payment_type.dart';
 import 'package:designers_hub_modile_app/Model/promo.dart';
+import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
+import 'package:designers_hub_modile_app/Screen/order_details_screen.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +50,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       discount: 0,
       cartDetailsList: [],
       promo: Promo(code: "")
+  );
+
+  Order order = Order(id: 0,
+      invoiceNumber: '',
+      createdAt: '',
+      cart: Cart(finalPrice: 0, grandTotal: 0, discount: 0, id: 0, totalPrice: 0, totalProducts: 0, printingCost: 0, cartDetailsList: [], promo: Promo(code: '')),
+      paymentType: PaymentType(name: '', value: ''),
+      orderStatus: OrderStatus(name: '', value: ''),
+      deliveryAddress: DeliveryAddress(id: 0, address: '', title: '', phoneNumber: ''),
+      user: User(active: false, address: "", password: '', banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
   );
   bool _hasPromo = false;
 
@@ -225,9 +240,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     //show error msg in toast;
                     return;
                   }
-                  orderProvider.placeOrder(
+                  order = await orderProvider.placeOrder(
                       deliveryAddressProvider.selectedDeliveryAddress);
-                  print('Order id -------> ${orderProvider.order.id}');
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderDetailsScreen(id: orderProvider.order.id)));
+                  print('Order id -------> ${order.id}');
                       }, "Place Order", context),
               )
 

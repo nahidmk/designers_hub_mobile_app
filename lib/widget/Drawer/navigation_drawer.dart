@@ -1,4 +1,5 @@
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
+import 'package:designers_hub_modile_app/Screen/order_history_screen.dart';
 import 'package:designers_hub_modile_app/widget/Drawer/drawer_header.dart';
 import 'package:designers_hub_modile_app/widget/Drawer/join_header.dart';
 import 'package:flutter/cupertino.dart';
@@ -81,7 +82,7 @@ class OrderHistory extends StatelessWidget {
 Widget build(BuildContext context) {
   return CupertinoButton(
     onPressed: () {
-      Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderHistory()));
+      Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderHistoryScreen()));
     },
     child: Row(
       children: <Widget>[

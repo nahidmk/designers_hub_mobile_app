@@ -10,8 +10,6 @@ class Order{
   int id;
   String invoiceNumber;
   String createdAt;
-  String deliveredAt;
-  String canceledAt;
   Cart cart;
   PaymentType paymentType;
   DeliveryAddress deliveryAddress;
@@ -21,8 +19,6 @@ class Order{
   Order({
     required this.id,
     required this.createdAt,
-    required this. deliveredAt,
-    required this. canceledAt,
     required this.invoiceNumber,
     required this.cart,
     required this.paymentType,
@@ -34,22 +30,18 @@ class Order{
   factory Order.fromJson(Map<String, dynamic> json) => Order(
       id: json["id"] as int,
       invoiceNumber: json["invoiceNumber"]==null?" ":json["invoiceNumber"] as String,
-      canceledAt: json["canceledAt"]==null?" ":json["canceledAt"] as String,
       createdAt: json["createdAt"]==null?" ":json["createdAt"] as String,
-      deliveredAt: json["deliveredAt"]==null?" ":json["deliveredAt"] as String,
       cart: json["cart"]==null? Cart(finalPrice: 0, grandTotal: 0, discount: 0, id: 0, totalPrice: 0, totalProducts: 0, printingCost: 0, cartDetailsList: [], promo: Promo(code: ""),):Cart.fromJson(json["cart"]),
       paymentType: json["paymentType"]==null?PaymentType(name: "", value: ""):PaymentType.fromJson(json["paymentType"]),
       orderStatus: json["orderStatus"]==null?OrderStatus(name: "", value: ""):OrderStatus.fromJson(json["orderStatus"]),
       deliveryAddress: json["deliveryAddress"]==null?DeliveryAddress(id: 0, address: "", title: "", phoneNumber: ""):DeliveryAddress.fromJson(json["deliveryAddress"]),
-      user: json["user"]==null?User(active: false, address: "", banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: ''):User.fromJson(json['user']),
+      user: json["user"]==null?User(active: false, address: "", password: '', banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: ''):User.fromJson(json['user']),
   );
 
   Map<String, dynamic> toJson()=>{
     "id":id,
     "invoiceNumber":invoiceNumber,
-    "canceledAt":canceledAt,
     "createdAt":createdAt,
-    "deliveredAt":deliveredAt,
     "cart":cart.cartDetailsList.isEmpty?null:cart.toJson(),
     "paymentTypes":paymentType.name.isEmpty?null:paymentType.toJson(),
     "orderStatus":orderStatus.name.isEmpty?null:orderStatus.toJson(),

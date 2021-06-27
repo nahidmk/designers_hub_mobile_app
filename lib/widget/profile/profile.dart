@@ -26,7 +26,11 @@ class _ProfileState extends State<Profile> {
       profileProvider.profileErrorMsg != '' ?
       Center(child: Text(profileProvider.profileErrorMsg),) :
       // Center(child: Text('hello world')),
-      Container(height: MediaQuery.of(context).size.height, width:MediaQuery.of(context).size.width,child: ProfileView(user: profileProvider.profile,)),
+      Container(
+          height: MediaQuery.of(context).size.height,
+          width:MediaQuery.of(context).size.width,
+          child: ProfileView(user: profileProvider.profile,)
+      ),
     );
   }
 }
@@ -51,7 +55,9 @@ class ProfileView extends StatelessWidget {
         child: Column(children: <Widget>[
           ProfileHeader(user: user),
           // Expanded(child: Text('hello'))
-          Expanded(child: ProfileInformation(user: user))
+          Expanded(
+              child: ProfileInformation(user: user)
+          )
         ]),
       ),
     );

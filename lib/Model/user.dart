@@ -10,6 +10,7 @@ class User{
    String gender;
    int id;
    String nid;
+   String password;
    String nidPictureBack;
    String nidPictureFront;
    String primaryNumber;
@@ -28,6 +29,7 @@ class User{
        required this.email,
        required this.fullName,
        required this.gender,
+    required this.password,
        required this.id,
        required this.nid,
        required this.nidPictureBack,
@@ -47,10 +49,11 @@ class User{
     primaryNumber: json["primaryNumber"] == null ? '':json["primaryNumber"]as String,
     secondaryNumber: json["secondaryNumber"] == null? '':json["secondaryNumber"]as String,
     address: json["address"]==null?'':json["address"]as String,
-    gender: json["gender"] == null? "": json["gender"] as String,
+    gender: json["gender"] == null? '': json["gender"] as String,
     dateOfBirth: json["dateOfBirth"]==null ? "":json["dateOfBirth"],
     provider: json["provider"]==null? "":json["provider"]as String,
     providerId: json["providerId"] == null ? '':json["providerId"] as String,
+    password: json["password"] == null ? '':json["password"] as String,
     active: json["active"] as bool,
     disabled: json["disabled"] as bool,
     banned: json["banned"]as bool,
@@ -62,21 +65,22 @@ class User{
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "email": email,
-    "fullName": fullName,
-    "profilePicture": profilePicture,
-    "primaryNumber": primaryNumber,
-    "secondaryNumber": secondaryNumber,
-    "address": address,
-    "gender": gender,
-    "dateOfBirth": dateOfBirth,
-    "provider": provider,
-    "providerId": providerId,
+    "email": email.isEmpty?null:email,
+    "fullName": fullName.isEmpty?null:fullName,
+    "profilePicture": profilePicture.isEmpty?null:profilePicture,
+    "primaryNumber": primaryNumber.isEmpty?null:primaryNumber,
+    "secondaryNumber": secondaryNumber.isEmpty?null:secondaryNumber,
+    "address": address.isEmpty?null:address,
+    "gender": gender.isEmpty?null:gender,
+    "dateOfBirth": dateOfBirth.isEmpty?null:dateOfBirth,
+    "provider": provider.isEmpty?null:provider,
+    "providerId": providerId.isEmpty?null:providerId,
     "active": active,
     "disabled": disabled,
+    "password":password,
     "banned": banned,
-    "nid": nid,
-    "nidPictureFront": nidPictureFront,
-    "nidPictureBack": nidPictureBack,
+    "nid": nid.isEmpty?null:nid,
+    "nidPictureFront": nidPictureFront.isEmpty?null:nidPictureFront,
+    "nidPictureBack": nidPictureBack.isEmpty?null:nidPictureBack,
   };
 }
