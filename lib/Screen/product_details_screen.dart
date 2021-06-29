@@ -23,6 +23,7 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   String _imageUrl = '';
+  TextEditingController _quantityEditingController = new TextEditingController(text: '1');
 
 
   @override
@@ -30,7 +31,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Provider.of<DesignProvider>(context, listen: false).getDesign(widget.id);
-
     });
 
   }
@@ -38,7 +38,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   double _quantityPrice = 0;
   String _fabricsName = "Choose Fabrics";
   Fabric _fabric = Fabric(available: false, baseColor: "", descriptions: "", disabled: false, favCount: 0, id: 0, name:"", price: 0, slug: "", fabricMixings: [], thumbnail: "");
-  double quantity = 0;
+  int quantity = 1;
 
   // List<CartDetails> cartDetailList = [];
 
@@ -55,6 +55,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     double _designPrice = designProvider.design.price;
     Design _design = designProvider.design;
 
+
+    void calculateTotalPrice(int q){
+
+      if(designProvider.design.designType.requiredFabric){
+        setState(() {
+          _quantityPrice =  _designPrice + (q*_fabric.price);
+        });
+      }else {
+        setState(() {
+          _quantityPrice =
+              q * _designPrice;
+        });
+      }
+    }
 
     void showModal(){
       showModalBottomSheet<void>(
@@ -130,7 +144,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   setState(() {
                                     _fabricsName = e.name;
                                     _fabric = e;
+
                                 });
+                                  calculateTotalPrice(quantity);
                                   Navigator.pop(context);
                                   }, "Select", context
                                 ),
@@ -162,6 +178,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       );
     }
+
 
 
 
@@ -302,33 +319,77 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
+                                        // width: 130,
+                                          height: 30,
+                                          // margin: EdgeInsets.only(top: 5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              GestureDetector(
+                                                child: Container(
+                                                  color: Theme.of(context).primaryColor,
+                                                  child: Icon(
+                                                    Icons.remove,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                onTap: () {
+                                                  if(quantity>1)
+                                                    setState(() {
+                                                      quantity = quantity-1;
+                                                    });
+                                                  calculateTotalPrice(quantity);
+                                                  _quantityEditingController.text = quantity.toString();
 
-                                        width: 80,
+                                                },
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Container(
+                                                width: 50,
+                                                child: TextField(
+                                                  controller: _quantityEditingController,
+                                                  keyboardType: TextInputType.number,
+                                                  style:
+                                                  Theme.of(context).textTheme.headline4,
 
-                                        child: TextField(
+                                                  onChanged: (value) {
+                                                    if (value.isEmpty){
+                                                      setState(() {
+                                                        quantity=1;
+                                                      });
+                                                      return;
+                                                    }
 
-                                          // controller: TextEditingController()..text = quantity.toString(),
-                                          style: Theme.of(context).textTheme.headline4,
-                                          onChanged: (value){
-                                            quantity = value.isEmpty?0:double.parse(value);
-                                            if(designProvider.design.designType.requiredFabric){
-                                              setState(() {
-                                                _quantityPrice =  _designPrice + (quantity*_fabric.price);
-                                              });
-                                            }else{
-                                              setState(() {
-                                                _quantityPrice = quantity * _designPrice;
-                                              });
-                                            }
+                                                    quantity = double.parse(value).toInt();
+                                                    calculateTotalPrice(quantity);
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                child: Container(
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    color: Colors.white,
+                                                  ),
+                                                  color: Theme.of(context).primaryColor,
+                                                ),
+                                                onTap: () {
+                                                  setState(() {
+                                                    quantity = quantity+1;
+                                                  });
+                                                  _quantityEditingController.text = quantity.toString();
 
-                                          },
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                          textAlign: TextAlign.right,
+                                                  calculateTotalPrice(quantity);
+                                                },
+                                              ),
 
-                                        ),
+                                            ],
+                                          )
                                       ),
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.start,
@@ -371,13 +432,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               designPrice: _designPrice,
                               id: 1,
                               totalPrice: _quantityPrice+_fabric.price,
-                              quantity: quantity,
+                              quantity: quantity.toDouble(),
                               design: _design,
                               fabric: _fabric,
                               note: "note",
                               fabricPrice: _fabric.price
                           ),
-                        quantity
+                        quantity.toDouble()
                       );
                       print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
                     }
@@ -391,13 +452,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               designPrice: _designPrice,
                               id: 1,
                               totalPrice: _quantityPrice+_fabric.price,
-                              quantity: quantity,
+                              quantity: quantity.toDouble(),
                               design: _design,
                               fabric: _fabric,
                               note: "note",
                               fabricPrice: _fabric.price
                           ),
-                        quantity
+                        quantity.toDouble()
                       );
                       print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
                     }

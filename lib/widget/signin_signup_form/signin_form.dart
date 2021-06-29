@@ -1,19 +1,26 @@
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
+import 'package:designers_hub_modile_app/Screen/profile_screen.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
 import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
 import 'package:designers_hub_modile_app/widget/signin_signup_form/helper_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class SignInFrom extends StatefulWidget {
 
   final Function toggleForm;
   final  bool popAble;
+  bool fromSideBar;
 
 
-  SignInFrom({ required this.toggleForm, this.popAble = true});
+  SignInFrom({ required this.toggleForm, this.popAble = true, required this.fromSideBar});
 
   @override
   _SignInFromState createState() => _SignInFromState();
@@ -22,6 +29,17 @@ class SignInFrom extends StatefulWidget {
 class _SignInFromState extends State<SignInFrom> {
 
   String _errorMessage = '';
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  // final _facebookLogin = FacebookLogin();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Firebase.initializeApp();
+  }
+
+
+
   late OverlayEntry _overlayEntry;
 
   _showErrorOnUI(String data) {
@@ -60,6 +78,29 @@ class _SignInFromState extends State<SignInFrom> {
           )
       ),
     );
+  }
+
+  _signInWithGoogle() async{
+    try{
+      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+      if(googleSignInAccount != null){
+        GoogleSignInAuthentication googleSignInAuth = await googleSignInAccount.authentication;
+        AuthCredential credential = GoogleAuthProvider.credential(
+            idToken: googleSignInAuth.idToken,
+            accessToken: googleSignInAuth.accessToken);
+        try{
+
+          final FirebaseAuth auth = FirebaseAuth.instance;
+          final userCredential = await auth.signInWithCredential(credential);
+          print('user ${userCredential.user}');
+
+        }catch(error){
+          print('user credential error ---> $error');
+        }
+      }
+    }catch(error){
+      print('google sign in error -> $error');
+    }
   }
 
   void _showLoadingOverlay({
@@ -171,7 +212,12 @@ class _SignInFromState extends State<SignInFrom> {
       if (signedIn && widget.popAble != null) {
         // Provider.of<OrderProvider>(context, listen: false).getOnGoingOrderCountWithTopics();
         print('hello i am sigin---->');
-        Navigator.pop(context);
+        if(widget.fromSideBar){
+          Navigator.pop(context);
+        }else {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+          Navigator.pop(context);
+        }
       }
     }
   }
@@ -188,6 +234,7 @@ class _SignInFromState extends State<SignInFrom> {
     color: LIGHT_GRAY,
     borderRadius: BorderRadius.all(Radius.circular(10)),
   );
+
 
   @override
   Widget build(BuildContext context) {
@@ -275,7 +322,31 @@ class _SignInFromState extends State<SignInFrom> {
                       widget.toggleForm(true);
                     },
                   ),
-                  SizedBox(height: 20,)
+                  MaterialButton(
+                    color: LIGHT_GRAY,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/google.svg', height: 25,),
+                        SizedBox(width: 20,),
+                        Text('Sign in with google'),
+                      ],
+                    ),
+                    onPressed: _signInWithGoogle,
+                  ),
+                  MaterialButton(
+                    color: LIGHT_GRAY,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/facebook.svg',height: 25,),
+                        SizedBox(width: 20,),
+                        Text('Sign in with facebook'),
+                      ],
+                    ),
+                    onPressed: (){},
+                  ),
+                  SizedBox(height: 30,)
                 ],
               ),
             ),

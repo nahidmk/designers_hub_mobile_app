@@ -21,7 +21,7 @@ class SingleProductCart extends StatefulWidget {
 
 class _SingleProductCartState extends State<SingleProductCart> {
   String _fabricsName = "";
-  double quantity = 0;
+  int quantity = 0;
   double totalPrice = 0;
   bool buttonPress = true;
 
@@ -33,7 +33,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
     });
     setState(() {
       _fabricsName = widget.cartDetails.fabric.name;
-      quantity = widget.cartDetails.quantity;
+      quantity = widget.cartDetails.quantity.toInt();
     });
 
 
@@ -129,7 +129,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                         _fabric = e;
                                       });
                                       widget.cartDetails.fabric=_fabric;
-                                      cartDesignProvider.addToCart(widget.cartDetails,quantity);
+                                      cartDesignProvider.addToCart(widget.cartDetails,quantity.toDouble());
 
                                       Navigator.pop(context);
                                     }, "Select", context),
@@ -236,7 +236,8 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                     ),
                                   ),
                                   onTap: () {
-                                    cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity - 1);
+                                    if(widget.cartDetails.quantity>1)
+                                      cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity - 1);
                                   },
                                 ),
                                 SizedBox(
@@ -246,7 +247,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                   width: 50,
                                   child: TextField(
                                     controller: TextEditingController()
-                                      ..text = widget.cartDetails.quantity.toString(),
+                                      ..text = widget.cartDetails.quantity.toInt().toString(),
                                     keyboardType: TextInputType.number,
                                     style:
                                         Theme.of(context).textTheme.headline4,

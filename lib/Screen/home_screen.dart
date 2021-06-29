@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }else if(value==2){
       return CartScreen(fromProductDetails: false,);
     }else{
-      return ProfileScreen(backToHome: backToHome,);
+      return ProfileScreen();
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
 import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
+import 'package:designers_hub_modile_app/Screen/profile_screen.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
 import 'package:designers_hub_modile_app/helper/text.dart';
 import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
@@ -460,6 +461,9 @@ class OTPForm extends StatelessWidget {
                   onPressed: () async {
                     bool status = await profileProvider.signUpWithOTP(
                         controller.text, user);
+                      if(status){
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                      }
                       Navigator.pop(context);
                   },
                 )

@@ -10,9 +10,9 @@ import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
 
-  Function backToHome;
-
-  ProfileScreen({required this.backToHome});
+  // Function backToHome;
+  //
+  // ProfileScreen({required this.backToHome});
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
@@ -25,19 +25,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
     print('Profile init state called.');
-    BackButtonInterceptor.add(myInterceptor);
+    // BackButtonInterceptor.add(myInterceptor);
   }
 
-  bool myInterceptor(bool stopDefaultButtonEvent,RouteInfo routeInfo) {
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    } else {
-      if (widget.backToHome != null) {
-        widget.backToHome();
-      }
-    }
-    return true;
-  }
+  // bool myInterceptor(bool stopDefaultButtonEvent,RouteInfo routeInfo) {
+  //   if (Navigator.of(context).canPop()) {
+  //     Navigator.of(context).pop();
+  //   } else {
+  //     if (widget.backToHome != null) {
+  //       widget.backToHome();
+  //     }
+  //   }
+  //   return true;
+  // }
 
 
   @override

@@ -1,5 +1,6 @@
 import 'package:designers_hub_modile_app/widget/signin_signup_form/signin_form.dart';
 import 'package:designers_hub_modile_app/widget/signin_signup_form/signup_form.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -27,13 +28,13 @@ class _SignInScreenState extends State<SignInScreen> {
     return widget.fromAccount?Scaffold(
       body: _signUpForm ?
       SignUpForm(toggleForm: swapSignupForm) :
-      SignInFrom(toggleForm: swapSignupForm,),
+      SignInFrom(toggleForm: swapSignupForm,fromSideBar: false,),
     ):
     Scaffold(
       appBar: AppBar(),
       body: _signUpForm ?
       SignUpForm(toggleForm: swapSignupForm) :
-      SignInFrom(toggleForm: swapSignupForm,),
+      SignInFrom(toggleForm: swapSignupForm,fromSideBar: true,),
     );
 
   }

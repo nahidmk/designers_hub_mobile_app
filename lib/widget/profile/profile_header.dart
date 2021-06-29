@@ -78,7 +78,7 @@ class ProfileHeader extends StatelessWidget {
 
         Positioned(
           bottom: 20,
-          right: 50,
+          right: 100,
           child: Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -133,7 +133,7 @@ class MyClipper extends CustomClipper<Path> {
     path.lineTo(0,size.height);
 
     path.lineTo(size.width, 0);
-    path.lineTo(size.width, size.height/2);
+    path.lineTo(size.width, size.height);
     //
     //  path.quadraticBezierTo(32, size.height, 60, size.height - 8);
     //

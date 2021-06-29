@@ -100,6 +100,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               )
                   : Card(
                   child: Container(
+                      padding: EdgeInsets.all(10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

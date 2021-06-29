@@ -51,7 +51,7 @@ class ProfileView extends StatelessWidget {
     print("user email---->${user.email}");
     return SingleChildScrollView(
       child: Container(
-        height: MediaQuery.of(context).size.height - 50 - bottomPadding,
+        height: MediaQuery.of(context).size.height - bottomPadding,
         child: Column(children: <Widget>[
           ProfileHeader(user: user),
           // Expanded(child: Text('hello'))
