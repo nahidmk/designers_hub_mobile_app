@@ -1,7 +1,7 @@
 
 final VERSION = '1.0.0';
-final ROOT_URL = "http://192.168.0.176:8081";
-// final ROOT_URL = "http://13.82.95.231:8080";
+// final ROOT_URL = "http://192.168.0.176:8081";
+final ROOT_URL = "http://13.82.95.231:8080";
 
 final PUBLIC_API_URL = '$ROOT_URL/api/v/$VERSION/public';
 final SECURED_API_URL = '$ROOT_URL/api/v/$VERSION/secured';
@@ -32,8 +32,11 @@ final GET_ORDER_BY_ID = "$SECURED_API_URL/orders/customer/id";
 
 
 //address
-
 final GET_ALL_DELIVERY_ADDRESSES = "$SECURED_API_URL/delivery-addresses/customer";
 final POST_DELIVERY_ADDRESS = "$SECURED_API_URL/delivery-addresses/customer/create";
 final UPDATE_DELIVERY_ADDRESS = "$SECURED_API_URL/delivery-addresses/customer/update";
 final DELETE_DELIVERY_ADDRESS = "$SECURED_API_URL/delivery-addresses/customer/delete";
+
+//social Media
+
+final SOCIAL_MEDIA_SIGN_IN = "$PUBLIC_API_URL/customers/social/login";

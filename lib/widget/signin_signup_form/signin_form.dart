@@ -1,17 +1,19 @@
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Screen/profile_screen.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
 import 'package:designers_hub_modile_app/widget/common/Text_field_with_validation.dart';
+import 'package:designers_hub_modile_app/widget/signin_signup_form/custom_web_view_for_social_login.dart';
 import 'package:designers_hub_modile_app/widget/signin_signup_form/helper_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class SignInFrom extends StatefulWidget {
 
@@ -31,6 +33,16 @@ class _SignInFromState extends State<SignInFrom> {
   String _errorMessage = '';
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   // final _facebookLogin = FacebookLogin();
+  bool _loading = false;
+
+
+  bool get loading => _loading;
+
+  set loading(bool value) {
+    setState(() {
+      _loading = value;
+    });
+  }
 
   @override
   void initState() {
@@ -82,6 +94,7 @@ class _SignInFromState extends State<SignInFrom> {
 
   _signInWithGoogle() async{
     try{
+      loading = true;
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
       if(googleSignInAccount != null){
         GoogleSignInAuthentication googleSignInAuth = await googleSignInAccount.authentication;
@@ -89,19 +102,78 @@ class _SignInFromState extends State<SignInFrom> {
             idToken: googleSignInAuth.idToken,
             accessToken: googleSignInAuth.accessToken);
         try{
+          FirebaseAuth auth = FirebaseAuth.instance;
+          final user = await auth.signInWithCredential(credential);
 
-          final FirebaseAuth auth = FirebaseAuth.instance;
-          final userCredential = await auth.signInWithCredential(credential);
-          print('user ${userCredential.user}');
+          final token = await user.user!.getIdToken(true);
+          bool signedIn = await Provider.of<ProfileProvider>(context,listen: false).socialMediaSignIn(token);
+          if (signedIn && widget.popAble != null) {
+            if(widget.fromSideBar){
+              Navigator.pop(context);
+            }else {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+              loading = false;
+              Navigator.pop(context);
+            }
+          }
 
         }catch(error){
+          loading = false;
           print('user credential error ---> $error');
         }
+        loading = false;
       }
+      loading = false;
     }catch(error){
+      loading = false;
       print('google sign in error -> $error');
     }
   }
+
+  Future<void> _loginWithFacebook() async{
+
+    loading = true;
+    String result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => CustomWebViewForSocialLogin(
+            selectedUrl:
+              ""
+            // 'https://www.facebook.com/dialog/oauth?client_id=966779757466816&redirect_uri=https://designer-s-hub.firebaseapp.com&response_type=token&scope=email,public_profile,',
+          ),
+          maintainState: true),
+    );
+
+    if (result != null) {
+      try {
+        final facebookAuthCred = FacebookAuthProvider.credential(result);
+
+        FirebaseAuth auth = FirebaseAuth.instance;
+        final user = await auth.signInWithCredential(facebookAuthCred);
+
+        final token = await user.user!.getIdToken(true);
+        bool signedIn = await Provider.of<ProfileProvider>(context,listen: false).socialMediaSignIn(token);
+        if (signedIn && widget.popAble != null) {
+          if(widget.fromSideBar){
+            loading = false;
+            Navigator.pop(context);
+          }else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+            loading = false;
+            Navigator.pop(context);
+          }
+        }
+        loading = false;
+      } catch (e) {
+        loading = false;
+        print('Facebook signin error -> $e');
+      }
+    }
+    loading = false;
+  }
+
 
   void _showLoadingOverlay({
     required BuildContext context,
@@ -289,7 +361,7 @@ class _SignInFromState extends State<SignInFrom> {
                     radius: 15,
                   )
                       :
-                  RaisedButton(
+                  MaterialButton(
                     color: CUSTOMER,
                     child: Center(
                       child: Text(
@@ -345,6 +417,7 @@ class _SignInFromState extends State<SignInFrom> {
                       ],
                     ),
                     onPressed: (){},
+
                   ),
                   SizedBox(height: 30,)
                 ],

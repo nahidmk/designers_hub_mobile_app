@@ -61,6 +61,8 @@ class DeliveryAddressListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
+
+      deliveryAddresses.length>0?
       Container(
         child: ListView(
           children: [
@@ -72,7 +74,7 @@ class DeliveryAddressListView extends StatelessWidget {
 
           ],
         ),
-      ),
+      ):Center(child: Text("You don't add any address yet"),),
       Positioned(
         bottom: 5,
         right: 5,

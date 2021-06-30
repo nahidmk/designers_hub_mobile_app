@@ -13,6 +13,7 @@ import 'package:designers_hub_modile_app/Provider/design_provider.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
 import 'package:designers_hub_modile_app/Screen/order_details_screen.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
+import 'package:designers_hub_modile_app/widget/signin_signup_form/helper_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -73,6 +74,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     setState(() {
       _loadingPromo = value;
     });
+  }
+
+
+  void showErrorMassage(String msg){
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Missing value',style: Theme.of(context).textTheme.headline4,),
+        content:  Text('$msg',style: Theme.of(context).textTheme.headline6),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'OK'),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -239,6 +257,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 secondaryButton(() async {
                   if(deliveryAddressProvider.selectedDeliveryAddress.title.isEmpty){
                     //show error msg in toast;
+                    showErrorMassage("Choose delivery address");
                     return;
                   }
                   order = await orderProvider.placeOrder(

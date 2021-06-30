@@ -36,6 +36,8 @@ dependencies:
   flutter_svg: ^0.22.0
   google_sign_in: ^5.0.4
 #  flutter_facebook_login: ^3.0.0
+  flutter_login_facebook: ^1.0.1
+  flutter_webview_plugin: ^0.4.0
   flutter_inner_drawer: ^1.0.0+1
   back_button_interceptor: ^5.0.1
 

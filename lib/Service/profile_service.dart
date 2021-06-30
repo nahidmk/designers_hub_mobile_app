@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileService {
 
   Future<http.Response> signIn(String username, String password) async {
+
     return http.post(
         Uri.parse(SIGN_IN_URL),
         headers: getHeader(),
@@ -28,6 +29,16 @@ class ProfileService {
           'FIREBASE-TOKEN': token == null ? '' : token,
         },
         body:json.encode(user.toJson()));
+  }
+
+  Future<http.Response> socialMediaSignIn(String token) async {
+    return http.post(
+        Uri.parse(SOCIAL_MEDIA_SIGN_IN),
+        headers: {
+          'Content-Type': 'application/json',
+          'FIREBASE-TOKEN': token,
+        },
+        body:null);
   }
 
 

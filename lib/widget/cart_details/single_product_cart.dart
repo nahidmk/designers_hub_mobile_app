@@ -24,6 +24,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
   int quantity = 0;
   double totalPrice = 0;
   bool buttonPress = true;
+  TextEditingController _quantityEditingController = new TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
     setState(() {
       _fabricsName = widget.cartDetails.fabric.name;
       quantity = widget.cartDetails.quantity.toInt();
+      _quantityEditingController.text = quantity.toString();
     });
 
 
@@ -151,7 +153,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
       elevation: 3,
       child: Container(
         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-        height: MediaQuery.of(context).size.height / 5,
+        height: MediaQuery.of(context).size.height / 4.5,
         padding: EdgeInsets.all(5),
 
         child: Row(
@@ -197,7 +199,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.only(left: 5),
-                            height: 30,
+                            height: 40,
                             decoration: BoxDecoration(
                                 border:
                                 Border.all(color: Colors.black, width: 1)),
@@ -206,12 +208,11 @@ class _SingleProductCartState extends State<SingleProductCart> {
                               children: [
                                 Text(
                                   _fabricsName,
-                                  style: Theme.of(context).textTheme.headline3,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
                                 Container(
                                   child:  Icon(
                                     CupertinoIcons.pencil,
-                                    size: 15,
                                   ),
                                 )
                               ],
@@ -220,12 +221,14 @@ class _SingleProductCartState extends State<SingleProductCart> {
                           onTap: (){showModal();},
                         ):SizedBox(height: 0,),
 
+                        SizedBox(height: 10,),
                         Container(
                             // width: 130,
                             height: 30,
                             // margin: EdgeInsets.only(top: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 GestureDetector(
                                   child: Container(
@@ -233,27 +236,37 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                     child: Icon(
                                       Icons.remove,
                                       color: Colors.white,
+                                      size: 30,
                                     ),
                                   ),
                                   onTap: () {
-                                    if(widget.cartDetails.quantity>1)
-                                      cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity - 1);
+                                    if(widget.cartDetails.quantity>1){
+                                      setState(() {
+                                        quantity = quantity-1;
+                                      });
+                                      cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
+                                      _quantityEditingController.text = quantity.toString();
+                                    }
+
                                   },
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  width: 50,
-                                  child: TextField(
-                                    controller: TextEditingController()
-                                      ..text = widget.cartDetails.quantity.toInt().toString(),
-                                    keyboardType: TextInputType.number,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
 
+                                Container(
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black,width: .5)
+                                  ),
+                                  height: 30,
+                                  child: TextField(
+                                    controller: _quantityEditingController,
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.headline4,
                                     onChanged: (value) {
                                       if(value.isEmpty){
+                                        setState(() {
+                                          quantity=1;
+                                        });
                                         return;
                                       }else{
                                         try{
@@ -266,19 +279,24 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                     },
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
+
                                 GestureDetector(
                                   child: Container(
                                     child: Icon(
                                       Icons.add,
                                       color: Colors.white,
+                                      size: 30,
                                     ),
                                     color: Theme.of(context).primaryColor,
+
                                   ),
                                   onTap: () {
-                                    cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity + 1);
+                                    setState(() {
+                                      quantity = quantity+1;
+                                    });
+                                    cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
+                                    _quantityEditingController.text = quantity.toString();
+                                    // cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity + 1);
                                   },
                                 ),
 

@@ -200,9 +200,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     children: [
                       //image
                       Container(
-                        height: 230,
+                        height: 200,
                         padding: EdgeInsets.all(2),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
@@ -211,7 +212,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               child: ListView(
                                 children: [
                                   ...imageList.map((e) => Container(
-                                        margin: EdgeInsets.all(5),
+                                        margin: EdgeInsets.only(bottom: 5,right: 5),
                                         child: GestureDetector(
                                           onTap: () {
 
@@ -280,6 +281,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               child: Container(
                                 margin: EdgeInsets.only(top: 5),
                                 padding: EdgeInsets.only(left: 5),
+                                height: 40,
                                 width: MediaQuery.of(context).size.width,
                                 decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 1)),
                                 child: Row(
@@ -298,11 +300,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ):SizedBox(height: 0,),
 
-                      Divider(),
 
+                      SizedBox(height: 20,),
 
                       //quantity and price
-
                       Container(
                         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
 
@@ -321,15 +322,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       Container(
                                         // width: 130,
                                           height: 30,
-                                          // margin: EdgeInsets.only(top: 5),
+
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.end,
                                             children: [
                                               GestureDetector(
                                                 child: Container(
+                                                  // decoration: BoxDecoration(
+                                                  //     border: Border.all(color: Colors.black,width: .5)
+                                                  // ),
                                                   color: Theme.of(context).primaryColor,
                                                   child: Icon(
                                                     Icons.remove,
+                                                    size: 30,
                                                     color: Colors.white,
                                                   ),
                                                 ),
@@ -343,12 +349,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                                                 },
                                               ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
+
+
                                               Container(
                                                 width: 50,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(color: Colors.black,width: .5)
+                                                ),
+
                                                 child: TextField(
+                                                  textAlign: TextAlign.center,
                                                   controller: _quantityEditingController,
                                                   keyboardType: TextInputType.number,
                                                   style:
@@ -367,13 +377,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   },
                                                 ),
                                               ),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
+
+
+
                                               GestureDetector(
                                                 child: Container(
+                                                  // decoration: BoxDecoration(
+                                                  //     border: Border.all(color: Colors.black,width: .5)
+                                                  // ),
                                                   child: Icon(
                                                     Icons.add,
+                                                    size: 30,
                                                     color: Colors.white,
                                                   ),
                                                   color: Theme.of(context).primaryColor,
@@ -466,9 +480,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       showErrorMassage("Provide Quantity");
                     }
                   }
-                  setState(() {
-                    _quantityPrice = 0;
-                  });
+
+
+                 FocusScope.of(context).unfocus();
 
                 }, "ADD TO CART", context)),
           ),

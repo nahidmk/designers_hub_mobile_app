@@ -50,6 +50,9 @@ class ProfileProvider extends ChangeNotifier{
   String? _idToken = '';
 
 
+
+
+
   FirebaseMessaging get firebaseMessaging => _firebaseMessaging;
 
   set firebaseMessaging(FirebaseMessaging value) {
@@ -138,6 +141,21 @@ class ProfileProvider extends ChangeNotifier{
   }
 
 
+  bool get phoneCodeSent => _phoneCodeSent;
+
+  set phoneCodeSent(bool value) {
+    _phoneCodeSent = value;
+    notifyListeners();
+  }
+
+  String get phoneVerificationErrorMsg => _phoneVerificationErrorMsg;
+
+  set phoneVerificationErrorMsg(String value) {
+    _phoneVerificationErrorMsg = value;
+    notifyListeners();
+  }
+
+
 
   Future<bool> signIn(String username, String password) async {
     try {
@@ -145,6 +163,7 @@ class ProfileProvider extends ChangeNotifier{
       signInLoading = true;
       signInErrorMsg = '';
       final response = await profileService.signIn(username, password);
+      print('response for signin----------->${json.decode(response.body)}');
       if (response.statusCode == 200) {
         print('access token ----->${json.decode(response.body)}');
         SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -167,7 +186,6 @@ class ProfileProvider extends ChangeNotifier{
         return false;
       }
     } catch (error) {
-      print("error----->${error.toString()}");
       signInLoading = false;
       signInErrorMsg = getErrorMsg(error);
       return false;
@@ -307,19 +325,7 @@ class ProfileProvider extends ChangeNotifier{
     }
   }
 
-  bool get phoneCodeSent => _phoneCodeSent;
 
-  set phoneCodeSent(bool value) {
-    _phoneCodeSent = value;
-    notifyListeners();
-  }
-
-  String get phoneVerificationErrorMsg => _phoneVerificationErrorMsg;
-
-  set phoneVerificationErrorMsg(String value) {
-    _phoneVerificationErrorMsg = value;
-    notifyListeners();
-  }
 
 
 
@@ -427,6 +433,41 @@ class ProfileProvider extends ChangeNotifier{
     }
 
   }
+
+  Future<bool> socialMediaSignIn(String token) async {
+    try {
+      print('From sign in function ---->');
+      signInLoading = true;
+      signInErrorMsg = '';
+      print('firebse Token------>$token');
+      final response = await profileService.socialMediaSignIn(token);
+      print('response----->${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        print('access token ----->${json.decode(response.body)}');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString(
+            'aw_auth_token', json.decode(response.body)['token']['access']);
+        bool status = await getProfile();
+        if(!status) {
+          signInErrorMsg = 'Something went wrong. Please try again later.';
+          signInLoading = false;
+          return false;
+        }
+        signInLoading = false;
+        return true;
+      } else {
+        print('sign in failed---->');
+        signInLoading = false;
+        signInErrorMsg = json.decode(response.body)['message'];
+        return false;
+      }
+    } catch (error) {
+      signInLoading = false;
+      signInErrorMsg = getErrorMsg(error);
+      return false;
+    }
+  }
+
 
 
 
