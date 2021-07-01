@@ -10,6 +10,7 @@ import 'package:designers_hub_modile_app/widget/common/CustomAppBar.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     DesignProvider designProvider = Provider.of<DesignProvider>(context);
-    OrderProvider cartDesignProvider = Provider.of<OrderProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     List<String> imageList = [
       designProvider.design.thumbnail,
@@ -316,12 +317,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 5),
+
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Container(
-                                        // width: 130,
                                           height: 30,
+
 
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.start,
@@ -346,13 +348,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                     });
                                                   calculateTotalPrice(quantity);
                                                   _quantityEditingController.text = quantity.toString();
+                                                  FocusScope.of(context).unfocus();
 
                                                 },
                                               ),
 
 
                                               Container(
-                                                width: 50,
+                                                width: 80,
                                                 decoration: BoxDecoration(
                                                     border: Border.all(color: Colors.black,width: .5)
                                                 ),
@@ -361,13 +364,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   textAlign: TextAlign.center,
                                                   controller: _quantityEditingController,
                                                   keyboardType: TextInputType.number,
-                                                  style:
-                                                  Theme.of(context).textTheme.headline4,
-
+                                                  style: Theme.of(context).textTheme.headline4,
                                                   onChanged: (value) {
                                                     if (value.isEmpty){
                                                       setState(() {
                                                         quantity=1;
+                                                        // _quantityEditingController.text = quantity.toString();
                                                       });
                                                       return;
                                                     }
@@ -382,9 +384,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                                               GestureDetector(
                                                 child: Container(
-                                                  // decoration: BoxDecoration(
-                                                  //     border: Border.all(color: Colors.black,width: .5)
-                                                  // ),
                                                   child: Icon(
                                                     Icons.add,
                                                     size: 30,
@@ -399,6 +398,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                   _quantityEditingController.text = quantity.toString();
 
                                                   calculateTotalPrice(quantity);
+                                                  FocusScope.of(context).unfocus();
                                                 },
                                               ),
 
@@ -441,7 +441,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   if(designProvider.design.designType.requiredFabric){
                     if(_fabricsName!="Choose Fabrics" && quantity > 0){
 
-                      cartDesignProvider.addToCart(
+                      orderProvider.addToCart(
                           CartDetails(
                               designPrice: _designPrice,
                               id: 1,
@@ -454,14 +454,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         quantity.toDouble()
                       );
-                      print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
+                      print(" length---->${orderProvider.cart.cartDetailsList.length}");
                     }
                     else{
                       showErrorMassage("Choose fabric and Quantity");
                     }
                   }else{
                     if(quantity > 0){
-                      cartDesignProvider.addToCart(
+                      orderProvider.addToCart(
                           CartDetails(
                               designPrice: _designPrice,
                               id: 1,
@@ -474,7 +474,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         quantity.toDouble()
                       );
-                      print(" length---->${cartDesignProvider.cart.cartDetailsList.length}");
+                      print(" length---->${orderProvider.cart.cartDetailsList.length}");
                     }
                     else{
                       showErrorMassage("Provide Quantity");
@@ -486,6 +486,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                 }, "ADD TO CART", context)),
           ),
+
         ]));
   }
 }

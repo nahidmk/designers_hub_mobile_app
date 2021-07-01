@@ -85,7 +85,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
 
     _firstNameProperties.controller.text = widget.user.fullName;
     _addressProperties.controller.text = widget.user.address;
-    _contactNumberProperties.controller.text = widget.user.secondaryNumber != null ? widget.user.secondaryNumber.substring(3) : '';
+    _contactNumberProperties.controller.text = widget.user.secondaryNumber != null ? widget.user.secondaryNumber : '';
     _birthDateProperties.selectedDate = widget.user.dateOfBirth == null
         ? 'Select your birth date.'
         : widget.user.dateOfBirth;

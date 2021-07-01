@@ -10,6 +10,7 @@ import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
+import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
 import 'package:designers_hub_modile_app/Screen/order_details_screen.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
@@ -130,9 +131,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(selectDeliveryAddress.title,style: Theme.of(context).textTheme.headline4,),
-                                  Text(selectDeliveryAddress.address,style: Theme.of(context).textTheme.headline6),
-                                  Text(selectDeliveryAddress.phoneNumber,style: Theme.of(context).textTheme.headline6),
+                                  Text("Title : ${selectDeliveryAddress.title}",style: Theme.of(context).textTheme.headline4,),
+                                  SizedBox(height: 6,),
+                                  Text("Address : ${selectDeliveryAddress.address}",style: Theme.of(context).textTheme.headline6),
+                                  Text("Phone : ${selectDeliveryAddress.phoneNumber}",style: Theme.of(context).textTheme.headline6),
                                 ],
                               ),
                               TextButton(onPressed:()=> Navigator.push(context, MaterialPageRoute(builder: (_)=>DeliveryAddressScreen()))

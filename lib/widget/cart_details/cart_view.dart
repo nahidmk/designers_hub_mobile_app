@@ -1,12 +1,15 @@
 import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Provider/order_provider.dart';
+import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Screen/checkout_screen.dart';
 import 'package:designers_hub_modile_app/Screen/delvery_address_screen.dart';
 import 'package:designers_hub_modile_app/Screen/home_screen.dart';
+import 'package:designers_hub_modile_app/Screen/sign_in_screen.dart';
 import 'package:designers_hub_modile_app/helper/currency.dart';
 import 'package:designers_hub_modile_app/widget/cart_details/single_product_cart.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +30,8 @@ class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
     OrderProvider cartDesignProvider = Provider.of<OrderProvider>(context);
+    ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
+
     Cart _cart = cartDesignProvider.cart;
 
     return Stack(
@@ -121,7 +126,10 @@ class _CartViewState extends State<CartView> {
                     ),
 
                   secondaryButton((){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)));
+                    profileProvider.isAuthenticated?
+                     Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)))
+                  :  Navigator.push(context, MaterialPageRoute(builder: (_)=>SignInScreen(false)));
+
                   }, "Check Out", context)
                 ],
               )

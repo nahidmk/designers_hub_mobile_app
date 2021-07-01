@@ -46,7 +46,9 @@ class OrderCard extends StatelessWidget {
                   Text(order.createdAt),
                   Icon(Icons.arrow_forward_sharp),
                 ],
-              )
+              ),
+              Divider(),
+              CustomRow("Order Status: ","${order.orderStatus.value}")
             ],
           ),
         ),

@@ -153,23 +153,25 @@ class _SingleProductCartState extends State<SingleProductCart> {
       elevation: 3,
       child: Container(
         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-        height: MediaQuery.of(context).size.height / 4.5,
-        padding: EdgeInsets.all(5),
+        height: MediaQuery.of(context).size.height / 5.6,
+        padding: EdgeInsets.only(top: 5,left: 5,right: 5,),
 
         child: Row(
           children: [
             Container(
-                height: 70,
-                width: 70,
+              // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 1)),
+                height: 97,
+                width: 80,
                 child: Image.network(
                   "$IMAGE_URL${widget.cartDetails.design.thumbnail}",
                   fit: BoxFit.fill,
                 )),
             Expanded(
                 child: Container(
+                  // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 1)),
               padding: EdgeInsets.only(left: 10),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -184,14 +186,14 @@ class _SingleProductCartState extends State<SingleProductCart> {
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5,),
+
                   Container(
                     // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
 
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+
                       children: [
 
                         //choose fabric
@@ -219,9 +221,10 @@ class _SingleProductCartState extends State<SingleProductCart> {
                             ),
                           ),
                           onTap: (){showModal();},
-                        ):SizedBox(height: 0,),
+                        ):SizedBox(height: 40,),
 
-                        SizedBox(height: 10,),
+                        SizedBox(height:5,),
+
                         Container(
                             // width: 130,
                             height: 30,
@@ -240,19 +243,20 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                     ),
                                   ),
                                   onTap: () {
-                                    if(widget.cartDetails.quantity>1){
+                                    if(quantity>1){
                                       setState(() {
                                         quantity = quantity-1;
+                                        _quantityEditingController.text = quantity.toString();
                                       });
                                       cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
-                                      _quantityEditingController.text = quantity.toString();
+                                      FocusScope.of(context).unfocus();
                                     }
 
                                   },
                                 ),
 
                                 Container(
-                                  width: 70,
+                                  width: 80,
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black,width: .5)
                                   ),
@@ -266,12 +270,19 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                       if(value.isEmpty){
                                         setState(() {
                                           quantity=1;
+                                          cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
+                                          // _quantityEditingController.text = quantity.toString();
                                         });
                                         return;
                                       }else{
                                         try{
                                           double q = double.parse(value);
                                           cartDesignProvider.addToCart(widget.cartDetails, q);
+                                          setState(() {
+                                            quantity = q.toInt();
+                                            // _quantityEditingController.text = quantity.toString();
+                                          });
+
                                         }catch(error){
                                           return;
                                         }
@@ -293,12 +304,16 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                   onTap: () {
                                     setState(() {
                                       quantity = quantity+1;
+                                      _quantityEditingController.text = quantity.toString();
                                     });
                                     cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
-                                    _quantityEditingController.text = quantity.toString();
+                                    FocusScope.of(context).unfocus();
+
                                     // cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity + 1);
                                   },
                                 ),
+
+                                Text('')
 
                               ],
                             )
