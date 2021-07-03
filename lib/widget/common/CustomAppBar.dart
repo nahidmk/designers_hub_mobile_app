@@ -26,19 +26,20 @@ AppBar buildCustomAppbar(String title, BuildContext context){
             }, icon: Icon(CupertinoIcons.shopping_cart))
             ,
           ),
+          orderProvider.cart.cartDetailsList.length>=1?
           Positioned(
               top: 4,
-              right: 4,
+              right: 8,
               child: Container(
-                height: 25,
-                width: 25,
+                height: 20,
+                width: 20,
                 decoration: BoxDecoration(
                   color: Colors.black,
                   shape: BoxShape.circle,
                 ),
                 child: Center( child: Text("${orderProvider.cart.cartDetailsList.length}",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),)),
               )
-          )
+          ):SizedBox(),
         ],
       )
 

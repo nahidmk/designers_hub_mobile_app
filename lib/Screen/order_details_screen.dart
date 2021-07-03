@@ -44,58 +44,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
     Order order = orderProvider.order;
 
-    void showModal(){
-      showModalBottomSheet(
-          context: context,
-          elevation: 10.0,
-          builder: (BuildContext context) {
-            return Container(
-              padding: EdgeInsets.all(10),
-              height: (MediaQuery.of(context)
-                  .size
-                  .height),
-              child: ListView(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 5, top: 10, bottom: 10),
-                    child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment
-                            .spaceBetween,
-                        children: [
-                          Text('Total Account',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13),),
-                          GestureDetector(
-                            onTap: () =>
-                                Navigator.pop(
-                                    context),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.red,
-                            ),
-                          )
-                        ]),
-                  ),
-                  Divider(),
-                  Container(
-                    child: Column(
-                      children: [
-                        CustomRow("Total Price", "${order.cart.totalPrice}"),
-                        SizedBox(height: 10,),
-                        CustomRow("Printing price", "${order.cart.printingCost}"),
-                        SizedBox(height: 10,),
-                        CustomRow("Discount", "${order.cart.discount}"),
-                        Divider(),
-                        CustomRow("Grand Total", "${order.cart.grandTotal}"),
-                      ],
 
-                    ),
-                  )
-                ],
-              ),
-            );
-          });
-    }
 
 
     return Scaffold(
@@ -119,7 +68,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 Divider(),
 
                 Container(
-                  height:300,
+                  height:MediaQuery.of(context).size.height-150,
                   child: ListView(
                     children: [
                       ...order.cart.cartDetailsList.map((e) => ItemCard(e))
@@ -130,20 +79,75 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
               ],
             ),
           ),
+          showModalSheet?
           Positioned(
               right: 0,
               bottom: 0,
-            child: IconButton(
-              icon: Icon(Icons.arrow_circle_up_outlined),
-              onPressed: showModal,
-            ),
-          )
+              left: 0,
+
+            child: Card(
+              elevation: 3,
+              child: Container(
+                // decoration: BoxDecoration(border: Border.all(width: 1,color: Colors.black)),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height/2.5,
+                padding: EdgeInsets.only(left: 5,right: 5),
+                child: ListView(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 5, top: 10, bottom: 10),
+                      child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment
+                              .spaceBetween,
+                          children: [
+                            Text('Total Account',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13),),
+                            GestureDetector(
+                              onTap: () => setState(() {
+                                showModalSheet = false;
+                              }),
+                              child: Icon(
+                                Icons.arrow_circle_down_sharp,
+                              ),
+                            )
+                          ]),
+                    ),
+                    Divider(),
+                    Container(
+                      child: Column(
+                        children: [
+                          CustomRow("Total Price", "${order.cart.totalPrice}"),
+                          SizedBox(height: 10,),
+                          CustomRow("Printing price", "${order.cart.printingCost}"),
+                          SizedBox(height: 10,),
+                          CustomRow("Discount", "${order.cart.discount}"),
+                          Divider(),
+                          CustomRow("Grand Total", "${order.cart.grandTotal}"),
+                        ],
+
+                      ),
+                    )
+                  ],
+                ),
+              )
+            )
+          ):
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child:IconButton(
+                  icon: Icon(Icons.arrow_circle_up_outlined),
+                  onPressed: ()=>setState(() {
+                    showModalSheet = true;
+                  }),
+                ),
+              )
         ],
       ),
     );
   }
 }
-
 Widget PayMentInfo(String title, String price){
 
   return Row(

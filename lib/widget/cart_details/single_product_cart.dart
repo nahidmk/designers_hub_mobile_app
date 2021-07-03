@@ -8,6 +8,7 @@ import 'package:designers_hub_modile_app/helper/currency.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class SingleProductCart extends StatefulWidget {
@@ -25,6 +26,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
   double totalPrice = 0;
   bool buttonPress = true;
   TextEditingController _quantityEditingController = new TextEditingController();
+
 
   @override
   void initState() {
@@ -61,9 +63,10 @@ class _SingleProductCartState extends State<SingleProductCart> {
   @override
   Widget build(BuildContext context) {
 
-    OrderProvider cartDesignProvider = Provider.of<OrderProvider>(context);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
     Design _design = widget.cartDetails.design;
     double _designPrice = widget.cartDetails.design.price;
+    double screenHeight = MediaQuery.of(context).size.height/5.1;
 
     void showModal() {
       showModalBottomSheet<void>(
@@ -131,7 +134,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                         _fabric = e;
                                       });
                                       widget.cartDetails.fabric=_fabric;
-                                      cartDesignProvider.addToCart(widget.cartDetails,quantity.toDouble());
+                                      orderProvider.addToCart(widget.cartDetails,quantity.toDouble());
 
                                       Navigator.pop(context);
                                     }, "Select", context),
@@ -153,7 +156,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
       elevation: 3,
       child: Container(
         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-        height: MediaQuery.of(context).size.height / 5.6,
+        height: screenHeight,
         padding: EdgeInsets.only(top: 5,left: 5,right: 5,),
 
         child: Row(
@@ -181,7 +184,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                       GestureDetector(
                         child:  Icon(Icons.delete,color: Colors.black,) ,
                         onTap:(){
-                        cartDesignProvider.deleteDesign(widget.cartDetails.design.id);
+                        orderProvider.deleteDesign(widget.cartDetails.design.id);
                         },
                       )
                     ],
@@ -248,7 +251,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                         quantity = quantity-1;
                                         _quantityEditingController.text = quantity.toString();
                                       });
-                                      cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
+                                      orderProvider.addToCart(widget.cartDetails, quantity.toDouble());
                                       FocusScope.of(context).unfocus();
                                     }
 
@@ -270,14 +273,14 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                       if(value.isEmpty){
                                         setState(() {
                                           quantity=1;
-                                          cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
+                                          orderProvider.addToCart(widget.cartDetails, quantity.toDouble());
                                           // _quantityEditingController.text = quantity.toString();
                                         });
                                         return;
                                       }else{
                                         try{
                                           double q = double.parse(value);
-                                          cartDesignProvider.addToCart(widget.cartDetails, q);
+                                          orderProvider.addToCart(widget.cartDetails, q);
                                           setState(() {
                                             quantity = q.toInt();
                                             // _quantityEditingController.text = quantity.toString();
@@ -306,7 +309,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                                       quantity = quantity+1;
                                       _quantityEditingController.text = quantity.toString();
                                     });
-                                    cartDesignProvider.addToCart(widget.cartDetails, quantity.toDouble());
+                                    orderProvider.addToCart(widget.cartDetails, quantity.toDouble());
                                     FocusScope.of(context).unfocus();
 
                                     // cartDesignProvider.addToCart(widget.cartDetails, widget.cartDetails.quantity + 1);

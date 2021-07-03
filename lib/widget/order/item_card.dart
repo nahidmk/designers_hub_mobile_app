@@ -32,7 +32,7 @@ class ItemCard extends StatelessWidget {
                 children: [
                   Text(cartDetails.design.name,style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16),),
                   Divider(),
-                  CustomRow(cartDetails.design.designType.requiredFabric?"Fabric ${cartDetails.fabric.name}":'', "$CURRENCY${cartDetails.totalPrice.toString()}"),
+                  CustomRow(cartDetails.design.designType.requiredFabric?"Fabric : ${cartDetails.fabric.name}":'', "$CURRENCY${cartDetails.totalPrice.toString()}"),
                   CustomRow('Quantity',cartDetails.quantity.toInt().toString() ),
                 ],
               ),
