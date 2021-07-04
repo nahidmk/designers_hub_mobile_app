@@ -6,12 +6,14 @@ import 'package:designers_hub_modile_app/Provider/home_page_design_provider.dart
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Provider/tab_provider.dart';
 import 'package:designers_hub_modile_app/Screen/home_screen.dart';
+import 'package:designers_hub_modile_app/Screen/splash_screen.dart';
 import 'package:designers_hub_modile_app/Service/delivery_address_service.dart';
 import 'package:designers_hub_modile_app/Service/design_service.dart';
 import 'package:designers_hub_modile_app/Service/home_page_desing_service.dart';
 import 'package:designers_hub_modile_app/Service/oder_service.dart';
 import 'package:designers_hub_modile_app/Service/profile_service.dart';
 import 'package:designers_hub_modile_app/Theme/custom_theme.dart';
+import 'package:designers_hub_modile_app/helper/text.dart';
 import 'package:get_it/get_it.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:provider/provider.dart';
@@ -58,14 +60,15 @@ void main(){
 
 class MyApp extends StatelessWidget {
 
+
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: NavigationService.navigationKey,
-      title: "Designer's Hub",
-      theme: CustomTheme(context),
-      home: HomeScreen(),
-    );
+    return  MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: APP_NAME,
+        theme: CustomTheme(context),
+        home: HomeScreen(),
+      );
   }
 }

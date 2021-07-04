@@ -132,8 +132,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               )
             )
-          ):
-              Positioned(
+          ) :
+          Positioned(
                 right: 0,
                 bottom: 0,
                 child:IconButton(
