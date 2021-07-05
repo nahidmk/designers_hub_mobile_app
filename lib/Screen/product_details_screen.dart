@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
 import 'package:designers_hub_modile_app/Model/fabric.dart';
@@ -11,6 +12,7 @@ import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -40,7 +42,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   String _fabricsName = "Choose Fabrics";
   Fabric _fabric = Fabric(available: false, baseColor: "", descriptions: "", disabled: false, favCount: 0, id: 0, name:"", price: 0, slug: "", fabricMixings: [], thumbnail: "");
   int quantity = 1;
-
+  BoxDecoration _boxDecoration = BoxDecoration(border: Border.all(color: Colors.black,width: 2));
   // List<CartDetails> cartDetailList = [];
 
   @override
@@ -164,22 +166,52 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           });
     }
 
-    void showErrorMassage(String msg){
-      showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text('Missing value',style: Theme.of(context).textTheme.headline4,),
-        content:  Text('$msg',style: Theme.of(context).textTheme.headline6),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
-            child: const Text('OK'),
-          ),
-         ],
+    showOverLay() async{
+      OverlayState? overlayState = Overlay.of(context);
+      OverlayEntry overlayEntry = OverlayEntry(
+        builder: (context)=> Positioned(
+          bottom: 80,
+            left: 0,
+            right: 0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+            ),
+              child: Center( child: Text('This design has already been added',style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold),),)
+          )
+        )
+      );
+      overlayState!.insert(overlayEntry);
+      await Future.delayed(Duration(seconds: 2));
+      overlayEntry.remove();
+    }
+
+    void _showToast(BuildContext context) {
+      final scaffold = ScaffoldMessenger.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          content: const Text('This Design has already been added'),
+          action: SnackBarAction(label: '', onPressed: scaffold.hideCurrentSnackBar),
+          duration: Duration(milliseconds: 1500),
         ),
       );
     }
-
 
 
 
@@ -214,11 +246,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 children: [
                                   ...imageList.map((e) => Container(
                                         margin: EdgeInsets.only(bottom: 5,right: 5),
+                                        decoration: _boxDecoration,
                                         child: GestureDetector(
                                           onTap: () {
-
                                             setState(() {
                                               _imageUrl = e;
+
+
                                             });
 
                                           },
@@ -438,6 +472,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   color: Colors.white,),
                 width: MediaQuery.of(context).size.width,
                 child: secondaryButton(() {
+                  int oldLength = orderProvider.cart.cartDetailsList.length;
                   if(designProvider.design.designType.requiredFabric){
                     if(_fabricsName!="Choose Fabrics" && quantity > 0){
 
@@ -454,10 +489,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         quantity.toDouble()
                       );
+
+                      if(oldLength == orderProvider.cart.cartDetailsList.length){
+                        BotToast.showText(text: "This design has already been added");
+                      }
                       print(" length---->${orderProvider.cart.cartDetailsList.length}");
                     }
                     else{
-                      showErrorMassage("Choose fabric and Quantity");
+
+                      BotToast.showText(text: "Please choose a Fabrics");
                     }
                   }else{
                     if(quantity > 0){
@@ -475,9 +515,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         quantity.toDouble()
                       );
                       print(" length---->${orderProvider.cart.cartDetailsList.length}");
+                      if(oldLength == orderProvider.cart.cartDetailsList.length){
+                        BotToast.showText(text: "This design has already been added");
+                      }
                     }
                     else{
-                      showErrorMassage("Provide Quantity");
+                      BotToast.showText(text: "Provide the quantity");
                     }
                   }
 

@@ -1,4 +1,5 @@
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/delivery_address_provider.dart';
 import 'package:designers_hub_modile_app/Provider/design_provider.dart';
@@ -65,7 +66,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
+        builder: BotToastInit(),
         debugShowCheckedModeBanner: false,
+        navigatorObservers: [BotToastNavigatorObserver()],
         title: APP_NAME,
         theme: CustomTheme(context),
         home: HomeScreen(),
