@@ -20,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
             clipper: new MyClipper(),
             child: Container(
               padding: EdgeInsets.all(20),
-              height: MediaQuery.of(context).size.height / 5 + 30,
+              height: MediaQuery.of(context).size.height / 5 ,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(

@@ -25,14 +25,16 @@ class SingleDesignCard extends StatelessWidget {
               child: Image.network(imgUrl,fit: BoxFit.fill,),
             ),
             Container(
+              // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2)),
+                width:( MediaQuery.of(context).size.width/3.2)*2,
                 padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                      Text(
-                      'Name : $name',
-                      style: Theme.of(context).textTheme.bodyText1,
-                      ),
+                       Text(
+                          'Name : $name',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       SizedBox(height: 8,),
                       Text(
                       '$CURRENCY $price',

@@ -45,42 +45,41 @@ class _HotDesignState extends State<HotDesign> {
 
     return homePageDesignProvider.loadingHomePageDesignList?
     Center(child: CupertinoActivityIndicator(),)
-    : ListView(
-
-
-      children:[
-
-        ...homePageDesignProvider.homePageDesignList.map((HomePageDesign homePageDesign) => (
-          Container(
-            // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-            width: screenWidth,
-            height: homePageDesign.height/2.5,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: homePageDesign.homePageDesignDetailsList.map((HomepageDesignDetails designDetails) => (
-                  hotDesignCard(homePageDesign: homePageDesign,designDetails: designDetails, onClick: (){},screenHeight: screenHeight-6,screenWidth: screenWidth)
-              )).toList(),
-            ),
-          )
-      )),
-
-      ...designProvider.designList.map((e) =>
-          GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailsScreen(id: e.id,)));
-            },
-            child: (
-                SingleDesignCard(
-                    e.price,
-                    e.name,
-                    screenWidthForDesignCard,
-                    screenHeightForDesignCard,
-                    '$IMAGE_URL${e.thumbnail}',
+    :  ListView(
+          children:[
+            ...homePageDesignProvider.homePageDesignList.map((HomePageDesign homePageDesign) => (
+                Container(
+                  // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
+                  width: screenWidth,
+                  height: homePageDesign.height/2.5,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: homePageDesign.homePageDesignDetailsList.map((HomepageDesignDetails designDetails) => (
+                        hotDesignCard(homePageDesign: homePageDesign,designDetails: designDetails, onClick: (){},screenHeight: screenHeight-6,screenWidth: screenWidth)
+                    )).toList(),
+                  ),
                 )
+            )),
+
+            ...designProvider.designList.map((e) =>
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailsScreen(id: e.id,)));
+                  },
+                  child: (
+                      SingleDesignCard(
+                        e.price,
+                        e.name,
+                        screenWidthForDesignCard,
+                        screenHeightForDesignCard,
+                        '$IMAGE_URL${e.thumbnail}',
+                      )
+                  ),
+                )
+
             ),
-          )
-        ),
-      ]
+            SizedBox(height: 100,)
+          ]
 
     );
   }

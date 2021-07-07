@@ -85,7 +85,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
 
     _firstNameProperties.controller.text = widget.user.fullName;
     _addressProperties.controller.text = widget.user.address;
-    _contactNumberProperties.controller.text = widget.user.secondaryNumber != null ? widget.user.secondaryNumber : '';
+    _contactNumberProperties.controller.text = widget.user.secondaryNumber != null ? widget.user.secondaryNumber.substring(3) : '';
     _birthDateProperties.selectedDate = widget.user.dateOfBirth == null
         ? 'Select your birth date.'
         : widget.user.dateOfBirth;
@@ -160,7 +160,7 @@ class _ProfileInformationState extends State<ProfileInformation> {
                 ),
               ),
               Container(
-                height: 300,
+                height: 350,
                 child: ListView(
                   children: <Widget>[
                     SizedBox(height: 10,),
@@ -174,9 +174,6 @@ class _ProfileInformationState extends State<ProfileInformation> {
                       height: 10,
                     ),
 
-                    SizedBox(
-                      height: 10,
-                    ),
                     FormAttribute(
                       icon: _buildSvgPicture('assets/icons/name.svg'),
                       properties: _contactNumberProperties,

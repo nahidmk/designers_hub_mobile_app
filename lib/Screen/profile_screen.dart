@@ -45,7 +45,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
 
     return profileProvider.isAuthenticated ?
-        Scaffold(backgroundColor: CupertinoColors.white, body: Profile())
+        // Scaffold(backgroundColor: CupertinoColors.white, body: Profile())
+        Profile()
         : SignInScreen(true);
   }
 }

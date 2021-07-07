@@ -48,12 +48,19 @@ class _CartScreenState extends State<CartScreen> {
       body: Container(
         child: CartView(true),
       ),
-    ):Scaffold(
-      backgroundColor: CupertinoColors.white,
-      body: Container(
-        child: CartView(false)
-      ),
+    ):
+     Container(
+       // child: Text('hello'),
+          child: CartView(false)
     );
+
+
+    // Scaffold(
+    //   backgroundColor: CupertinoColors.white,
+    //   body: Container(
+    //     child: CartView(false)
+    //   ),
+    // );
 
   }
 }

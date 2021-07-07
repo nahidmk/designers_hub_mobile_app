@@ -25,6 +25,10 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
 
+  double position = 0;
+
+
+
 
 
   @override
@@ -33,37 +37,25 @@ class _CartViewState extends State<CartView> {
     ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
 
     Cart _cart = cartDesignProvider.cart;
+    widget.fromProductDetails? position = 0:position = 50;
 
     return Stack(
       children: [
-        Container(
 
-
-        child: Column(
-
-          children:[
-            Container(
+       Container(
               // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
-
-            height: MediaQuery.of(context).size.height-210,
+            height: MediaQuery.of(context).size.height,
               child: ListView(
 
               children: [
                 ...cartDesignProvider.cart.cartDetailsList.map((e)=>SingleProductCart(cartDetails: e)),
+                SizedBox(height: 200,)
 
               ],
           ),
-            ),
-
-
-
-        ]
-        ),
       ),
-
-        widget.fromProductDetails?
         Positioned(
-          bottom: 0,
+          bottom: position,
           child: Container(
               padding: EdgeInsets.only(top: 5,left: 10,right: 10),
               decoration: BoxDecoration(
@@ -97,44 +89,6 @@ class _CartViewState extends State<CartView> {
               )
           ),
         )
-        :Positioned(
-          bottom: 50,
-          child: Container(
-              padding: EdgeInsets.only(top: 5,left: 10,right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,),
-              width: MediaQuery.of(context).size.width,
-              child:Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                   Container(
-                        width: MediaQuery.of(context).size.width,
-                        child:Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Estimated Total",style: Theme.of(context).textTheme.headline4,),
-                                  Text("$CURRENCY ${_cart.totalPrice}",style: Theme.of(context).textTheme.headline4,)
-                                ],
-                              ),
-                              SizedBox(height: 5,),
-                              Text("Note: All price in the cart and during checkout are show including tax",style: Theme.of(context).textTheme.bodyText1 ),
-                            ]
-                        )
-                    ),
-
-                  secondaryButton((){
-                    profileProvider.isAuthenticated?
-                     Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)))
-                  :  Navigator.push(context, MaterialPageRoute(builder: (_)=>SignInScreen(false)));
-
-                  }, "Check Out", context)
-                ],
-              )
-          ),
-        ),
       ]);
 
   }

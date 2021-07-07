@@ -95,25 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-  // Future<bool> _onWillPop() async {
-  //   return (await showDialog(
-  //     context: context,
-  //     builder: (context) => new AlertDialog(
-  //       title: Text('Warning?',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-  //       content: Text('Do you want to exit an App',style: TextStyle(fontWeight: FontWeight.w500,fontSize: 15)),
-  //       actions: <Widget>[
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(false),
-  //           child: new Text('No'),
-  //         ),
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(true),
-  //           child: new Text('Yes'),
-  //         ),
-  //       ],
-  //     ),
-  //   )) ?? false;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +106,17 @@ class _HomeScreenState extends State<HomeScreen> {
               )
           ),
           drawer:  NavigationDrawer(),
-          body: Stack(
+          body:
+
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     activeScreen(activeTab),
+            //     CustomNavigationBar(onChangeTab)
+            //   ],
+            // )
+
+          Stack(
             children: [
               activeScreen(activeTab),
               Positioned(
