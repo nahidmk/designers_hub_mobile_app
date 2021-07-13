@@ -187,7 +187,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
     color: LIGHT_GRAY,
-    borderRadius: BorderRadius.all(Radius.circular(10)),
+    // border: Border.all(color: Colors.black,width: 1)
+    // borderRadius: BorderRadius.all(Radius.circular(10)),
+
   );
 
   TextEditingController _otpController = new TextEditingController();
@@ -269,7 +271,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       onChange: _onChange,
                     ),
                     TextFieldWithValidation(
-                      padding: EdgeInsets.only(bottom: 20),
+                      padding: EdgeInsets.only(bottom: 10),
                       obscureText: _hidePassword,
                       properties: _confirmPasswordProperties,
                       suffix: buildToggleHideOrShowButton(
@@ -321,14 +323,14 @@ class _SignUpFormState extends State<SignUpForm> {
                         :
                     SizedBox(
                             width: double.infinity,
-                            child: CupertinoButton(
+                            child: MaterialButton(
                               child: Text(
                                 'SUBMIT',
                                 style: TextStyle(
                                     color: CupertinoColors.white,
                                     fontWeight: FontWeight.w300),
                               ),
-                              color: CUSTOMER,
+                              color: Colors.black54,
                               onPressed:(){
                                 _signUp();
                               },
@@ -350,6 +352,7 @@ Widget _buildAlreadyHaveAccountMsg(
     Function toggleForm, Function _dismissErrorMsg) {
   return Center(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       Text('Already have an account ?'),
       CupertinoButton(
@@ -453,7 +456,7 @@ class OTPForm extends StatelessWidget {
                   radius: 15,
                 )
               : CupertinoButton(
-                  color: CUSTOMER,
+                  color: Colors.black54,
                   child: Text(
                     'Submit code',
                     style: TextStyle(color: CupertinoColors.white),

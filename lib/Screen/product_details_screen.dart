@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/design.dart';
@@ -13,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -286,15 +289,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       //name
                       Container(
                         // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
-                        margin: EdgeInsets.only(top: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                        margin: EdgeInsets.only(top: 20),
+                        child:
                             Text('${_design.name}',
-                                style: Theme.of(context).textTheme.headline1),
-                          ],
-                        ),
+                                style: TextStyle(fontSize: 27,fontWeight: FontWeight.w700,color: Colors.black54)),
                       ),
 
                       Divider(),
@@ -310,7 +308,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           children: [
                             Text(
                               'Fabrics :  ',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
                             ),
                             GestureDetector(
                               child: Container(
@@ -322,7 +320,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(_fabricsName,style: Theme.of(context).textTheme.bodyText1,),
+                                    Text(_fabricsName,style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),),
                                     Icon(CupertinoIcons.pencil)
                                   ],
                                 ),
@@ -347,7 +345,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               children: [
                                 Text(
                                   'Quantity : ',
-                                  style: Theme.of(context).textTheme.bodyText1,
+                            style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 5),
@@ -459,6 +457,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
 
                       ),
+
+                      Divider(),
+
+                      Container(
+                        // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
+                        child:
+                        Text('Description : ',
+                            style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black)),
+                      ),
+                      SizedBox(height: 10,),
+                      Container(
+                        // decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent,width: 2.0)),
+                        width: MediaQuery.of(context).size.width,
+                        child:
+                        Text('${_design.descriptions}',
+                            style: TextStyle(fontSize: 13,fontWeight: FontWeight.w300,color: Colors.black)),
+                      ),
+
+
 
                       SizedBox(height: 90,)
                     ],

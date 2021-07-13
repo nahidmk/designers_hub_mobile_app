@@ -304,7 +304,7 @@ class _SignInFromState extends State<SignInFrom> {
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
     color: LIGHT_GRAY,
-    borderRadius: BorderRadius.all(Radius.circular(10)),
+    // borderRadius: BorderRadius.all(Radius.circular(10)),
   );
 
 
@@ -362,7 +362,7 @@ class _SignInFromState extends State<SignInFrom> {
                   )
                       :
                   MaterialButton(
-                    color: CUSTOMER,
+                    color: Colors.black54,
                     child: Center(
                       child: Text(
                         'SIGN IN',

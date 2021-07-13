@@ -23,7 +23,7 @@ MaterialButton secondaryButton(VoidCallback function, String name,BuildContext c
         name,
         style: Theme.of(context).textTheme.button,
       ),
-      color: Colors.black,
+      color: Colors.black54,
       splashColor: Colors.greenAccent,
       highlightElevation: 30.0,
       textColor: Colors.black,
@@ -69,22 +69,25 @@ MaterialButton dangerButton(VoidCallback function, String name,BuildContext cont
 
 );
 
-MaterialButton AppBarButton(VoidCallback function, String name,BuildContext context) => (
-    MaterialButton(
-      onPressed: function,
-      child: Text(
-        name,
-        style: TextStyle(fontWeight: FontWeight.w300,fontSize: 10),
+Container AppBarButton(VoidCallback function, String name,BuildContext context) => (
+    Container(
+    height: 10,
+      decoration: BoxDecoration(border: Border.all(color: Colors.white,width: 10)),
+      child: MaterialButton(
+        onPressed: function,
+        child: Text(
+          name,
+          style: TextStyle(fontWeight: FontWeight.w300,fontSize: 13,wordSpacing: 5),
+
+        ),
+        color: Colors.black54,
+        splashColor: Colors.greenAccent,
+        highlightElevation: 30.0,
+        textColor: Colors.white,
+        padding: EdgeInsets.all(5),
+
       ),
-
-      color: Colors.black,
-      splashColor: Colors.greenAccent,
-      highlightElevation: 30.0,
-      textColor: Colors.white,
-      padding: EdgeInsets.all(5),
-
     )
-
 
 );
 

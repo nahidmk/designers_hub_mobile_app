@@ -1,6 +1,7 @@
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/helper/functions.dart';
 import 'package:designers_hub_modile_app/helper/text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -13,14 +14,11 @@ Widget createDrawerHeader(BuildContext context,User user) {
           margin: EdgeInsets.zero,
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-
-              image: DecorationImage(
-
-                  fit: BoxFit.fill,
-                  image:  AssetImage('assets/images/placeholder.jpg'))),
+            color: Colors.black54,
+          ),
           child: Stack(children: <Widget>[
             Positioned(
-              bottom: 50.0,
+              bottom: 40.0,
               left: 16.0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,10 +30,12 @@ Widget createDrawerHeader(BuildContext context,User user) {
                         fit: BoxFit.cover, height: 60, width: 60),
                   ),
                   Container(
-                    child: Text("Name : ${capitalize(user.fullName)}",style: Theme.of(context).textTheme.headline4,),
+                    margin: EdgeInsets.only(left: 15,top: 5),
+                    child: Text("${capitalize(user.fullName)}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white),),
                   ),
                   Container(
-                    child: Text("Phone : ${user.primaryNumber}",style: Theme.of(context).textTheme.headline4,),
+                    margin: EdgeInsets.only(left: 15,),
+                    child: Text("${user.primaryNumber}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white),),
                   )
                 ],
               ) ,

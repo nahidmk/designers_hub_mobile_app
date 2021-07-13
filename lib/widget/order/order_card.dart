@@ -31,9 +31,26 @@ class OrderCard extends StatelessWidget {
         print('order id --->${order.id}');
         Navigator.push(context, MaterialPageRoute(builder: (_)=>OrderDetailsScreen(id: order.id,)));
       },
-      child: Card(
         child:Container(
           padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(7),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(5),
+                bottomRight: Radius.circular(5),
+              bottomLeft: Radius.circular(5),
+              topLeft: Radius.circular(5)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
           child: Column(
             children: [
               CustomRow("ID: ${order.id}", "$CURRENCY${order.cart.grandTotal}"),
@@ -52,7 +69,7 @@ class OrderCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
+
 
     );
   }

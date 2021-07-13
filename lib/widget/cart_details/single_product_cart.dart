@@ -152,10 +152,24 @@ class _SingleProductCartState extends State<SingleProductCart> {
     }
 
 
-    return Card(
-      elevation: 3,
-      child: Container(
+    return  Container(
         // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 2.0)),
+      margin: EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(5),
+            bottomRight: Radius.circular(5)
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
         height: screenHeight,
         padding: EdgeInsets.only(top: 5,left: 5,right: 5,),
 
@@ -182,7 +196,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                     children: [
                       Text("${widget.cartDetails.design.name}",style: Theme.of(context).textTheme.subtitle1,),
                       GestureDetector(
-                        child:  Icon(Icons.delete,color: Colors.black,) ,
+                        child:  Icon(Icons.delete,color: Colors.red,) ,
                         onTap:(){
                         orderProvider.deleteDesign(widget.cartDetails.design.id);
                         },
@@ -329,7 +343,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
             ))
           ],
         ),
-      ),
+
     );
   }
 }

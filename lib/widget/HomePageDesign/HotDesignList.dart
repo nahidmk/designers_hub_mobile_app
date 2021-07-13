@@ -66,7 +66,7 @@ class _HotDesignState extends State<HotDesign> {
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailsScreen(id: e.id,)));
                   },
-                  child: (
+                  child:
                       SingleDesignCard(
                         e.price,
                         e.name,
@@ -74,9 +74,8 @@ class _HotDesignState extends State<HotDesign> {
                         screenHeightForDesignCard,
                         '$IMAGE_URL${e.thumbnail}',
                       )
-                  ),
-                )
 
+                )
             ),
             SizedBox(height: 100,)
           ]

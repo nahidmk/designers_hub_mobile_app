@@ -43,7 +43,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   @override
   Widget build(BuildContext context) {
 
-    OrderProvider orderProvider = Provider.of<OrderProvider>(context,listen: false);
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
     return Stack(
       children: [
