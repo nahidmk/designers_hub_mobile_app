@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">outh2</string>
-    <string name="facebook_app_id">966779757466816</string>
-    <string name="fb_login_protocol_scheme">fb966779757466816</string>
+    <string name="app_name">Oushod sheba</string>
+    <string name="facebook_app_id">460742414993407</string>
+    <string name="fb_login_protocol_scheme">fb460742414993407</string>
 </resources>

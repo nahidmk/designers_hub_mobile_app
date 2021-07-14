@@ -8,6 +8,7 @@ import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/widget/common/buttons.dart';
 import 'package:designers_hub_modile_app/widget/order/item_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ OrderDetailsScreen({required this.id});
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   bool showModalSheet = true;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -33,6 +35,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     WidgetsBinding.instance!.addPostFrameCallback((_) async {
       Provider.of<OrderProvider>(context,listen: false).getOrderByOrderId(widget.id);
     });
+
 
   }
 
@@ -51,6 +54,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       appBar: AppBar(title: Text('Order Details'),),
       body: Stack(
         children: [
+          orderProvider.loadingOrder?Center(child: CupertinoActivityIndicator(),):
           Container(
             child: Column(
               children: [
@@ -94,15 +98,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 padding: EdgeInsets.only(left: 5,right: 5),
                 child: ListView(
                   children: [
+
                     Container(
                       margin: EdgeInsets.only(
-                          left: 5, top: 10, bottom: 10),
+                          left: 5, top: 10,),
                       child: Row(
                           mainAxisAlignment:
                           MainAxisAlignment
                               .spaceBetween,
                           children: [
-                            Text('Total Account',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13),),
+                            Text('Order Status',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13),),
                             GestureDetector(
                               onTap: () => setState(() {
                                 showModalSheet = false;
@@ -111,6 +116,25 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 Icons.arrow_circle_down_sharp,
                               ),
                             )
+                          ]),
+                    ),
+                    Divider(),
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 5, top: 10, bottom: 10),
+                      child: CustomRow("Status", "${order.orderStatus.value}"),
+                    ),
+
+
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 5, top: 10, bottom: 10),
+                      child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment
+                              .spaceBetween,
+                          children: [
+                            Text('Total Amount',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 13),),
                           ]),
                     ),
                     Divider(),
@@ -148,15 +172,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     );
   }
 }
-Widget PayMentInfo(String title, String price){
-
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(title),
-      Text(price,),
-    ],
-  );
-}
+// Widget PaymentInfo(String title, String price){
+//
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//     children: [
+//       Text(title),
+//       Text(price,),
+//     ],
+//   );
+// }
 
 

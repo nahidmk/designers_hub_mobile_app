@@ -1,6 +1,7 @@
 
 import 'package:designers_hub_modile_app/Screen/profile_screen.dart';
 import 'package:designers_hub_modile_app/Screen/cart_screen.dart';
+import 'package:designers_hub_modile_app/Screen/search_screen.dart';
 import 'package:designers_hub_modile_app/helper/text.dart';
 import 'package:designers_hub_modile_app/widget/Drawer/navigation_drawer.dart';
 import 'package:designers_hub_modile_app/widget/HomePageDesign/HotDesignList.dart';
@@ -103,7 +104,10 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: AppBar(
               title: Text(
                 APP_NAME,
-              )
+              ),
+            actions: [
+              IconButton(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>SearchScreen())), icon: Icon(CupertinoIcons.search))
+            ],
           ),
           drawer:  NavigationDrawer(),
           body:

@@ -254,15 +254,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           onTap: () {
                                             setState(() {
                                               _imageUrl = e;
-
-
                                             });
 
                                           },
-                                          child: Image.network(
-                                            "$IMAGE_URL${e}",
-                                            fit: BoxFit.fill,
+                                          child: FadeInImage(
+                                            placeholder: AssetImage('assets/images/placeholder.jpg'),
+                                            image: NetworkImage("$IMAGE_URL$e"),
                                           ),
+
+                                          // child: Image.network(
+                                          //   "$IMAGE_URL${e}",
+                                          //   fit: BoxFit.fill,
+                                          // ),
                                         ),
                                       ))
                                 ],

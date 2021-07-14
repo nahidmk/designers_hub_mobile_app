@@ -12,8 +12,24 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
-      child: Card(
+      margin: EdgeInsets.only(top: 7,left: 7,right: 7),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(5),
+            bottomRight: Radius.circular(5),
+            bottomLeft: Radius.circular(5),
+            topLeft: Radius.circular(5)
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 3,
+            blurRadius: 7,
+            offset: Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
         child: Row(
 
           children: [
@@ -21,7 +37,11 @@ class ItemCard extends StatelessWidget {
               padding: EdgeInsets.all(5),
               height: 70,
               width: 70,
-              child: Image.network("$IMAGE_URL${cartDetails.design.thumbnail}",fit: BoxFit.fill,),
+              child: FadeInImage(
+                placeholder: AssetImage('assets/images/placeholder.jpg'),
+                image: NetworkImage("$IMAGE_URL${cartDetails.design.thumbnail}"),
+              ),
+              // child: Image.network("$IMAGE_URL${cartDetails.design.thumbnail}",fit: BoxFit.fill,),
             ),
             Container(
               width: MediaQuery.of(context).size.width-100,
@@ -39,7 +59,6 @@ class ItemCard extends StatelessWidget {
             )
           ],
         ),
-      ),
     );
   }
 }

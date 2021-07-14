@@ -139,7 +139,7 @@ class _SignInFromState extends State<SignInFrom> {
       MaterialPageRoute(
           builder: (context) => CustomWebViewForSocialLogin(
             selectedUrl:
-              ""
+            'https://www.facebook.com/dialog/oauth?client_id=460742414993407&redirect_uri=https://oushodsheba.com&response_type=token&scope=email,public_profile,',
             // 'https://www.facebook.com/dialog/oauth?client_id=966779757466816&redirect_uri=https://designer-s-hub.firebaseapp.com&response_type=token&scope=email,public_profile,',
           ),
           maintainState: true),
@@ -304,6 +304,7 @@ class _SignInFromState extends State<SignInFrom> {
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
     color: LIGHT_GRAY,
+    border: Border.all(color: Colors.black38,width: 0.2)
     // borderRadius: BorderRadius.all(Radius.circular(10)),
   );
 
@@ -319,7 +320,7 @@ class _SignInFromState extends State<SignInFrom> {
           children: <Widget>[
             Container(
               child: Image.asset(
-                'assets/images/2.jpg',
+                'assets/images/placeholder.jpg',
                 height: 100,
               ),
             ),
@@ -416,7 +417,7 @@ class _SignInFromState extends State<SignInFrom> {
                         Text('Sign in with facebook'),
                       ],
                     ),
-                    onPressed: (){},
+                    onPressed: _loginWithFacebook,
 
                   ),
                   SizedBox(height: 30,)

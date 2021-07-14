@@ -7,8 +7,9 @@ import 'dart:async';
 
 class DesignService{
 
-  Future <http.Response> getAllDesign() {
-    return http.get(Uri.parse(GET_ALL_DESIGN));
+  Future <http.Response> getAllDesign({String designName='',int page=0,int size=10}) {
+
+    return http.get(Uri.parse('$GET_ALL_DESIGN?name=$designName&page=$page&size=$size&userId=0'));
   }
 
 

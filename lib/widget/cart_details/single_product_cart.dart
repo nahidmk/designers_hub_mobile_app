@@ -179,10 +179,15 @@ class _SingleProductCartState extends State<SingleProductCart> {
               // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 1)),
                 height: 97,
                 width: 80,
-                child: Image.network(
-                  "$IMAGE_URL${widget.cartDetails.design.thumbnail}",
-                  fit: BoxFit.fill,
-                )),
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/images/placeholder.jpg'),
+                  image: NetworkImage("$IMAGE_URL${widget.cartDetails.design.thumbnail}"),
+                ),
+                // child: Image.network(
+                //   "$IMAGE_URL${widget.cartDetails.design.thumbnail}",
+                //   fit: BoxFit.fill,
+                // )
+            ),
             Expanded(
                 child: Container(
                   // decoration: BoxDecoration(border: Border.all(color: Colors.red,width: 1)),

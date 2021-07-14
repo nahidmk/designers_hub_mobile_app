@@ -187,6 +187,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
     color: LIGHT_GRAY,
+      border: Border.all(color: Colors.black38,width: 0.2)
     // border: Border.all(color: Colors.black,width: 1)
     // borderRadius: BorderRadius.all(Radius.circular(10)),
 

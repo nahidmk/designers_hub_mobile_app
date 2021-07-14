@@ -110,10 +110,10 @@ class DesignProvider extends ChangeNotifier {
   }
 
 
-  void getDesignList() async {
+  void getDesignList({String designName=''}) async {
     try {
       loadingList = true;
-      final response = await designService.getAllDesign();
+      final response = await designService.getAllDesign(designName: designName);
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         designList = (jsonResponse['content'] as List).map(

@@ -37,7 +37,12 @@ class SingleDesignCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: Image.network(imgUrl,fit: BoxFit.cover,),
+              width: cardWidth*0.36,
+              child: FadeInImage(
+                placeholder: AssetImage('assets/images/placeholder.jpg'),
+                image: NetworkImage(imgUrl),
+              ),
+              // child: Image.network(imgUrl,fit: BoxFit.cover,),
             ),
             Expanded(
                 child: Container(
