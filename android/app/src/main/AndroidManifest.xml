@@ -3,7 +3,7 @@
     <!-- Required to fetch data from the internet. -->
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="designers_hub_modile_app"
+        android:label="Alisha's World"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
