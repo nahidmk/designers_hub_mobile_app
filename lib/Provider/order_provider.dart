@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -17,7 +16,6 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OrderProvider extends ChangeNotifier {
-
   OrderService get orderService => GetIt.I<OrderService>();
 
   Cart _cart = Cart(
@@ -32,16 +30,43 @@ class OrderProvider extends ChangeNotifier {
     promo: Promo(code: ""),
   );
 
-  Order _order = Order(id: 0,
+  Order _order = Order(
+      id: 0,
       invoiceNumber: '',
       createdAt: '',
-      cart: Cart(finalPrice: 0, grandTotal: 0, discount: 0, id: 0, totalPrice: 0, totalProducts: 0, printingCost: 0, cartDetailsList: [], promo: Promo(code: '')),
+      cart: Cart(
+          finalPrice: 0,
+          grandTotal: 0,
+          discount: 0,
+          id: 0,
+          totalPrice: 0,
+          totalProducts: 0,
+          printingCost: 0,
+          cartDetailsList: [],
+          promo: Promo(code: '')),
       paymentType: PaymentType(name: '', value: ''),
       orderStatus: OrderStatus(name: '', value: ''),
-      deliveryAddress: DeliveryAddress(id: 0, address: '', title: '', phoneNumber: ''),
-      user: User(active: false, address: "", password: '', banned: false, dateOfBirth:"", disabled: false, email: "", fullName: "", gender: '', id: 0, nid: '', nidPictureBack: '', nidPictureFront: '', primaryNumber: '', profilePicture: '', provider: '', providerId: '', secondaryNumber: '')
-  );
-
+      deliveryAddress:
+          DeliveryAddress(id: 0, address: '', title: '', phoneNumber: ''),
+      user: User(
+          active: false,
+          address: "",
+          password: '',
+          banned: false,
+          dateOfBirth: "",
+          disabled: false,
+          email: "",
+          fullName: "",
+          gender: '',
+          id: 0,
+          nid: '',
+          nidPictureBack: '',
+          nidPictureFront: '',
+          primaryNumber: '',
+          profilePicture: '',
+          provider: '',
+          providerId: '',
+          secondaryNumber: ''));
 
   Order get order => _order;
 
@@ -50,7 +75,7 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  OrderProvider(){
+  OrderProvider() {
     _loadCart();
   }
 
@@ -60,6 +85,22 @@ class OrderProvider extends ChangeNotifier {
   List<Order> _orderList = [];
   String _ordersErrorMsg = '';
 
+  int _currentPage = 0;
+  bool _loadingMore = false;
+
+  int get currentPage => _currentPage;
+
+  set currentPage(int value) {
+    _currentPage = value;
+    notifyListeners();
+  }
+
+  bool get loadingMore => _loadingMore;
+
+  set loadingMore(bool value) {
+    _loadingMore = value;
+    notifyListeners();
+  }
 
   String get ordersErrorMsg => _ordersErrorMsg;
 
@@ -85,13 +126,12 @@ class OrderProvider extends ChangeNotifier {
   void _loadCart() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? cartString = pref.getString('cart');
-    if(cartString != null){
+    if (cartString != null) {
       cart = Cart.fromJson(json.decode(cartString));
     }
   }
 
   bool _loadingUpdateCart = false;
-
 
   bool get loadingUpdateCart => _loadingUpdateCart;
 
@@ -117,7 +157,6 @@ class OrderProvider extends ChangeNotifier {
   Cart get cart => _cart;
   bool _loadingOrder = false;
 
-
   bool get loadingOrder => _loadingOrder;
 
   set loadingOrder(bool value) {
@@ -130,22 +169,22 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteDesign(int id){
-    _cart.cartDetailsList.removeWhere((element) => element.design.id==id);
+  void deleteDesign(int id) {
+    _cart.cartDetailsList.removeWhere((element) => element.design.id == id);
     calculateTotalPrice();
   }
 
-  void calculateTotalPrice() async{
-    double totalPrice =0;
+  void calculateTotalPrice() async {
+    double totalPrice = 0;
 
-    for(int i =0;i<cart.cartDetailsList.length;i++){
+    for (int i = 0; i < cart.cartDetailsList.length; i++) {
       CartDetails cartDetails = cart.cartDetailsList[i];
-      if(cartDetails.design.designType.requiredFabric){
-        totalPrice += cart.cartDetailsList[i].design.price +(cartDetails.fabric.price*cartDetails.quantity);
-      }else{
-        totalPrice += cartDetails.design.price*cartDetails.quantity;
+      if (cartDetails.design.designType.requiredFabric) {
+        totalPrice += cart.cartDetailsList[i].design.price +
+            (cartDetails.fabric.price * cartDetails.quantity);
+      } else {
+        totalPrice += cartDetails.design.price * cartDetails.quantity;
       }
-
     }
     _cart.totalPrice = totalPrice;
     cart = _cart;
@@ -153,27 +192,27 @@ class OrderProvider extends ChangeNotifier {
     pref.setString('cart', json.encode(cart.toJson()));
   }
 
-  void addToCart(CartDetails cartDetails, double quantity){
+  void addToCart(CartDetails cartDetails, double quantity) {
+    final exist = _cart.cartDetailsList
+        .where((element) => element.design.id == cartDetails.design.id);
 
-    final exist = _cart.cartDetailsList.where((element) => element.design.id==cartDetails.design.id);
-
-    if(exist.isNotEmpty){
+    if (exist.isNotEmpty) {
       _cart.cartDetailsList = _cart.cartDetailsList.map((e) {
-        if(e.design.id==cartDetails.design.id){
+        if (e.design.id == cartDetails.design.id) {
           e.quantity = quantity;
         }
         return e;
       }).toList();
-    }else{
+    } else {
       cartDetails.quantity = quantity;
       _cart.cartDetailsList.add(cartDetails);
     }
     calculateTotalPrice();
   }
 
-
-  Future<bool> updateCart(List<CartDetails> cartDetailsList, {String promoCode = ''}) async {
-    try{
+  Future<bool> updateCart(List<CartDetails> cartDetailsList,
+      {String promoCode = ''}) async {
+    try {
       loadingUpdateCart = true;
       Cart newCart = Cart(
           finalPrice: 0,
@@ -184,74 +223,81 @@ class OrderProvider extends ChangeNotifier {
           totalProducts: cartDetailsList.length,
           printingCost: 100,
           cartDetailsList: cartDetailsList,
-          promo: Promo(code: promoCode)
-      );
+          promo: Promo(code: promoCode));
 
       final response = await orderService.updateCart(newCart);
       print('response--->${response.body}');
-      if(response.statusCode==200){
-          cart = Cart.fromJson(json.decode(response.body));
-      }else{
+      if (response.statusCode == 200) {
+        cart = Cart.fromJson(json.decode(response.body));
+      } else {
         print('cart update response error---->${response.body}');
         loadingUpdateCart = false;
         return false;
       }
       loadingUpdateCart = false;
       return true;
-    }catch(error){
+    } catch (error) {
       print('cart update error---->$error');
       loadingUpdateCart = false;
       return false;
     }
-
   }
 
   Future<Order> placeOrder(DeliveryAddress selectedDeliveryAddress) async {
-    try{
+    try {
       loadingOrder = true;
       final response = await orderService.placeOrder(selectedDeliveryAddress);
-      if(response.statusCode == 201){
+      if (response.statusCode == 201) {
         print('successful order - >${response.body}');
         _order = Order.fromJson(json.decode(response.body));
-      }else{
+      } else {
         loadingOrder = false;
         print('order place response error --> ${json.decode(response.body)}');
         return _order;
       }
       loadingOrder = false;
       return _order;
-
-    }catch(error){
+    } catch (error) {
       loadingOrder = false;
       print('place order error ---> $error');
       return _order;
     }
   }
 
+  Future<List<Order>> getAllOrder(
+      {int page = 0, int size = 10, bool loadMore = false}) async {
+    try {
+      !loadMore ? loadingOrders = true : loadingMore = true;
+      page = loadingMore ? currentPage : page;
+      setCurrentPage(page, loadingMore);
 
-  Future<List<Order>> getAllOrder(int page, int size) async {
-    try{
-      loadingOrders = true;
       ordersErrorMsg = '';
-      Response response = await orderService.getAllOrder(page, size);
+      Response response =
+          await orderService.getAllOrder(page: page, size: size);
 
       print("response --->${json.decode(response.body)}");
 
       totalElements = json.decode(response.body)['totalElements'];
 
-      _orderList = (json.decode(response.body)['content'] as List)
-          .map((value) => Order.fromJson(value))
-          .toList();
-      loadingOrders = false;
+      orderList = loadMore
+          ? [
+              ..._orderList,
+              ...(json.decode(response.body)['content'] as List)
+                  .map((value) => Order.fromJson(value))
+                  .toList()
+            ]
+          : (json.decode(response.body)['content'] as List)
+              .map((value) => Order.fromJson(value))
+              .toList();
+
+      !loadMore ? loadingOrders = false : loadingMore = false;
       return _orderList;
-    }catch(error){
-      loadingOrders = false;
+    } catch (error) {
+      !loadMore ? loadingOrders = false : loadingMore = false;
       ordersErrorMsg = getErrorMsg(error);
     }
     return [];
-
   }
-
 
   Future getOrderByOrderId(int orderId) async {
     loadingOrder = true;
@@ -273,14 +319,18 @@ class OrderProvider extends ChangeNotifier {
     }
   }
 
-  String getErrorMsg(error){
+  String getErrorMsg(error) {
     if (error is SocketException) {
       return 'Please check your internet connection !';
-    }
-    else{
+    } else {
       return 'Something went wrong. Please try again later !';
     }
   }
 
-
+  setCurrentPage(int page, bool __loadingMore) {
+    if (!__loadingMore && currentPage > 0) {
+      currentPage = page;
+    }
+    currentPage = currentPage + 1;
+  }
 }

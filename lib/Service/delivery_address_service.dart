@@ -7,12 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DeliveryAddressService{
 
-  Future<http.Response> fetchDeliveryAddresses() async {
+  Future<http.Response> fetchDeliveryAddresses({int page = 0, int size = 20}) async {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? authToken = prefs.getString('aw_auth_token');
 
-    return http.get(Uri.parse('$GET_ALL_DELIVERY_ADDRESSES'), headers: getAuthHeader(authToken));
+    return http.get(Uri.parse('$GET_ALL_DELIVERY_ADDRESSES?page=$page&size=$size'), headers: getAuthHeader(authToken));
   }
 
   Future<http.Response> postDeliveryAddress(DeliveryAddress deliveryAddress) async {

@@ -405,7 +405,8 @@ class _SignInFromState extends State<SignInFrom> {
                         Text('Sign in with google'),
                       ],
                     ),
-                    onPressed: _signInWithGoogle,
+                    // onPressed: _signInWithGoogle,
+                    onPressed: (){},
                   ),
                   MaterialButton(
                     color: LIGHT_GRAY,
@@ -417,7 +418,8 @@ class _SignInFromState extends State<SignInFrom> {
                         Text('Sign in with facebook'),
                       ],
                     ),
-                    onPressed: _loginWithFacebook,
+                    // onPressed: _loginWithFacebook,
+                    onPressed: (){},
 
                   ),
                   SizedBox(height: 30,)

@@ -22,13 +22,24 @@ class _HotDesignState extends State<HotDesign> {
     // TODO: implement initState
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       if(Provider.of<HomePageDesignProvider>(context, listen: false).homePageDesignList.isEmpty)
-        Provider.of<HomePageDesignProvider>(context, listen: false).getHomePageDesignList();
+        _getHomePageDesignList();
       if(Provider.of<DesignProvider>(context, listen: false).designList.isEmpty)
-        Provider.of<DesignProvider>(context, listen: false).getDesignList();
+        _getDesignList(false);
       if(Provider.of<ProfileProvider>(context,listen: false).profile.primaryNumber.isEmpty)
         Provider.of<ProfileProvider>(context,listen: false).isLogin();
     });
   }
+
+
+  _getHomePageDesignList(){
+    Provider.of<HomePageDesignProvider>(context, listen: false).getHomePageDesignList();
+  }
+
+  _getDesignList(bool loadMore){
+    Provider.of<DesignProvider>(context, listen: false).getDesignList(loadMore: loadMore);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +88,14 @@ class _HotDesignState extends State<HotDesign> {
 
                 )
             ),
+            if(designProvider.designList.length<designProvider.totalElements)
+              designProvider.loadingMore?
+              Center(
+                child: CupertinoActivityIndicator(),
+              )
+                  : CupertinoButton(
+                  child: Text('Load more'),
+                  onPressed: () => _getDesignList(true)),
             SizedBox(height: 100,)
           ]
 

@@ -34,9 +34,9 @@ class OrderService {
     );
   }
 
-  Future<Http.Response> getAllOrder(int page, int size) async {
+  Future<Http.Response> getAllOrder({int page = 0, int size = 10}) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
+    print('page===>$page \n size===>$size');
     return Http.get(
       Uri.parse("$GET_ALL_ORDER?page=$page&size=$size"),
       headers: getAuthHeader(
