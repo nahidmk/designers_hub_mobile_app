@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "981751900036",
-    "project_id": "designer-s-hub",
-    "storage_bucket": "designer-s-hub.appspot.com"
+    "project_number": "774585865023",
+    "project_id": "alisha-s-world",
+    "storage_bucket": "alisha-s-world.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:981751900036:android:ef4ad0f28ca3f3aba19fd1",
+        "mobilesdk_app_id": "1:774585865023:android:dd96e1e3cb217756cc398a",
         "android_client_info": {
           "package_name": "com.example.designers_hub_modile_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "981751900036-gbqh9qoiisjjk1ktfpujcl58b1glukmf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.designers_hub_modile_app",
-            "certificate_hash": "b2e568ae594af9bccc166caa0e2ddd3264dd33f8"
-          }
-        },
-        {
-          "client_id": "981751900036-6cd7i29o7t2atg0ba01s01h6bk3lc7oo.apps.googleusercontent.com",
+          "client_id": "774585865023-8c62tlld3fscgotsq43ejsgbhe3b3jf5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ7SdH3ln-yBHKU1x67gtzwVM7HEECi2g"
+          "current_key": "AIzaSyCHVeSBtn9kwHrPbpfNJp-PXXC0m0F6Seg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "981751900036-6cd7i29o7t2atg0ba01s01h6bk3lc7oo.apps.googleusercontent.com",
+              "client_id": "774585865023-8c62tlld3fscgotsq43ejsgbhe3b3jf5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
