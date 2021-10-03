@@ -32,7 +32,7 @@ class _HotDesignState extends State<HotDesign> {
 
 
   _getHomePageDesignList(){
-    Provider.of<HomePageDesignProvider>(context, listen: false).getHomePageDesignList();
+    Provider.of<HomePageDesignProvider>(context, listen: false).getHomePageDesignList(context);
   }
 
   _getDesignList(bool loadMore){

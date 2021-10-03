@@ -4,12 +4,14 @@ import 'dart:convert';
 
 import 'package:designers_hub_modile_app/Model/home_page_design.dart';
 import 'package:designers_hub_modile_app/Service/home_page_desing_service.dart';
+import 'package:designers_hub_modile_app/helper/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 
-class HomePageDesignProvider extends ChangeNotifier{
+class HomePageDesignProvider extends ChangeNotifier {
 
-  HomePageDesignService get homePageDesignService => GetIt.I<HomePageDesignService>();
+  HomePageDesignService get homePageDesignService =>
+      GetIt.I<HomePageDesignService>();
 
   List<HomePageDesign> _homePageDesignList = [];
   bool _loadingHomePageDesignList = true;
@@ -38,27 +40,29 @@ class HomePageDesignProvider extends ChangeNotifier{
   }
 
 
-  void getHomePageDesignList() async {
-    try{
+  void getHomePageDesignList(BuildContext context) async {
+    try {
       loadingHomePageDesignList = true;
       final response = await homePageDesignService.getAllHomePageDesign();
-      if(response.statusCode == 200){
+      print('get home page desing==>${response.statusCode}');
+      if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-
         homePageDesignList = (jsonResponse['content'] as List).map(
                 (e) => HomePageDesign.fromJson(e)
         ).toList();
 
         totalElements = jsonResponse['totalElements'];
-      }else{
-        print('get home page design response error ---> ${json.decode(response.body)}');
+      } else {
+        print('get home page design response error ---> ${json.decode(
+            response.body)}');
       }
       loadingHomePageDesignList = false;
-    }catch(error){
+    }
+    catch (error) {
       loadingHomePageDesignList = false;
       print('home page design get error ---> $error');
+      // showApiErrorMessage(error, context);
     }
   }
-
 
 }

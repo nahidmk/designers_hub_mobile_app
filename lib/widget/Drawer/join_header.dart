@@ -22,7 +22,7 @@ class JoinHeader extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width / 3,
               child: Image.asset(
-              'assets/images/placeholder.jpg',
+              'assets/images/sp.jpeg',
               fit: BoxFit.cover,
               )
             ),
