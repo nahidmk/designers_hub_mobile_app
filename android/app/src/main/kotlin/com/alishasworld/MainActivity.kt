@@ -1,4 +1,4 @@
-package com.example.designers_hub_modile_app
+package com.alishasworld
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:774585865023:android:dd96e1e3cb217756cc398a",
+        "mobilesdk_app_id": "1:774585865023:android:62b9865a112b99cacc398a",
         "android_client_info": {
-          "package_name": "com.example.designers_hub_modile_app"
+          "package_name": "com.alishasworld"
         }
       },
       "oauth_client": [
