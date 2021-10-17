@@ -394,7 +394,7 @@ class _SignInFromState extends State<SignInFrom> {
                       widget.toggleForm(true);
                     },
                   ),
-                  MaterialButton(
+                  loading?CupertinoActivityIndicator(): MaterialButton(
                     color: LIGHT_GRAY,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -406,7 +406,7 @@ class _SignInFromState extends State<SignInFrom> {
                     ),
                     onPressed: _signInWithGoogle,
                   ),
-                  MaterialButton(
+                  loading?CupertinoActivityIndicator():MaterialButton(
                     color: LIGHT_GRAY,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
