@@ -419,7 +419,8 @@ class ProfileProvider extends ChangeNotifier{
 
 
     final response = await profileService.signUp(user, _idToken);
-    if (response.statusCode == 201) {
+    print('');
+    if (response.statusCode == 200) {
       print('success---->${json.decode(response.body)}');
       signIn(user.primaryNumber, user.password);
       return true;

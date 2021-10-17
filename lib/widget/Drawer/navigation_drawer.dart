@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavigationDrawer extends StatefulWidget {
 
@@ -17,6 +18,8 @@ class NavigationDrawer extends StatefulWidget {
 }
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
+
+
 
 
   @override
@@ -121,11 +124,21 @@ class TermsAndCondition extends StatelessWidget {
 
 
 class FacebookPage extends StatelessWidget {
+
+  _launchURL(String url) async {
+    print('called');
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
       onPressed: () {
-        // _launchURL('https://www.facebook.com/OushodS');
+        _launchURL('https://www.facebook.com/profile.php?id=100073002721582');
       },
       child: Row(
         children: <Widget>[

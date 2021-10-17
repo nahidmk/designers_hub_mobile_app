@@ -42,6 +42,7 @@ dependencies:
   flutter_inner_drawer: ^1.0.0+1
   back_button_interceptor: ^5.0.1
   change_app_package_name: ^1.0.0
+  url_launcher: ^6.0.10
 #  args: ^2.1.1
 #  yaml: ^3.1.0
 
