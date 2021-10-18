@@ -14,7 +14,7 @@ Widget createDrawerHeader(BuildContext context,User user) {
           margin: EdgeInsets.zero,
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-            color: Colors.black54,
+            color: Colors.black,
           ),
           child: Stack(children: <Widget>[
             Positioned(

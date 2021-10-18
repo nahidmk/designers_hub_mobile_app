@@ -1,5 +1,7 @@
+
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
+import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Screen/profile_screen.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+
 
 import 'helper_widgets.dart';
 
@@ -24,6 +27,8 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+
+
   // TextFieldProperties _firstNameProperties;
   // TextFieldProperties _phoneNumberProperties;
   // TextFieldProperties _passwordProperties;

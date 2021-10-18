@@ -346,7 +346,7 @@ class ProfileProvider extends ChangeNotifier{
         (Firebse.FirebaseAuthException authException) {
       if(authException.code == 'invalid-phone-number'){
         print('The provided phone number is not valid.');
-        signUpErrorMsg = 'The provided phone number is not valid';
+        signUpErrorMsg = "The provided phone number is not valid";
       }
       signUpLoading = false;
     };
@@ -354,9 +354,9 @@ class ProfileProvider extends ChangeNotifier{
     final Firebse.PhoneCodeSent smsSent = (String verId, [int? forceResend]) {
       print('phone code sent --->$verId');
       verificationId = verId;
-
-      phoneCodeSent = true;
       signUpLoading = false;
+      phoneCodeSent = true;
+
     };
 
 
