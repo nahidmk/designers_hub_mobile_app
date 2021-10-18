@@ -44,6 +44,17 @@ class _SignInFromState extends State<SignInFrom> {
     });
   }
 
+  bool _loadingFacebookLogin = false;
+
+
+  bool get loadingFacebookLogin => _loadingFacebookLogin;
+
+  set loadingFacebookLogin(bool value) {
+    setState(() {
+      _loadingFacebookLogin = value;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -133,7 +144,7 @@ class _SignInFromState extends State<SignInFrom> {
 
   Future<void> _loginWithFacebook() async{
 
-    loading = true;
+    loadingFacebookLogin = true;
     String result = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -155,18 +166,18 @@ class _SignInFromState extends State<SignInFrom> {
         bool signedIn = await Provider.of<ProfileProvider>(context,listen: false).socialMediaSignIn(token);
         if (signedIn && widget.popAble != null) {
           if(widget.fromSideBar){
-            loading = false;
+            loadingFacebookLogin = false;
             Navigator.pop(context);
           }else {
             Navigator.push(
                 context, MaterialPageRoute(builder: (_) => ProfileScreen()));
-            loading = false;
+            loadingFacebookLogin = false;
             Navigator.pop(context);
           }
         }
-        loading = false;
+        loadingFacebookLogin = false;
       } catch (e) {
-        loading = false;
+        loadingFacebookLogin = false;
         print('Facebook signin error -> $e');
       }
     }
@@ -394,7 +405,8 @@ class _SignInFromState extends State<SignInFrom> {
                       widget.toggleForm(true);
                     },
                   ),
-                  MaterialButton(
+
+                  loading?CupertinoActivityIndicator():MaterialButton(
                     color: LIGHT_GRAY,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -406,7 +418,7 @@ class _SignInFromState extends State<SignInFrom> {
                     ),
                     onPressed: _signInWithGoogle,
                   ),
-                  MaterialButton(
+                  loadingFacebookLogin?CupertinoActivityIndicator():MaterialButton(
                     color: LIGHT_GRAY,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -417,8 +429,6 @@ class _SignInFromState extends State<SignInFrom> {
                       ],
                     ),
                     onPressed: _loginWithFacebook,
-
-
                   ),
                   SizedBox(height: 30,)
                 ],

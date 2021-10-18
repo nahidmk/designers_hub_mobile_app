@@ -346,6 +346,7 @@ class ProfileProvider extends ChangeNotifier{
         (Firebse.FirebaseAuthException authException) {
       if(authException.code == 'invalid-phone-number'){
         print('The provided phone number is not valid.');
+        signUpErrorMsg = 'The provided phone number is not valid';
       }
       signUpLoading = false;
     };
@@ -376,7 +377,6 @@ class ProfileProvider extends ChangeNotifier{
         codeAutoRetrievalTimeout: autoTimeout,
 
       );
-      signUpLoading = false;
     } catch (error) {
       print('google error---> ${error}');
       signUpErrorMsg = 'Unexpected error !';
@@ -423,13 +423,12 @@ class ProfileProvider extends ChangeNotifier{
     if (response.statusCode == 200) {
       print('success---->${json.decode(response.body)}');
       signIn(user.primaryNumber, user.password);
+      phoneVerificationLoading = false;
       return true;
     } else {
       print('failed---->${json.decode(response.body)}');
       signUpErrorMsg = 'Unexpected error !';
-      phoneCodeSent = false;
       phoneVerificationLoading = false;
-      phoneCodeSent = false;
       return false;
     }
 

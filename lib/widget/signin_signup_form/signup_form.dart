@@ -1,7 +1,5 @@
-
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Model/widget_helper_models/textFieldProperties.dart';
-import 'package:designers_hub_modile_app/Provider/order_provider.dart';
 import 'package:designers_hub_modile_app/Provider/profile_provider.dart';
 import 'package:designers_hub_modile_app/Screen/profile_screen.dart';
 import 'package:designers_hub_modile_app/helper/colors.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
 
 import 'helper_widgets.dart';
 
@@ -27,8 +24,6 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-
-
   // TextFieldProperties _firstNameProperties;
   // TextFieldProperties _phoneNumberProperties;
   // TextFieldProperties _passwordProperties;
@@ -41,66 +36,64 @@ class _SignUpFormState extends State<SignUpForm> {
       return '';
   }
 
-  TextFieldProperties _firstNameProperties =  TextFieldProperties(
-  controller: TextEditingController(),
-  label: 'Full Name',
-  required: true,
-  inputType: "text",
-  keyboardType: TextInputType.text,
-  validate: (String text) {
-  if (text.length < 1) {
-  return 'Too small.';
-  } else if (text.length > 20) {
-  return 'Too long';
-  } else
-  return '';
-  });
-
-
+  TextFieldProperties _firstNameProperties = TextFieldProperties(
+      controller: TextEditingController(),
+      label: 'Full Name',
+      required: true,
+      inputType: "text",
+      keyboardType: TextInputType.text,
+      validate: (String text) {
+        if (text.length < 1) {
+          return 'Too small.';
+        } else if (text.length > 20) {
+          return 'Too long';
+        } else
+          return '';
+      });
 
   TextFieldProperties _phoneNumberProperties = new TextFieldProperties(
-  controller: new TextEditingController(),
-  label: 'Phone number',
-  required: true,
-  inputType: "number",
-  keyboardType: TextInputType.number,
-  validate: (String text) {
-  if (text.length < 10 || text.length > 10) {
-  return 'Phone number must be 10 digits.';
-  } else
-  return '';
-  });
+      controller: new TextEditingController(),
+      label: 'Phone number',
+      required: true,
+      inputType: "number",
+      keyboardType: TextInputType.number,
+      validate: (String text) {
+        if (text.length < 10 || text.length > 10) {
+          return 'Phone number must be 10 digits.';
+        } else
+          return '';
+      });
 
   TextFieldProperties _passwordProperties = new TextFieldProperties(
-  controller: new TextEditingController(text: ''),
-  label: 'Password',
-  required: true,
-  inputType: "text",
-  keyboardType: TextInputType.text,
-  validate: (String text) {
-  if (text.isEmpty) {
-  return 'Please enter your password';
-  }
-  if (text.length < 6) {
-  return 'At least 6 character';
-  }
-  return '';
-  });
+      controller: new TextEditingController(text: ''),
+      label: 'Password',
+      required: true,
+      inputType: "text",
+      keyboardType: TextInputType.text,
+      validate: (String text) {
+        if (text.isEmpty) {
+          return 'Please enter your password';
+        }
+        if (text.length < 6) {
+          return 'At least 6 character';
+        }
+        return '';
+      });
 
   TextFieldProperties _confirmPasswordProperties = new TextFieldProperties(
-  controller: new TextEditingController(),
-  label: 'Confirm password',
-  inputType: "text",
-  keyboardType: TextInputType.text,
-  required: true,
-  validate: (String text) {
-  if (text.isEmpty) {
-  return 'Please confirm your password';
-  }
-  });
+      controller: new TextEditingController(),
+      label: 'Confirm password',
+      inputType: "text",
+      keyboardType: TextInputType.text,
+      required: true,
+      validate: (String text) {
+        if (text.isEmpty) {
+          return 'Please confirm your password';
+        }
+      });
+
   @override
   void initState() {
-
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _confirmPasswordProperties = new TextFieldProperties(
           controller: new TextEditingController(),
@@ -114,10 +107,17 @@ class _SignUpFormState extends State<SignUpForm> {
             }
             return _checkPassword(text);
           });
-    });
-    Firebase.initializeApp();
-  }
 
+      ProfileProvider profileProvider = Provider.of<ProfileProvider>(context,listen: false);
+      profileProvider.phoneCodeSent = false;
+      profileProvider.phoneVerificationLoading = false;
+      profileProvider.phoneVerificationErrorMsg = '';
+    });
+
+
+    Firebase.initializeApp();
+
+  }
 
   String _errorMessage = '';
   bool termsAndConditions = false;
@@ -156,8 +156,9 @@ class _SignUpFormState extends State<SignUpForm> {
     });
 
     if (valid && !termsAndConditions) {
-
-      Fluttertoast.showToast(msg: "You must accept privacy policy and terms & conditions in order to sign up for $APP_NAME ");
+      Fluttertoast.showToast(
+          msg:
+              "You must accept privacy policy and terms & conditions in order to sign up for $APP_NAME ");
       return false;
     }
 
@@ -186,46 +187,45 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   final BoxDecoration _textFieldDecoration = BoxDecoration(
-    color: LIGHT_GRAY,
-      border: Border.all(color: Colors.black38,width: 0.2)
-    // border: Border.all(color: Colors.black,width: 1)
-    // borderRadius: BorderRadius.all(Radius.circular(10)),
+      color: LIGHT_GRAY, border: Border.all(color: Colors.black38, width: 0.2)
+      // border: Border.all(color: Colors.black,width: 1)
+      // borderRadius: BorderRadius.all(Radius.circular(10)),
 
-  );
+      );
 
   TextEditingController _otpController = new TextEditingController();
 
- @override
- void didChangeDependencies() {
-   // TODO: implement didChangeDependencies
-   super.didChangeDependencies();
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
 
-   if(Provider.of<ProfileProvider>(context, listen: false).isAuthenticated && Navigator.canPop(context)){
-     Navigator.pop(context);
-   }
- }
+    if (Provider.of<ProfileProvider>(context, listen: false).isAuthenticated &&
+        Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     ProfileProvider profileProvider = Provider.of<ProfileProvider>(context);
+
 
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: SingleChildScrollView(
-        child:
-        profileProvider.phoneCodeSent
+        child: profileProvider.phoneCodeSent
             ? OTPForm(
                 controller: _otpController,
                 user: new User(
                   id: 0,
-                    active: false,
-
-                    primaryNumber:
-                        '+880${_phoneNumberProperties.controller.text}',
-                    fullName: _firstNameProperties.controller.text,
-                    password: _passwordProperties.controller.text,
+                  active: false,
+                  primaryNumber:
+                      '+880${_phoneNumberProperties.controller.text}',
+                  fullName: _firstNameProperties.controller.text,
+                  password: _passwordProperties.controller.text,
                   address: '',
                   banned: false,
                   dateOfBirth: '',
@@ -234,17 +234,15 @@ class _SignUpFormState extends State<SignUpForm> {
                   gender: '',
                   nid: '',
                   nidPictureBack: '',
-                  nidPictureFront:'' ,
-                  profilePicture:'' ,
-                  provider:'' ,
+                  nidPictureFront: '',
+                  profilePicture: '',
+                  provider: '',
                   providerId: '',
-                  secondaryNumber:'' ,
-
+                  secondaryNumber: '',
                 ),
                 dismissErrorMsg: _dismissErrorMsg,
-                resend: _signUp
-        )
-           : Container(
+                resend: _signUp)
+            : Container(
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: <Widget>[
@@ -289,8 +287,6 @@ class _SignUpFormState extends State<SignUpForm> {
                             children: [
                               Checkbox(
                                 value: termsAndConditions,
-
-
                                 onChanged: (value) {
                                   setState(() {
                                     termsAndConditions = value!;
@@ -299,13 +295,12 @@ class _SignUpFormState extends State<SignUpForm> {
                               ),
                               Text(
                                 "Please agree with terms and conditions",
-                                style:
-                                TextStyle(color: CupertinoColors.activeOrange, fontSize: 12),
+                                style: TextStyle(
+                                    color: CupertinoColors.activeOrange,
+                                    fontSize: 12),
                               ),
                             ],
-
                           ),
-
                         ],
                       ),
                     ),
@@ -317,12 +312,12 @@ class _SignUpFormState extends State<SignUpForm> {
                             ? _errorMessage
                             : profileProvider.signUpErrorMsg,
                         _dismissErrorMsg),
+
                     profileProvider.signUpLoading
                         ? CupertinoActivityIndicator(
                             radius: 15,
                           )
-                        :
-                    SizedBox(
+                        : SizedBox(
                             width: double.infinity,
                             child: MaterialButton(
                               child: Text(
@@ -332,15 +327,16 @@ class _SignUpFormState extends State<SignUpForm> {
                                     fontWeight: FontWeight.w300),
                               ),
                               color: Colors.black54,
-                              onPressed:(){
+                              onPressed: () {
                                 _signUp();
                               },
                             ),
                           ),
                     _buildAlreadyHaveAccountMsg(
                         widget.toggleForm, _dismissErrorMsg),
-
-                    SizedBox(height: 70,)
+                    SizedBox(
+                      height: 70,
+                    )
                   ],
                 ),
               ),
@@ -353,7 +349,7 @@ Widget _buildAlreadyHaveAccountMsg(
     Function toggleForm, Function _dismissErrorMsg) {
   return Center(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       Text('Already have an account ?'),
       CupertinoButton(
@@ -452,6 +448,7 @@ class OTPForm extends StatelessWidget {
           ),
           ShowErrorMsgIfNeeded(
               profileProvider.phoneVerificationErrorMsg, dismissErrorMsg),
+
           profileProvider.phoneVerificationLoading
               ? CupertinoActivityIndicator(
                   radius: 15,
@@ -465,10 +462,11 @@ class OTPForm extends StatelessWidget {
                   onPressed: () async {
                     bool status = await profileProvider.signUpWithOTP(
                         controller.text, user);
-                      if(status){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
-                      }
-                      Navigator.pop(context);
+                    if (status) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => ProfileScreen()));
+                    }
+                    Navigator.pop(context);
                   },
                 )
         ],
