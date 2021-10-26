@@ -199,7 +199,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("${widget.cartDetails.design.name}",style: Theme.of(context).textTheme.subtitle1,),
+                      Expanded(child: Text("${widget.cartDetails.design.name}",style: Theme.of(context).textTheme.subtitle1,)),
                       GestureDetector(
                         child:  Icon(Icons.delete,color: Colors.red,) ,
                         onTap:(){
@@ -243,7 +243,7 @@ class _SingleProductCartState extends State<SingleProductCart> {
                             ),
                           ),
                           onTap: (){showModal();},
-                        ):SizedBox(height: 40,),
+                        ):SizedBox(height: 20,),
 
                         SizedBox(height:5,),
 

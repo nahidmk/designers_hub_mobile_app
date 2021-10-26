@@ -83,13 +83,15 @@ class _CartViewState extends State<CartView> {
                   ),
 
                   secondaryButton((){
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList)));
+                    profileProvider.isAuthenticated?
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>CheckoutScreen(cartDesignProvider.cart.cartDetailsList))):SignInScreen(false);
                   }, "Check Out", context)
                 ],
               )
           ),
         )
       ]);
+
 
   }
 }

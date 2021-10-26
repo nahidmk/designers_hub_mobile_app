@@ -10,6 +10,7 @@ import 'package:designers_hub_modile_app/Model/payment_type.dart';
 import 'package:designers_hub_modile_app/Model/promo.dart';
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Service/oder_service.dart';
+import 'package:designers_hub_modile_app/helper/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -169,6 +170,13 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clearCard() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove("cart");
+    _cart.cartDetailsList.clear();
+    calculateTotalPrice();
+  }
+
   void deleteDesign(int id) {
     _cart.cartDetailsList.removeWhere((element) => element.design.id == id);
     calculateTotalPrice();
@@ -228,6 +236,7 @@ class OrderProvider extends ChangeNotifier {
       final response = await orderService.updateCart(newCart);
       print('response--->${response.body}');
       if (response.statusCode == 200) {
+        loadingUpdateCart = false;
         cart = Cart.fromJson(json.decode(response.body));
       } else {
         print('cart update response error---->${response.body}');
@@ -243,24 +252,29 @@ class OrderProvider extends ChangeNotifier {
     }
   }
 
-  Future<Order> placeOrder(DeliveryAddress selectedDeliveryAddress) async {
+  Future<Order> placeOrder(DeliveryAddress selectedDeliveryAddress, BuildContext context) async {
     try {
       loadingOrder = true;
       final response = await orderService.placeOrder(selectedDeliveryAddress);
       if (response.statusCode == 201) {
         print('successful order - >${response.body}');
-        _order = Order.fromJson(json.decode(response.body));
+        order = Order.fromJson(json.decode(response.body));
+        clearCard();
+        showSuccessMessage("Order hase been placed successfully", context);
+        loadingOrder = false;
       } else {
         loadingOrder = false;
+        showErrorMessage("Some thing went worng", context);
         print('order place response error --> ${json.decode(response.body)}');
-        return _order;
+        return order;
       }
       loadingOrder = false;
-      return _order;
+      return order;
     } catch (error) {
       loadingOrder = false;
+      showApiErrorMessage(error, context);
       print('place order error ---> $error');
-      return _order;
+      return order;
     }
   }
 

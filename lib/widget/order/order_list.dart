@@ -37,7 +37,7 @@ class _OrderListState extends State<OrderList> {
   Widget build(BuildContext context) {
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
-    return orderProvider.loadingOrder
+    return orderProvider.loadingOrders
         ? Center(
             child: CupertinoActivityIndicator(
               radius: 15,

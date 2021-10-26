@@ -106,17 +106,24 @@ class _SignInFromState extends State<SignInFrom> {
   _signInWithGoogle() async{
     try{
       loading = true;
+      print('login with google .....');
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+      print('google sign in account===>${googleSignInAccount!.displayName??"display name"}');
       if(googleSignInAccount != null){
         GoogleSignInAuthentication googleSignInAuth = await googleSignInAccount.authentication;
         AuthCredential credential = GoogleAuthProvider.credential(
             idToken: googleSignInAuth.idToken,
             accessToken: googleSignInAuth.accessToken);
+
+        print('credential====>${credential.providerId}');
         try{
           FirebaseAuth auth = FirebaseAuth.instance;
           final user = await auth.signInWithCredential(credential);
+          print('user===>${user.user!.displayName??"display name"}');
 
           final token = await user.user!.getIdToken(true);
+          print('token===>${token}');
+
           bool signedIn = await Provider.of<ProfileProvider>(context,listen: false).socialMediaSignIn(token);
           if (signedIn && widget.popAble != null) {
             if(widget.fromSideBar){

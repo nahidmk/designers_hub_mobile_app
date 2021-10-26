@@ -363,7 +363,7 @@ class ProfileProvider extends ChangeNotifier{
     final Firebse.PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
       phoneVerificationErrorMsg = 'Time out !';
       verificationId = verId;
-
+      print('time out');
     };
 
     Firebse.FirebaseAuth _auth = Firebse.FirebaseAuth.instance;
@@ -375,8 +375,8 @@ class ProfileProvider extends ChangeNotifier{
         verificationFailed: verificationFailed,
         codeSent: smsSent,
         codeAutoRetrievalTimeout: autoTimeout,
-
       );
+      print('phone code set otp....>$phoneCodeSent');
     } catch (error) {
       print('google error---> ${error}');
       signUpErrorMsg = 'Unexpected error !';
