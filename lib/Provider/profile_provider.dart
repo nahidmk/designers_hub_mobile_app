@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:designers_hub_modile_app/Model/fcm_device_reg_token.dart';
 import 'package:designers_hub_modile_app/Model/user.dart';
 import 'package:designers_hub_modile_app/Service/profile_service.dart';
@@ -159,13 +160,13 @@ class ProfileProvider extends ChangeNotifier{
 
   Future<bool> signIn(String username, String password) async {
     try {
-      print('sign in function called---->');
+      // // print('sign in function called---->');
       signInLoading = true;
       signInErrorMsg = '';
       final response = await profileService.signIn(username, password);
-      print('response for signin----------->${json.decode(response.body)}');
+      // print('response for signin----------->${json.decode(response.body)}');
       if (response.statusCode == 200) {
-        print('access token ----->${json.decode(response.body)}');
+        // print('access token ----->${json.decode(response.body)}');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString(
             'aw_auth_token', json.decode(response.body)['token']['access']);
@@ -180,7 +181,7 @@ class ProfileProvider extends ChangeNotifier{
         signInLoading = false;
         return true;
       } else {
-        print('sign in failed---->');
+        // print('sign in failed---->');
         signInLoading = false;
         signInErrorMsg = json.decode(response.body)['message'];
         return false;
@@ -229,10 +230,10 @@ class ProfileProvider extends ChangeNotifier{
     try {
       var response = await profileService.getProfile();
       if (response.statusCode == 200) {
-        print('profile response --->${json.decode(response.body)}');
+        // // print('profile response --->${json.decode(response.body)}');
         User user = User.fromJson(json.decode(response.body)["info"]);
         _profile = user;
-        print("user name---->${_profile.fullName}");
+        // // print("user name---->${_profile.fullName}");
         isAuthenticated = true;
         profileLoading = false;
         return true;
@@ -241,8 +242,10 @@ class ProfileProvider extends ChangeNotifier{
         return status;
       }
     } catch (error) {
-      print( 'get profile error---->$error');
+      // print( 'get profile error---->$error');
       profileErrorMsg = getErrorMsg(error);
+      BotToast.showText(
+          text: "Please Connect the Internet");
       profileLoading = false;
       return false;
     }
@@ -256,15 +259,15 @@ class ProfileProvider extends ChangeNotifier{
       final response = await profileService.updateProfile(user);
       if (response.statusCode == 200) {
         profile = User.fromJson(json.decode(response.body));
-        print("profile provider--->${profile.email}");
+        // print("profile provider--->${profile.email}");
         return true;
       } else {
-        print('update profile response error---> ${response.body}');
+        // print('update profile response error---> ${response.body}');
         updateProfileErrorMsg = json.decode(response.body)['message'];
         return false;
       }
     } catch (error) {
-      print('update profile error --->$error');
+      // print('update profile error --->$error');
       profileLoading = false;
       updateProfileErrorMsg = getErrorMsg(error);
       return false;
@@ -289,14 +292,14 @@ class ProfileProvider extends ChangeNotifier{
           return false;
         }
       }else{
-        print("forgot password response error ---->${response.body}");
+        // print("forgot password response error ---->${response.body}");
         loadingForgotPassword = false;
         forgotPasswordErrorMsg = json.decode(response.body)['errors'][0];
         return false;
       }
 
     }catch(error){
-      print("forgot password error ---->${error}");
+      // print("forgot password error ---->${error}");
       forgotPasswordErrorMsg = getErrorMsg(error);
       return false;
     }
@@ -331,13 +334,13 @@ class ProfileProvider extends ChangeNotifier{
 
   Future<bool> sendOTP({primaryPhone}) async {
 
-    print('sent otp called------<><><><><>');
+    // print('sent otp called------<><><><><>');
     signUpLoading = true;
 
     signUpErrorMsg = '';
 
     final Firebse.PhoneVerificationCompleted verified = (Firebse.PhoneAuthCredential credential) {
-      print('completed---> ${json.decode(credential.toString())}');
+      // print('completed---> ${json.decode(credential.toString())}');
       signUpLoading = false;
     };
 
@@ -345,14 +348,14 @@ class ProfileProvider extends ChangeNotifier{
     final Firebse.PhoneVerificationFailed verificationFailed =
         (Firebse.FirebaseAuthException authException) {
       if(authException.code == 'invalid-phone-number'){
-        print('The provided phone number is not valid.');
+        // print('The provided phone number is not valid.');
         signUpErrorMsg = "The provided phone number is not valid";
       }
       signUpLoading = false;
     };
 
     final Firebse.PhoneCodeSent smsSent = (String verId, [int? forceResend]) {
-      print('phone code sent --->$verId');
+      // print('phone code sent --->$verId');
       verificationId = verId;
       signUpLoading = false;
       phoneCodeSent = true;
@@ -363,7 +366,7 @@ class ProfileProvider extends ChangeNotifier{
     final Firebse.PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
       phoneVerificationErrorMsg = 'Time out !';
       verificationId = verId;
-      print('time out');
+      // print('time out');
     };
 
     Firebse.FirebaseAuth _auth = Firebse.FirebaseAuth.instance;
@@ -376,9 +379,9 @@ class ProfileProvider extends ChangeNotifier{
         codeSent: smsSent,
         codeAutoRetrievalTimeout: autoTimeout,
       );
-      print('phone code set otp....>$phoneCodeSent');
+      // print('phone code set otp....>$phoneCodeSent');
     } catch (error) {
-      print('google error---> ${error}');
+      // print('google error---> ${error}');
       signUpErrorMsg = 'Unexpected error !';
       signUpLoading = false;
     }
@@ -386,20 +389,20 @@ class ProfileProvider extends ChangeNotifier{
   }
 
   Future<bool> verifyOTP(smsCode) async {
-    print('verification id ------->$verificationId');
+    // print('verification id ------->$verificationId');
 
     Firebse.AuthCredential authCredential = Firebse.PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsCode);
 
-    print('auth credential ----> $authCredential');
+    // print('auth credential ----> $authCredential');
 
     try {
       Firebse.UserCredential authResult = await Firebse.FirebaseAuth.instance.signInWithCredential(authCredential);
       _idToken = await authResult.user?.getIdToken();
-      print('idToken -----> ${_idToken}');
+      // print('idToken -----> ${_idToken}');
       return true;
     } catch (error) {
-      print('error--->${error}');
+      // print('error--->${error}');
       return false;
     }
   }
@@ -419,14 +422,14 @@ class ProfileProvider extends ChangeNotifier{
 
 
     final response = await profileService.signUp(user, _idToken);
-    print('');
+    // print('');
     if (response.statusCode == 200) {
-      print('success---->${json.decode(response.body)}');
+      // print('success---->${json.decode(response.body)}');
       signIn(user.primaryNumber, user.password);
       phoneVerificationLoading = false;
       return true;
     } else {
-      print('failed---->${json.decode(response.body)}');
+      // print('failed---->${json.decode(response.body)}');
       signUpErrorMsg = 'Unexpected error !';
       phoneVerificationLoading = false;
       return false;
@@ -436,14 +439,14 @@ class ProfileProvider extends ChangeNotifier{
 
   Future<bool> socialMediaSignIn(String token) async {
     try {
-      print('From sign in function ---->');
+      // print('From sign in function ---->');
       signInLoading = true;
       signInErrorMsg = '';
-      print('firebse Token------>$token');
+      // print('firebse Token------>$token');
       final response = await profileService.socialMediaSignIn(token);
-      print('response----->${json.decode(response.body)}');
+      // print('response----->${json.decode(response.body)}');
       if (response.statusCode == 200) {
-        print('access token ----->${json.decode(response.body)}');
+        // print('access token ----->${json.decode(response.body)}');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString(
             'aw_auth_token', json.decode(response.body)['token']['access']);
@@ -456,7 +459,7 @@ class ProfileProvider extends ChangeNotifier{
         signInLoading = false;
         return true;
       } else {
-        print('sign in failed---->');
+        // print('sign in failed---->');
         signInLoading = false;
         signInErrorMsg = json.decode(response.body)['message'];
         return false;
@@ -476,19 +479,19 @@ class ProfileProvider extends ChangeNotifier{
   //     final response = await commonService.fcmDeviceRegToken(fcmDeviceRegToken);
   //
   //     if (response.statusCode == 200) {
-  //       print(response.body);
+  // //       print(response.body);
   //
   //       _fcmRegToken = FCMDeviceRegToken.fromJson(json.decode(response.body));
   //
-  //       print('FCM Reg toke: $_fcmRegToken');
+  // //       print('FCM Reg toke: $_fcmRegToken');
   //
   //       SharedPreferences prefs = await SharedPreferences.getInstance();
   //       prefs.setString("device_fcm_token", json.encode(_fcmRegToken));
   //     } else {
-  //       print(response.body);
+  // //       print(response.body);
   //     }
   //   } catch (e) {
-  //     print(e.toString());
+  // //     print(e.toString());
   //   }
   // }
 }

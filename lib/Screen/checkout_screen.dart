@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
@@ -357,12 +358,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         if (deliveryAddressProvider
                             .selectedDeliveryAddress.title.isEmpty) {
                           //show error msg in toast;
-                          showErrorMassage("Choose delivery address");
-
+                          BotToast.showText(
+                              text: "Choose delivery address");
                           return;
                         }
-                        if(cart.cartDetailsList !=null || cart.cartDetailsList.isEmpty){
-                          showErrorMassage("Cart is Empty");
+                        if(cart.totalProducts==0){
+                          BotToast.showText(
+                              text: "Your card in Empty");
+                          return;
                         }
                         order = await orderProvider.placeOrder(
                             deliveryAddressProvider.selectedDeliveryAddress,context);

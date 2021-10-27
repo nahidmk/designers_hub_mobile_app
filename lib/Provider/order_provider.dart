@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:designers_hub_modile_app/Model/cart.dart';
 import 'package:designers_hub_modile_app/Model/cart_details.dart';
 import 'package:designers_hub_modile_app/Model/delivery_address.dart';
@@ -173,7 +174,17 @@ class OrderProvider extends ChangeNotifier {
   Future<void> clearCard() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.remove("cart");
-    _cart.cartDetailsList.clear();
+    cart = Cart(
+      id: 0,
+      discount: 0,
+      finalPrice: 0,
+      cartDetailsList: [],
+      grandTotal: 0,
+      totalPrice: 0,
+      printingCost: 0,
+      totalProducts: 0,
+      promo: Promo(code: ""),
+    );
     calculateTotalPrice();
   }
 
@@ -234,19 +245,23 @@ class OrderProvider extends ChangeNotifier {
           promo: Promo(code: promoCode));
 
       final response = await orderService.updateCart(newCart);
-      print('response--->${response.body}');
+      // print('response--->${response.body}');
       if (response.statusCode == 200) {
         loadingUpdateCart = false;
         cart = Cart.fromJson(json.decode(response.body));
       } else {
-        print('cart update response error---->${response.body}');
+        // print('cart update response error---->${response.body}');
+        BotToast.showText(
+            text: '${json.decode(response.body)["message"]}');
         loadingUpdateCart = false;
         return false;
       }
       loadingUpdateCart = false;
       return true;
     } catch (error) {
-      print('cart update error---->$error');
+      // print('cart update error---->$error');
+      BotToast.showText(
+          text: "Some thing went wrong");
       loadingUpdateCart = false;
       return false;
     }
@@ -258,13 +273,14 @@ class OrderProvider extends ChangeNotifier {
       final response = await orderService.placeOrder(selectedDeliveryAddress);
       if (response.statusCode == 201) {
         print('successful order - >${response.body}');
+
         order = Order.fromJson(json.decode(response.body));
         clearCard();
         showSuccessMessage("Order hase been placed successfully", context);
         loadingOrder = false;
       } else {
         loadingOrder = false;
-        showErrorMessage("Some thing went worng", context);
+        BotToast.showText(text: json.decode(response.body)["message"]);
         print('order place response error --> ${json.decode(response.body)}');
         return order;
       }
@@ -323,11 +339,13 @@ class OrderProvider extends ChangeNotifier {
         order = Order.fromJson(json.decode(response.body));
       } else {
         orderErrorMsg = 'Can not load order. Try again later';
+
         print(json.decode(response.body));
       }
       loadingOrder = false;
     } catch (error) {
       print(error.toString());
+      BotToast.showText(text: error.toString());
       orderErrorMsg = getErrorMsg(error);
       loadingOrder = false;
     }

@@ -146,14 +146,16 @@ class DesignProvider extends ChangeNotifier {
                 .map((e) => Design.fromJson(e))
                 .toList();
 
+
+
         totalElements = json.decode(response.body)['totalElements'];
       } else {
-        print('get design response error ---> ${json.decode(response.body)}');
+        // print('get design response error ---> ${json.decode(response.body)}');
       }
       !loadMore ? loadingList = false : loadingMore = false;
     } catch (error) {
       !loadMore ? loadingList = false : loadingMore = false;
-      print('design gt error ---> $error');
+      // print('design gt error ---> $error');
     }
   }
 
@@ -163,17 +165,17 @@ class DesignProvider extends ChangeNotifier {
       final response = await designService.getDesignById(id);
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-        print("json response-->${jsonResponse['designImages']}");
+        // print("json response-->${jsonResponse['designImages']}");
         design = Design.fromJson(jsonResponse);
 
-        print("Design name----->${_design.designImages}");
+        // print("Design name----->${_design.designImages}");
       } else {
-        print('get design response error ---> ${json.decode(response.body)}');
+        // print('get design response error ---> ${json.decode(response.body)}');
       }
       loading = false;
     } catch (error) {
       loading = false;
-      print('design gt error ---> $error');
+      // print('design gt error ---> $error');
     }
   }
 

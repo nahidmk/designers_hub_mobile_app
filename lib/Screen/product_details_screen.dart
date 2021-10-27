@@ -124,6 +124,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 child: Image.network(
                               "$IMAGE_URL${e.thumbnail}",
                               fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/no_image_placeholder.jpg',
+                                );
+                              },
                             )),
                             Expanded(
                               child: Container(
@@ -261,6 +266,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             placeholder: AssetImage(
                                                 'assets/images/placeholder.jpg'),
                                             image: NetworkImage("$IMAGE_URL$e"),
+                                            imageErrorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                'assets/images/no_image_placeholder.jpg',
+                                              );
+                                            },
                                           ),
 
                                           // child: Image.network(
@@ -282,9 +293,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     ? Image.network(
                                         "$IMAGE_URL${_design.thumbnail}",
                                         fit: BoxFit.fill,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/no_image_placeholder.jpg',
+                                          );
+                                        },
                                       )
-                                    : Image.network("$IMAGE_URL${_imageUrl}",
-                                        fit: BoxFit.fill))
+                                    : Image.network(
+                                        "$IMAGE_URL${_imageUrl}",
+                                        fit: BoxFit.fill,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/images/no_image_placeholder.jpg',
+                                          );
+                                        },
+                                      ))
                           ],
                         ),
                       ),
@@ -526,7 +551,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       orderProvider.addToCart(
                           CartDetails(
                               designPrice: _designPrice,
-                              id: 1,
+                              id: 0,
                               totalPrice: _quantityPrice + _fabric.price,
                               quantity: quantity.toDouble(),
                               design: _design,
@@ -550,7 +575,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       orderProvider.addToCart(
                           CartDetails(
                               designPrice: _designPrice,
-                              id: 1,
+                              id: 0,
                               totalPrice: _quantityPrice + _fabric.price,
                               quantity: quantity.toDouble(),
                               design: _design,

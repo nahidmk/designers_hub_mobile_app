@@ -84,6 +84,7 @@ class _HotDesignState extends State<HotDesign> {
                         screenWidthForDesignCard,
                         screenHeightForDesignCard,
                         '$IMAGE_URL${e.thumbnail}',
+
                       )
 
                 )

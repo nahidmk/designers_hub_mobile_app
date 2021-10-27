@@ -15,13 +15,16 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
 
+
   bool _signUpForm = false;
 
   void swapSignupForm(bool value){
     setState(() {
       _signUpForm = value;
+
     });
   }
+
 
   @override
   Widget build(BuildContext context) {

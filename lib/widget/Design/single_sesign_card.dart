@@ -9,8 +9,10 @@ class SingleDesignCard extends StatelessWidget {
   final double cardWidth;
   final double cardHeight;
   final String imgUrl;
+  final int id;
 
-  SingleDesignCard(this.price, this.name,this.cardWidth,this.cardHeight,this.imgUrl);
+  SingleDesignCard(this.price, this.name,this.cardWidth,this.cardHeight,this.imgUrl,
+      {this.id = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,11 @@ class SingleDesignCard extends StatelessWidget {
               child: FadeInImage(
                 placeholder: AssetImage('assets/images/placeholder.jpg'),
                 image: NetworkImage(imgUrl),
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/images/no_image_placeholder.jpg',
+                  );
+                },
               ),
               // child: Image.network(imgUrl,fit: BoxFit.cover,),
             ),
@@ -66,6 +73,7 @@ class SingleDesignCard extends StatelessWidget {
                         '$CURRENCY $price',
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
+
                     ],
                   ),
                 ),
