@@ -1,7 +1,7 @@
 
 final VERSION = '1.0.0';
-// final ROOT_URL = "http://192.168.0.147:8081";
-final ROOT_URL = "https://alishasworld.com:8081";
+final ROOT_URL = "http://192.168.0.147:8081";
+// final ROOT_URL = "https://alishasworld.com:8081";
 
 final PUBLIC_API_URL = '$ROOT_URL/api/v/$VERSION/public';
 final SECURED_API_URL = '$ROOT_URL/api/v/$VERSION/secured';

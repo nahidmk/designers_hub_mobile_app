@@ -122,17 +122,18 @@ class TermsAndCondition extends StatelessWidget {
   }
 }
 
+_launchURL(String url) async {
+  print('called');
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
 class FacebookPage extends StatelessWidget {
 
-  _launchURL(String url) async {
-    print('called');
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +184,7 @@ class PrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoButton(
       onPressed: () {
-        // _launchURL('https://oushodsheba.com/help');
+        _launchURL('https://alishasworld.com/privacy-policy');
       },
       child: Row(
         children: <Widget>[

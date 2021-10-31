@@ -106,23 +106,23 @@ class _SignInFromState extends State<SignInFrom> {
   _signInWithGoogle() async{
     try{
       loading = true;
-      print('login with google .....');
+      // print('login with google .....');
       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-      print('google sign in account===>${googleSignInAccount!.displayName??"display name"}');
+      // print('google sign in account===>${googleSignInAccount!.displayName??"display name"}');
       if(googleSignInAccount != null){
         GoogleSignInAuthentication googleSignInAuth = await googleSignInAccount.authentication;
         AuthCredential credential = GoogleAuthProvider.credential(
             idToken: googleSignInAuth.idToken,
             accessToken: googleSignInAuth.accessToken);
 
-        print('credential====>${credential.providerId}');
+        // print('credential====>${credential.providerId}');
         try{
           FirebaseAuth auth = FirebaseAuth.instance;
           final user = await auth.signInWithCredential(credential);
-          print('user===>${user.user!.displayName??"display name"}');
+          // print('user===>${user.user!.displayName??"display name"}');
 
           final token = await user.user!.getIdToken(true);
-          print('token===>${token}');
+          // print('token===>${token}');
 
           bool signedIn = await Provider.of<ProfileProvider>(context,listen: false).socialMediaSignIn(token);
           if (signedIn && widget.popAble != null) {
@@ -138,14 +138,14 @@ class _SignInFromState extends State<SignInFrom> {
 
         }catch(error){
           loading = false;
-          print('user credential error ---> $error');
+          // print('user credential error ---> $error');
         }
         loading = false;
       }
       loading = false;
     }catch(error){
       loading = false;
-      print('google sign in error -> $error');
+      // print('google sign in error -> $error');
     }
   }
 
